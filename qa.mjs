@@ -98,6 +98,16 @@ ok(index.includes('download-pdf'),'reader must keep the direct-download control 
 ok(index.includes(' download>')||index.includes(' download '),'direct-download link must carry the HTML download attribute');
 ok(index.includes('exports/student-pages/cone-student.pdf'),'direct download must point to the validated canonical student PDF');
 
+// Continuous scroll view (reader shell only): every student page stacked for
+// review via ?view=scroll or the toggle; the default reader stays single-page
+// and print pagination must not change.
+ok(index.includes('id="view-toggle"'),'reader must keep the scroll-view toggle control (view-toggle)');
+ok(app.includes("get('view')")&&app.includes("urlView==='scroll'"),'reader must honour ?view=scroll');
+ok(app.includes("classList.toggle('scroll-view',scrollView)"),'reader must expose the scroll-view body class');
+ok(app.includes("addEventListener('scroll',syncCounterToScroll"),'scroll view counter must follow the page in view');
+ok(css.includes('.scroll-view .page{margin-bottom:18px}'),'scroll-view page stacking style missing');
+ok(css.includes('@media print{.scroll-view .page,.scroll-view .page:last-child{margin:0}}'),'scroll view must not alter print pagination');
+
 ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
 ok(css.includes('width:10mm')&&css.includes('height:10mm'),'district logo must render at 10mm square');
 ok(css.includes('family=Rubik')&&css.includes('family=Heebo'),'canonical Google font import missing');

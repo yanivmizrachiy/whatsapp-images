@@ -115,9 +115,52 @@ ${renderSubpart(officialD,{size:'official-part-d',unit:'סמ״ק'})}`);
 
 let idx=0;
 const students=[...document.querySelectorAll('[data-kind="student"]')];
-function show(){students.forEach((p,i)=>p.hidden=i!==idx);document.querySelector('#counter').textContent=`${idx+1} / ${students.length}`;document.querySelector('#prev').disabled=idx===0;document.querySelector('#next').disabled=idx===students.length-1;fitPage()}
+const reader=document.querySelector('.reader');
+const counter=document.querySelector('#counter');
+const prevBtn=document.querySelector('#prev');
+const nextBtn=document.querySelector('#next');
+const toggleBtn=document.querySelector('#view-toggle');
+
+// Reader view: 'paged' shows one A4 page at a time (default, locked by QA);
+// 'scroll' stacks every student page in one continuous flow for review.
+// URL ?view=scroll|paged wins; otherwise the viewer's last explicit choice.
+const VIEW_KEY='cone-reader-view';
+const readStoredView=()=>{try{return localStorage.getItem(VIEW_KEY)}catch{return null}};
+const storeView=(view)=>{try{localStorage.setItem(VIEW_KEY,view)}catch{}};
+const urlView=new URLSearchParams(location.search).get('view');
+let scrollView=urlView?urlView==='scroll':readStoredView()==='scroll';
+
+function updateCounter(){counter.textContent=`${idx+1} / ${students.length}`;prevBtn.disabled=idx===0;nextBtn.disabled=idx===students.length-1}
+function show(){
+  document.body.classList.toggle('scroll-view',scrollView);
+  toggleBtn.setAttribute('aria-pressed',String(scrollView));
+  toggleBtn.textContent=scrollView?'דף אחד':'כל הדפים';
+  students.forEach((p,i)=>p.hidden=scrollView?false:i!==idx);
+  updateCounter();fitPage();
+}
 function fitPage(){if(innerWidth>850){book.style.removeProperty('--page-scale');return}book.style.setProperty('--page-scale',Math.min(1,(innerWidth-16)/794))}
-document.querySelector('#prev').onclick=()=>{idx=Math.max(0,idx-1);show()};
-document.querySelector('#next').onclick=()=>{idx=Math.min(students.length-1,idx+1);show()};
+function scrollToPage(i){const top=students[i].getBoundingClientRect().top+scrollY-reader.offsetHeight-8;scrollTo({top:Math.max(0,top)})}
+function goTo(i){idx=Math.max(0,Math.min(students.length-1,i));show();if(scrollView)scrollToPage(idx)}
+
+// In scroll view the counter follows the page that occupies most of the viewport
+// below the sticky reader bar (11 rect reads per scroll event: negligible).
+const visibleHeight=p=>{const r=p.getBoundingClientRect();return Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(r.top,reader.offsetHeight))};
+function syncCounterToScroll(){
+  if(!scrollView)return;
+  let best=idx,bestH=-1;
+  students.forEach((p,i)=>{const h=visibleHeight(p);if(h>bestH){bestH=h;best=i}});
+  if(best!==idx){idx=best;updateCounter()}
+}
+addEventListener('scroll',syncCounterToScroll,{passive:true});
+
+prevBtn.onclick=()=>goTo(idx-1);
+nextBtn.onclick=()=>goTo(idx+1);
+toggleBtn.onclick=()=>{
+  scrollView=!scrollView;
+  storeView(scrollView?'scroll':'paged');
+  const next=new URL(location.href);next.searchParams.set('view',scrollView?'scroll':'paged');history.replaceState(null,'',next);
+  show();
+  if(scrollView)scrollToPage(idx);else scrollTo({top:0});
+};
 addEventListener('resize',fitPage);
 show();
