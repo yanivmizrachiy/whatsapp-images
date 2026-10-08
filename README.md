@@ -4,6 +4,20 @@
 
 > כלל ברזל: אין להתחיל, ליצור או לעצב עמודי מורה עד הוראה מפורשת חדשה של יניב לאחר סיום כל עמודי התלמיד.
 
+## חובה ל-Google AI Studio לפני כל עבודה
+
+יש לקרוא לפי הסדר:
+
+1. `SOURCE_OF_TRUTH.md` — מקור האמת היחיד והסמכות היחידה.
+2. `AI_STUDIO_STUDENT_EXECUTION.md` — תוכנית הביצוע המחייבת עד 100% דפי תלמיד.
+3. `STUDENT_PROGRESS.json` — קובץ המעקב הקנוני לאחוזים, משקלים, evidence ו-commits.
+4. `STUDENT_REQUIREMENT_TRACEABILITY.md` — מפת דרישה → בעלים → QA → ראיה.
+5. `student-pages.manifest.json` — מפת הדפים והקבצים.
+
+Google AI Studio חייב לעבוד במצב **Inspect → Change → Verify → Update progress → Continue**, לעדכן את `STUDENT_PROGRESS.json` אחרי כל שינוי מהותי, ולא לסמן 100% בלי שכל המשימות הגיעו ל-100% וכל שערי ה-QA עברו.
+
+נקודת המעקב שנקבעה לפני המשך העבודה: **91.1% דפי תלמיד**, מחושבת לפי משקלים שסכומם 100 ב-`STUDENT_PROGRESS.json`.
+
 ## הפעלה / Google AI Studio
 
 קובץ הכניסה הוא `index.html`.
@@ -31,7 +45,10 @@ npm start
 
 ## מקור האמת וקבצי הבעלות
 
-- `SOURCE_OF_TRUTH.md` — דרישות הפרויקט.
+- `SOURCE_OF_TRUTH.md` — דרישות הפרויקט והסמכות היחידה.
+- `AI_STUDIO_STUDENT_EXECUTION.md` — תוכנית ביצוע נגזרת מן ה-SSOT; אינה מחליפה אותו.
+- `STUDENT_PROGRESS.json` — מעקב אחוזים/evidence קנוני.
+- `STUDENT_REQUIREMENT_TRACEABILITY.md` — מיפוי דרישות ו-QA.
 - `content.js` — תוכן ונתונים קנוניים של דפי התלמיד.
 - `app.js` — רינדור 8 דפי ה-A4 והקורא.
 - `styles.css` — עיצוב A4, RTL, מובייל והדפסה.
@@ -50,8 +67,8 @@ npm run qa:browser
 
 הבדיקות כוללות בין היתר: IDs ייחודיים, נעילת עמוד 1, נעילת השאלה הרשמית, מתמטיקה, טבלת נפח, π, פיתגורס, חתך צירי, המרות, חישוב הפוך, שינוי ממדים, A4, overflow, Desktop, Android, iPhone, הדפסה ו-PDF.
 
-הגרסה החזותית האחרונה של דפי התלמיד עברה GitHub Actions בהצלחה ב-run #75 על commit `f9859224e65fdbe09e90124534b57f9592ffff71` לפני הוספת קבצי ההרצה/תיעוד של AI Studio. קבצי ההרצה שנוספו לאחר מכן אינם משנים את תוכן הדפים.
+הגרסה החזותית האחרונה של דפי התלמיד עברה GitHub Actions בהצלחה על קו המימוש הקיים; קבצי ההרצה/תיעוד/מעקב אינם משנים את תוכן הדפים כשלעצמם.
 
-## הנחיה ל-AI Studio
+## הנחיה קצרה ל-AI Studio
 
-בעת טעינת הריפו יש להפעיל את האתר דרך `npm start` ולהציג את `index.html`. אין לבנות מחדש את החוברת ממסמך או מצילום; הקוד הקנוני כבר מייצר את 8 הדפים. אם נדרש שינוי, יש לערוך את הבעלים המתאים (`content.js`, `app.js`, `styles.css`) ולשמור על `SOURCE_OF_TRUTH.md` ועל בדיקות ה-QA.
+בעת טעינת הריפו: קרא קודם את `SOURCE_OF_TRUTH.md`, אחריו את `AI_STUDIO_STUDENT_EXECUTION.md`, את `STUDENT_PROGRESS.json` ואת `STUDENT_REQUIREMENT_TRACEABILITY.md`. המשך אוטונומית עד 100% אמיתי של דפי התלמיד בלבד, הרץ QA אחרי כל שינוי מהותי, ועדכן את קובץ המעקב עם אחוזים, commits וראיות. אין להתחיל עמודי מורה.
