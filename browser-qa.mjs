@@ -1,18 +1,33 @@
 import { chromium } from 'playwright';
 import { PDFDocument } from 'pdf-lib';
 import fs from 'node:fs';
+import http from 'node:http';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
 
 const failures=[];
 const ok=(cond,msg)=>{if(!cond)failures.push(msg)};
+const root=process.cwd();
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.svg':'image/svg+xml'};
+const server=http.createServer((req,res)=>{
+  const pathname=new URL(req.url,'http://127.0.0.1').pathname;
+  const rel=pathname==='/'?'index.html':pathname.replace(/^\//,'');
+  const file=path.resolve(root,rel);
+  if(!file.startsWith(root+path.sep)&&file!==path.join(root,'index.html')){res.writeHead(403);res.end();return;}
+  fs.readFile(file,(err,buf)=>{
+    if(err){res.writeHead(404);res.end('not found');return;}
+    res.writeHead(200,{'content-type':mime[path.extname(file)]||'application/octet-stream','cache-control':'no-store'});
+    res.end(buf);
+  });
+});
+await new Promise(resolve=>server.listen(0,'127.0.0.1',resolve));
+const address=server.address();
+const url=`http://127.0.0.1:${address.port}/`;
+
 const browser=await chromium.launch({headless:true});
 const page=await browser.newPage();
 const consoleErrors=[];
 page.on('pageerror',e=>consoleErrors.push(`pageerror: ${e.message}`));
 page.on('console',m=>{if(m.type()==='error')consoleErrors.push(`console: ${m.text()}`)});
-
-const url=pathToFileURL(path.resolve('index.html')).href;
 await page.goto(url,{waitUntil:'load'});
 await page.waitForTimeout(400);
 
@@ -23,7 +38,13 @@ const expectedH=297*mmPx;
 async function waitForAssets(){
   await page.evaluate(async()=>{
     if(window.MathJax?.startup?.promise)await window.MathJax.startup.promise;
-    if(document.fonts?.ready)await document.fonts.ready;
+    if(document.fonts){
+      await Promise.all([
+        document.fonts.load('16px "Rubik"','אבג'),
+        document.fonts.load('16px "Heebo"','אבג')
+      ]);
+      await document.fonts.ready;
+    }
     await Promise.all([...document.images].map(img=>img.complete?Promise.resolve():new Promise(resolve=>{
       img.addEventListener('load',resolve,{once:true});
       img.addEventListener('error',resolve,{once:true});
@@ -53,8 +74,8 @@ async function inspectViewport(width,height,label){
       pageOverflow:pages.some(p=>p.scrollWidth>p.clientWidth+1||p.scrollHeight>p.clientHeight+1),
       controls,
       counter:document.querySelector('#counter')?.textContent||'',
-      rubik:document.fonts?.check('16px "Rubik"')??true,
-      heebo:document.fonts?.check('16px "Heebo"')??true,
+      rubik:document.fonts?.check('16px "Rubik"','אבג')??true,
+      heebo:document.fonts?.check('16px "Heebo"','אבג')??true,
       imagesOk:[...document.images].every(img=>img.complete&&img.naturalWidth>0)
     };
   });
@@ -113,10 +134,11 @@ ok(pdfBytes.length>50000,`PDF: suspiciously small (${pdfBytes.length} bytes)`);
 
 ok(consoleErrors.length===0,`browser console errors: ${consoleErrors.join(' | ')}`);
 await browser.close();
+await new Promise(resolve=>server.close(resolve));
 
 if(failures.length){
   console.error('BROWSER QA FAIL');
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`BROWSER QA PASS: 8 A4 pages; canonical fonts/images; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / 8 A4 pages; no internal overflow.`);
+console.log(`BROWSER QA PASS: HTTP-served workbook; 8 A4 pages; canonical fonts/images; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / 8 A4 pages; no internal overflow.`);
