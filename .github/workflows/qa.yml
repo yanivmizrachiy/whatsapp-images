@@ -3,11 +3,13 @@ name: Cone Workbook QA
 on:
   push:
     branches: [main]
+    paths-ignore:
+      - 'exports/student-pages/**'
   pull_request:
     branches: [main]
 
 permissions:
-  contents: read
+  contents: write
 
 jobs:
   qa:
@@ -27,6 +29,20 @@ jobs:
         run: npm run qa
       - name: Run browser A4/mobile/print/PDF QA
         run: npm run qa:browser
+      - name: Persist validated student workbook exports
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: |
+          mkdir -p exports/student-pages
+          cp qa-artifacts/cone-student.pdf exports/student-pages/cone-student.pdf
+          cp qa-artifacts/page-*.png exports/student-pages/
+          printf 'Generated from commit: %s\nWorkflow run: %s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > exports/student-pages/GENERATED_FROM.txt
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add exports/student-pages
+          if ! git diff --cached --quiet; then
+            git commit -m "chore: persist validated student workbook exports [skip ci]"
+            git push origin HEAD:main
+          fi
       - name: Upload visual and PDF QA evidence
         if: always()
         uses: actions/upload-artifact@v4
