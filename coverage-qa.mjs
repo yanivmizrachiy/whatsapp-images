@@ -27,7 +27,7 @@ const coverage=[
   ['approximate pi', text('CONE-CONV-01').includes('π ≈ 3.14')],
   ['Pythagoras inside cone', Boolean(byId.get('CONE-PYT-01')) && text('CONE-PYT-01').includes('h²+6²=10²') && app.includes('חתך צירי ומשפט פיתגורס')],
   ['axial-section area', Boolean(byId.get('CONE-AX-01'))],
-  ['dimension changes', Boolean(byId.get('CONE-CHANGE-01')) && text('CONE-CHANGE-01').includes('פי 2')],
+  ['guided numeric dimension changes', Boolean(byId.get('CONE-CHANGE-01')) && text('CONE-CHANGE-01').includes('רדיוס הבסיס 3') && text('CONE-CHANGE-01').includes('גובהו 8') && text('CONE-CHANGE-01').includes('16 ס״מ') && text('CONE-CHANGE-01').includes('6 ס״מ') && text('CONE-CHANGE-01').includes('24π') && text('CONE-CHANGE-01').includes('48π') && text('CONE-CHANGE-01').includes('96π')],
   ['varied cone orientations', Boolean(byId.get('CONE-ORIENT-01')) && text('CONE-ORIENT-01').includes('מעטפת החרוט') && app.includes('orientedConeSvg(90)') && app.includes('orientedConeSvg(180)')],
   ['orientation drawing practice', Boolean(byId.get('CONE-ORIENT-DRAW-01')) && app.includes("prompt('CONE-ORIENT-DRAW-01')") && app.includes('orientation-sketch')],
   ['realistic context', Boolean(byId.get('CURR-CONE-06')) && text('CURR-CONE-06').includes('גלידרייה')],
