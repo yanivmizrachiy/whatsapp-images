@@ -10,7 +10,12 @@ const ssotPath = path.join(root, SSOT);
 if (!fs.existsSync(ssotPath)) fail(`${SSOT} is missing`);
 const ssot = fs.readFileSync(ssotPath, 'utf8');
 if (!ssot.startsWith('# מקור האמת היחיד — חרוט חדש')) fail('canonical SSOT title is missing or wrong');
-if (!ssot.includes('זהו קובץ ההוראות והדרישות המחייב היחיד')) fail('SSOT does not declare itself as the only requirements authority');
+// Check the current canonical meaning rather than pinning QA to one stale sentence.
+const declaresOnlyAuthority =
+  ssot.includes('קובץ זה בלבד מגדיר את דרישות הפרויקט') &&
+  ssot.includes('`SOURCE_OF_TRUTH.md` הוא מקור האמת היחיד והמחייב');
+if (!declaresOnlyAuthority) fail('SSOT does not declare itself as the only requirements authority');
+if (!ssot.includes('אסור להחזיק מסמך דרישות מקביל')) fail('SSOT must explicitly forbid a parallel requirements document');
 
 const walk = (dir) => fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
   if (['.git','node_modules','exports'].includes(entry.name)) return [];
