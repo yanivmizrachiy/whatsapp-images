@@ -29,6 +29,7 @@ const coverage=[
   ['axial-section area', Boolean(byId.get('CONE-AX-01'))],
   ['dimension changes', Boolean(byId.get('CONE-CHANGE-01')) && text('CONE-CHANGE-01').includes('פי 2')],
   ['varied cone orientations', Boolean(byId.get('CONE-ORIENT-01')) && text('CONE-ORIENT-01').includes('מעטפת החרוט') && app.includes('orientedConeSvg(90)') && app.includes('orientedConeSvg(180)')],
+  ['orientation drawing practice', Boolean(byId.get('CONE-ORIENT-DRAW-01')) && app.includes("prompt('CONE-ORIENT-DRAW-01')") && app.includes('orientation-sketch')],
   ['realistic context', Boolean(byId.get('CURR-CONE-06')) && text('CURR-CONE-06').includes('גלידרייה')],
   ['official curriculum question locked', byId.get('CURR-CONE-06')?.locked===true],
   ['official question includes Pythagoras + volume + dimension comparison', text('CURR-CONE-06').includes('פיתגורס') && text('CURR-CONE-06').includes('נפח') && text('CURR-CONE-06').includes('להגדיל את רדיוס הגביע פי 2')],
