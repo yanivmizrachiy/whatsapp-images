@@ -27,3 +27,11 @@ jobs:
         run: npm run qa
       - name: Run browser A4/mobile/print QA
         run: npm run qa:browser
+      - name: Upload visual QA evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: cone-visual-qa
+          path: qa-artifacts/*.png
+          if-no-files-found: warn
+          retention-days: 7
