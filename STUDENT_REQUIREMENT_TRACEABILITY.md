@@ -48,8 +48,8 @@
 | R36 | קורא: הקודם/הבא/מונה | SSOT — מובייל/ניווט | `index.html`, `app.js` | dynamic navigation QA | ✅ בוצע | אין |
 | R37 | touch targets ≥44px | SSOT — מובייל | CSS | browser QA | ✅ בוצע | אין |
 | R38 | Desktop + Android + iPhone portrait/landscape | SSOT — QA | `browser-qa.mjs` | 5 viewport checks; CI #103 | ✅ בוצע | אין |
-| R39 | Print/PDF במספר עמודים דינמי | SSOT — הדפסה/PDF | print CSS + Playwright | 10-page PDF/A4 QA; export commit `fcf2b06` | ✅ בוצע | הורדה ישירה R40 |
-| R40 | הורדה ישירה/PDF UX | SSOT — הדפסה/PDF | reader + validated export | partial | 🟡 חלקי | direct stable download action/link |
+| R39 | Print/PDF במספר עמודים דינמי | SSOT — הדפסה/PDF | print CSS + Playwright | dynamic PDF/A4 QA; export commit `fcf2b06` | ✅ בוצע | אין |
+| R40 | הורדה ישירה/PDF UX | SSOT — הדפסה/PDF | `index.html` `download-pdf` anchor → validated `exports/student-pages/cone-student.pdf` (CI regenerates on main) | direct-download contract gate ב־`qa.mjs`; commit `56bdc99` | ✅ בוצע | שמירת ה־PDF מעודכן מתבצעת ע״י persist של CI ב־main |
 | R41 | URL ציבורי קבוע + smoke check | SSOT — תוצר אתר | טרם הופעל | prior 404 evidence | ❌ פתוח | להפעיל רק אם נדרש והרשאות מאפשרות |
 | R42 | הפרדת content/design/behavior | SSOT — ארכיטקטורה | `content.js` / `styles.css` / `app.js` | code audit | ✅ בוצע | אין |
 | R43 | stable IDs; אין array-index lookup | SSOT — ארכיטקטורה | `content.js`, `q(id)` | `qa.mjs` | ✅ בוצע | אין |
@@ -61,7 +61,7 @@
 | R49 | Requirement Traceability | SSOT — Traceability | מסמך זה | updated against verified commits/CI | 🟡 מתקדם | להשלים ראיית commit לכל פער שנותר לפני final 100% |
 | R50 | SOURCE_OF_TRUTH ללא מקור מתחרה/drift | SSOT — סמכות יחידה | `SOURCE_OF_TRUTH.md`, `ssot-qa.mjs` | SSOT QA PASS; commits `34bc363`, `b5738e8` | ✅ בוצע | כל דרישה חדשה ממוזגת רק שם |
 | R51 | Evidence before claim | SSOT — QA/ביצוע | GitHub commits + Actions | contract + browser + export evidence ב־CI #103 | ✅ פעיל ומוכח | להמשיך כך בכל שלב |
-| R52 | 100% רק כשכל השערים סגורים | SSOT — תנאי סיום | `STUDENT_PROGRESS.json` + CI | progress guard | 🟡 פעיל | אסור לטעון 100% כל עוד קיימים R17/R25/R33/R40/R41/R44/R46/R49 |
+| R52 | 100% רק כשכל השערים סגורים | SSOT — תנאי סיום | `STUDENT_PROGRESS.json` + CI | progress guard | 🟡 פעיל | אסור לטעון 100% כל עוד קיימים R17/R25/R33/R41/R44/R46/R49 |
 
 ## כללי עדכון ראיות
 
