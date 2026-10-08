@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import { PDFDocument } from 'pdf-lib';
 import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
@@ -86,6 +87,18 @@ const printResult=await page.evaluate(()=>({
 ok(printResult.visible===8,`print: expected 8 printable pages, got ${printResult.visible}`);
 ok(printResult.transforms.every(t=>t==='none'),`print: transformed/scaled A4 page detected`);
 
+const pdfPath='qa-artifacts/cone-student.pdf';
+await page.pdf({path:pdfPath,format:'A4',printBackground:true,preferCSSPageSize:true,margin:{top:'0',right:'0',bottom:'0',left:'0'}});
+const pdfBytes=fs.readFileSync(pdfPath);
+const pdf=await PDFDocument.load(pdfBytes);
+ok(pdf.getPageCount()===8,`PDF: expected 8 pages, got ${pdf.getPageCount()}`);
+const a4Pt={w:595.28,h:841.89};
+pdf.getPages().forEach((p,i)=>{
+  const {width,height}=p.getSize();
+  ok(Math.abs(width-a4Pt.w)<1.5&&Math.abs(height-a4Pt.h)<1.5,`PDF page ${i+1}: not A4 (${width} x ${height})`);
+});
+ok(pdfBytes.length>50000,`PDF: suspiciously small (${pdfBytes.length} bytes)`);
+
 ok(consoleErrors.length===0,`browser console errors: ${consoleErrors.join(' | ')}`);
 await browser.close();
 
@@ -94,4 +107,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log('BROWSER QA PASS: 8 A4 pages; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; no internal overflow.');
+console.log(`BROWSER QA PASS: 8 A4 pages; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / 8 A4 pages; no internal overflow.`);
