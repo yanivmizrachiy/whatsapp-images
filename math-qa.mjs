@@ -16,6 +16,15 @@ const coneVolumeApprox=(r,h,pi=3.14)=>volumeCoeff(r,h)*pi;
 const rightLeg=(hyp,leg)=>Math.sqrt(hyp*hyp-leg*leg);
 const axialArea=(r,h)=>(2*r*h)/2;
 
+// Approximation semantics gate for authored practice. Locked 1:1 source questions
+// are excluded because their wording may not be silently edited.
+const authoredMathText=data.questions
+  .filter(q=>q.locked!==true)
+  .map(q=>`${q.prompt||''}\n${q.answer||''}`)
+  .join('\n');
+ok(!/π\s*=\s*3(?:[.,]14)?/.test(authoredMathText),'authored practice must never present π=3.14 as an exact equality');
+ok(prompt('CONE-CONV-01').includes('π ≈ 3.14'),'CONE-CONV-01 must explicitly use the approximation sign for π≈3.14');
+
 ok(volumeCoeff(3,8)===24,'CONE-VOL-01 coefficient must be 24π');
 ok(answer('CONE-VOL-01').includes('24π'),'CONE-VOL-01 stored result drifted');
 
@@ -95,4 +104,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log('MATH QA PASS: table rows, volume, π estimation, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and guided dimension-change results verified.');
+console.log('MATH QA PASS: table rows, volume, π approximation semantics, estimation, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and guided dimension-change results verified.');
