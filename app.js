@@ -37,7 +37,8 @@ addPage(`${header(`נפח חרוט — השלימו: ${tex('V=\\underline{\\hspa
 addPage(`${header('חתך צירי ומשפט פיתגורס',4)}
 <div class="concept-note">חתך צירי של חרוט הוא משולש שווה שוקיים שקודקוד הראש שלו הוא קודקוד החרוט והבסיס שלו הוא קוטר העיגול.</div>
 <div class="two-column"><div>${axialSvg()}</div><div><div class="task first">${prompt('CONE-PYT-01')}</div>${grid('pythagoras')}${answerLine('ס״מ')}</div></div>
-<div class="task">${prompt('CONE-AX-01')}</div>${grid('axial-work')}${answerLine('סמ״ר')}`);
+<div class="task">${prompt('CONE-AX-01')}</div>${grid('axial-work')}${answerLine('סמ״ר')}
+<div class="task sketch-task">${prompt('CONE-AX-SKETCH-01')}</div><div class="sketch-box"></div>`);
 
 const estimate=q('CONE-EST-01');
 addPage(`${header(`נפח חרוט — השלימו: ${tex('\\pi\\approx\\underline{\\hspace{14mm}}')}`,5)}
@@ -49,7 +50,7 @@ ${estimate?`<div class="task compact">${estimate.prompt}</div>${grid('small')}${
 addPage(`${header('זיהוי חרוטים במנחים שונים',6)}
 <div class="task first">${prompt('CONE-ORIENT-01')}</div>
 <div class="orientation-grid"><div>${orientedConeSvg(0)}</div><div>${orientedConeSvg(90)}</div><div>${orientedConeSvg(180)}</div></div>
-<div class="orientation-note">כתבו מתחת לכל שרטוט: בסיס, קודקוד וגובה.</div>${grid('orientation-work')}`);
+<div class="orientation-note">כתבו מתחת לכל שרטוט: בסיס, קודקוד, מעטפת וגובה.</div>${grid('orientation-work')}`);
 
 const official=prompt('CURR-CONE-06');
 const splitMarker=' ג. בעל הגלידרייה';
