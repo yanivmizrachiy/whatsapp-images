@@ -47,7 +47,10 @@ ok(!content.includes('src="assets/ayelet-original-cone.png'),'broken local compa
 
 ok(!index.includes('פתרונות למורה'),'teacher UI must not exist during student phase');
 ok(!app.includes('teacher-page')&&!app.includes('פתרונות למורה'),'teacher pages must not be rendered during student phase');
-ok(ssot.includes('כלל ברזל — עמודי מורה רק לאחר השלמת כל עמודי התלמיד'),'teacher-page iron rule missing from SSOT');
+const teacherIronRule=
+  ssot.includes('אין ליצור, להשלים, לעצב, לפרסם או לבצע QA סופי לעמודי מורה') &&
+  ssot.includes('עד שיניב מודיע במפורש שסיים את כל דפי התלמיד');
+ok(teacherIronRule,'teacher-page iron rule missing from SSOT');
 
 const studentPageBuilders=(app.match(/addPage\(/g)||[]).length;
 ok(studentPageBuilders>=8,'expected at least 8 student A4 pages');
