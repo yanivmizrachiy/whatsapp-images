@@ -18,21 +18,24 @@ const sandbox={window:{}};
 vm.runInNewContext(content,sandbox);
 const data=sandbox.window.CONE_DATA;
 const officialQuestion=data.questions.find(q=>q.id==='CURR-CONE-06');
+const orientationQuestion=data.questions.find(q=>q.id==='CONE-ORIENT-01');
+const ids=data.questions.map(q=>q.id);
 
-const ids=[...content.matchAll(/id:'([^']+)'/g)].map(m=>m[1]);
 ok(ids.length>=11,'expected at least 11 canonical question IDs');
 ok(new Set(ids).size===ids.length,'duplicate question IDs found');
-ok(content.includes("id:'CURR-CONE-06'")&&content.includes('locked:true'),'official curriculum question is not locked');
-ok(content.includes("id:'CONE-ORIENT-01'"),'varied-orientation identification task missing');
+ok(officialQuestion?.locked===true,'official curriculum question is not locked');
+ok(Boolean(orientationQuestion),'varied-orientation identification task missing');
+ok(Array.isArray(data.volumeTableRows)&&data.volumeTableRows.length===5,'canonical volume table must contain five rows');
+ok(data.volumeTableRows.filter(r=>r.vPi!=null).length>=2,'canonical volume table must include reverse rows with V given');
 ok(normalize(data.page1)===normalize(page1Lock),'locked page-1 source wording changed');
 ok(officialQuestion&&normalize(officialQuestion.prompt)===normalize(officialLock),'locked official curriculum cone question changed');
-ok(content.includes('שאלות מתוך תוכנית הלימודים')||app.includes('שאלות מתוך תוכנית הלימודים'),'official curriculum heading missing');
+ok(app.includes('שאלות מתוך תוכנית הלימודים'),'official curriculum heading missing');
 ok(content.includes('96π')&&content.includes('384π')&&content.includes('h=8'),'official cone QA values missing');
 ok(content.includes('מעטפת החרוט'),'mantle identification is missing from student content');
 ok(app.includes('חתך צירי של חרוט הוא משולש שווה שוקיים'),'explicit axial-section definition is missing');
 ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew-voice-notes/main/worksheets/assets/ayelet-original-cone.png'),'verified companion-sheet source asset reference is missing');
 ok(app.includes('7121dfeaa9d8dc9f4101eea155c23a24374a0a2a/worksheets/assets/ayelet-original-cone.png'),'rendered companion-sheet artwork is not pinned to the verified immutable source commit');
-ok(!content.includes('src=\\"assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');
+ok(!content.includes('src="assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');
 
 ok(!index.includes('פתרונות למורה'),'teacher UI must not exist during student phase');
 ok(!app.includes('teacher-page')&&!app.includes('פתרונות למורה'),'teacher pages must not be rendered during student phase');
@@ -40,6 +43,7 @@ ok(ssot.includes('כלל ברזל — עמודי מורה רק לאחר השלמ
 
 const studentPageBuilders=(app.match(/addPage\(/g)||[]).length;
 ok(studentPageBuilders>=8,'expected at least 8 student A4 pages');
+ok(app.includes('volumeTableRows()'),'student volume table is not rendered from canonical data');
 ok(app.includes('orientedConeSvg(90)')&&app.includes('orientedConeSvg(180)'),'varied cone orientations are not rendered');
 ok(app.includes("splitMarker=' ג. בעל הגלידרייה'"),'official curriculum task is not split safely across A4 pages');
 
@@ -62,7 +66,7 @@ ok(index.includes('mathjax@3.2.2/es5/tex-svg.js'),'pinned MathJax 3.2.2 TeX-SVG 
 ok(index.includes("inlineMath:[['\\\\(','\\\\)']]"),'MathJax inline TeX delimiters missing');
 ok(app.includes("const tex=(s)=>`\\\\(${s}\\\\)`"),'shared TeX helper missing');
 ok(app.includes('\\\\underline{\\\\hspace{28mm}}'),'volume-page active TeX completion missing');
-ok(app.includes("tex('r')")&&app.includes("tex('d')")&&app.includes("tex('h')")&&app.includes("tex('V')"),'table math labels are not consistently rendered through TeX');
+ok(app.includes("tex('r')")&&app.includes("tex('d')")&&app.includes("tex('h')")&&app.includes("tex('V')"),'math labels are not consistently rendered through TeX');
 
 const forbiddenMath=/[×✕✖]/;
 ok(!forbiddenMath.test(app),'forbidden multiplication glyph found in app.js');
@@ -73,4 +77,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student A4 pages; locked source wording/artwork intact; teacher phase locked; varied orientations/A4/mobile/print/logo/typography/MathJax contracts present.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked source wording/artwork intact; teacher phase locked; A4/mobile/print/logo/typography/MathJax contracts present.`);
