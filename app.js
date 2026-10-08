@@ -11,4 +11,4 @@ let teacher=false,idx=0;const students=[...document.querySelectorAll('[data-kind
 function show(){students.forEach((p,i)=>p.hidden=teacher||i!==idx);teachers.forEach(p=>{p.hidden=!teacher;p.classList.toggle('teacher-on',teacher)});document.querySelector('#counter').textContent=teacher?'פתרונות למורה':(idx+1)+' / '+students.length;document.querySelector('#teacher').textContent=teacher?'חזרה לדפי תלמיד':'פתרונות למורה'}
 document.querySelector('#prev').onclick=()=>{idx=Math.max(0,idx-1);show()};document.querySelector('#next').onclick=()=>{idx=Math.min(students.length-1,idx+1);show()};function fitPage(){if(innerWidth>850){book.style.removeProperty('--page-scale');return}book.style.setProperty('--page-scale',Math.min(1,(innerWidth-16)/794))}
 addEventListener('resize',fitPage);
-document.querySelector('#teacher').onclick=()=>{teacher=!teacher;show()};fitPage();show();
+const teacherBtn=document.querySelector('#teacher');if(teacherBtn)teacherBtn.onclick=()=>{teacher=!teacher;show()};fitPage();show();
