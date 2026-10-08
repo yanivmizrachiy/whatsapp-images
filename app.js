@@ -1,7 +1,8 @@
 const D=window.CONE_DATA;
 const book=document.querySelector('#book');
 
-const footer=()=>`<footer class="gz-footer"><div class="f1">${D.footer[0]}</div><div class="f2">${D.footer[1]}</div></footer>`;
+const DISTRICT_LOGO='https://raw.githubusercontent.com/yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png';
+const footer=()=>`<footer class="gz-footer"><div class="footer-inner"><img class="district-logo" src="${DISTRICT_LOGO}" alt="סמל מחוז ירושלים"><div class="footer-copy"><div class="f1">${D.footer[0]}</div><div class="f2">${D.footer[1]}</div></div></div></footer>`;
 const header=(title,n)=>`<header class="page-header"><h1>${title}</h1><b>${n}</b></header>`;
 const grid=(size='medium')=>`<div class="work-grid ${size}"></div>`;
 const answerLine=(unit='')=>`<div class="final-answer">תשובה: <span></span>${unit?` <em>${unit}</em>`:''}</div>`;
