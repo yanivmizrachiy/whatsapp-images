@@ -6,6 +6,7 @@
     "qa:browser": "node browser-qa.mjs"
   },
   "devDependencies": {
+    "pdf-lib": "1.17.1",
     "playwright": "1.55.0"
   }
 }
