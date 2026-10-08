@@ -9,9 +9,9 @@
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
   "weightsSum": 100,
   "baselinePercent": 91.1,
-  "overallPercent": 91.1,
+  "overallPercent": 93.35,
   "updatedAt": "2026-10-08",
-  "headCommit": "6514c69021ea97670badb9886bc8c6dcac2333a7",
+  "headCommit": "cce44ddc62457ecd1ff0f70fd564c81514c7d5d5",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
     "partial": "work exists but at least one acceptance criterion is still open",
@@ -22,27 +22,27 @@
   "groups": [
     {
       "id": "G01",
-      "name": "Core student content and 8-page workbook",
+      "name": "Core student content and current workbook",
       "weight": 20,
       "completionPercent": 100,
       "status": "done",
       "covers": ["P14"],
-      "evidence": ["8 active student A4 pages", "content.js", "app.js", "exports/student-pages/page-01.png..page-08.png"],
-      "testsPassed": ["8-page browser QA", "PDF page-count QA"],
+      "evidence": ["10 active student A4 pages", "content.js", "app.js", "exports/student-pages/page-01.png..page-10.png"],
+      "testsPassed": ["dynamic page-count browser QA", "10-page PDF page-count QA", "11+ independent subsection work-unit browser gate"],
       "remaining": [],
-      "lastCommit": "026c165c28732e6589756d1b014c1629fadfad95"
+      "lastCommit": "fcf2b06e0b7d7f43e38fd8c2e49bb0c9cba480f8"
     },
     {
       "id": "G02",
-      "name": "Locked official sources and curriculum question",
+      "name": "Locked official sources and complete curriculum inventory",
       "weight": 10,
       "completionPercent": 100,
       "status": "done",
       "covers": ["P01"],
-      "evidence": ["tests/page1-source-lock.txt", "tests/official-cone-q6-lock.txt", "CURR-CONE-06 locked=true"],
-      "testsPassed": ["locked page-1 comparator", "locked official question comparator"],
-      "remaining": ["P01 still requires canonical inventory/completeness gate for future-proofing, but current official cone question is present and locked"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "evidence": ["tests/page1-source-lock.txt", "tests/official-cone-q6-lock.txt", "curriculum-cone-inventory.json", "CURR-CONE-06 locked=true"],
+      "testsPassed": ["locked page-1 comparator", "locked official question comparator", "curriculum inventory completeness gate"],
+      "remaining": [],
+      "lastCommit": "c33278422c29725d9bf77defe97c353e211e9325"
     },
     {
       "id": "G03",
@@ -51,10 +51,10 @@
       "completionPercent": 95,
       "status": "partial",
       "covers": ["P04", "P14"],
-      "evidence": ["coverage-qa.mjs", "definition -> identification -> calculation -> reverse -> combined -> application sequence"],
-      "testsPassed": ["mandatory coverage QA"],
-      "remaining": ["strengthen guided dimension-change investigation before final generalization", "final set-level pedagogical review"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "evidence": ["coverage-qa.mjs", "definition -> identification -> calculation -> reverse -> combined -> application sequence", "10-page subsection layout"],
+      "testsPassed": ["mandatory coverage QA", "subsection-separation QA"],
+      "remaining": ["strengthen guided dimension-change investigation before final generalization", "final set-level pedagogical/visual review"],
+      "lastCommit": "0bfc943ed1a14a11eb0c1b518d2178900973044f"
     },
     {
       "id": "G04",
@@ -64,9 +64,9 @@
       "status": "partial",
       "covers": ["P02", "P03"],
       "evidence": ["5 canonical r/d/h/V rows", "direct and reverse rows", "CONE-CONV-01", "math-qa.mjs"],
-      "testsPassed": ["table solver QA", "exact pi QA", "pi≈3.14 QA", "estimation QA", "unit conversion QA"],
+      "testsPassed": ["table solver QA", "exact pi QA", "pi≈3.14 QA", "approximation-sign semantics QA", "estimation QA", "unit conversion QA"],
       "remaining": ["include unit conversion inside an appropriate table row", "include approximate numeric pi workflow inside an appropriate table row", "explicitly connect kπ result to numerical approximation in at least one task"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "lastCommit": "81673137ef17ec9dcf459e23b2f617b6acd39cf1"
     },
     {
       "id": "G05",
@@ -75,10 +75,10 @@
       "completionPercent": 85,
       "status": "partial",
       "covers": ["P04"],
-      "evidence": ["CONE-CHANGE-01", "24π -> 48π -> 96π deterministic QA"],
-      "testsPassed": ["doubling height x2 volume", "doubling radius x4 volume"],
+      "evidence": ["CONE-CHANGE-01", "24π -> 48π -> 96π deterministic QA", "separate work/answer units on pages 6-7"],
+      "testsPassed": ["doubling height x2 volume", "doubling radius x4 volume", "subsection browser gate"],
       "remaining": ["ensure enough guided numerical evidence before the student writes the generalization without unnecessary repetition"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "lastCommit": "0bfc943ed1a14a11eb0c1b518d2178900973044f"
     },
     {
       "id": "G06",
@@ -90,7 +90,7 @@
       "evidence": ["coneSvg", "axialSvg", "orientedConeSvg", "waffleConeSvg", "orientation page"],
       "testsPassed": ["visual screenshots", "desktop/mobile/PDF rendering"],
       "remaining": ["replace fragile magic-coordinate label placement with deterministic safe label zones where useful", "add explicit label-collision/diagram regression evidence"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "lastCommit": "0bfc943ed1a14a11eb0c1b518d2178900973044f"
     },
     {
       "id": "G07",
@@ -99,10 +99,10 @@
       "completionPercent": 100,
       "status": "done",
       "covers": ["P06"],
-      "evidence": ["210mm x 297mm pages", "5x5mm grid", "task-specific grid heights"],
-      "testsPassed": ["A4 geometry QA", "no internal overflow QA", "8-page PDF A4 QA"],
-      "remaining": ["P06 requests one final per-question review of answer lines on official a-b before final 100%"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "evidence": ["210mm x 297mm pages", "5x5mm grid", "task-specific grid heights", "each multi-part subsection gets dedicated grid + answer line"],
+      "testsPassed": ["A4 geometry QA", "no internal overflow QA", "subsection DOM QA", "10-page PDF A4 QA"],
+      "remaining": [],
+      "lastCommit": "0bfc943ed1a14a11eb0c1b518d2178900973044f"
     },
     {
       "id": "G08",
@@ -111,10 +111,10 @@
       "completionPercent": 95,
       "status": "partial",
       "covers": ["P07", "P14"],
-      "evidence": ["Rubik/Heebo", "student headings 500", "district footer", "BBB/razpages-derived visual language"],
-      "testsPassed": ["font load QA", "heading-weight contract QA"],
+      "evidence": ["Rubik/Heebo", "student headings 500", "district footer", "BBB/razpages-derived visual language", "subsection spacing system"],
+      "testsPassed": ["font load QA", "heading-weight contract QA", "10-page browser QA"],
       "remaining": ["centralize additional repeated design values only where it materially improves maintainability", "final visual consistency audit"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "lastCommit": "398a706b420060061413fa54656128f74d6ee950"
     },
     {
       "id": "G09",
@@ -123,10 +123,10 @@
       "completionPercent": 100,
       "status": "done",
       "covers": ["P11", "P12"],
-      "evidence": ["prev/next reader", "LTR counter in RTL", "print CSS", "cone-student.pdf"],
-      "testsPassed": ["desktop", "Android portrait", "Android landscape", "iPhone portrait", "iPhone landscape", "print", "8-page PDF"],
-      "remaining": ["direct-download/public URL work is tracked separately in G14"],
-      "lastCommit": "026c165c28732e6589756d1b014c1629fadfad95"
+      "evidence": ["prev/next reader", "LTR counter in RTL", "dynamic page count", "print CSS", "cone-student.pdf"],
+      "testsPassed": ["desktop", "Android portrait", "Android landscape", "iPhone portrait", "iPhone landscape", "print", "10-page PDF"],
+      "remaining": [],
+      "lastCommit": "fcf2b06e0b7d7f43e38fd8c2e49bb0c9cba480f8"
     },
     {
       "id": "G10",
@@ -135,10 +135,10 @@
       "completionPercent": 95,
       "status": "partial",
       "covers": ["P09", "P12"],
-      "evidence": ["qa.mjs", "coverage-qa.mjs", "math-qa.mjs", "browser-qa.mjs", "GitHub Actions", "PNG/PDF exports"],
-      "testsPassed": ["contract QA", "coverage QA", "math QA", "browser QA", "asset/font QA", "console error QA"],
+      "evidence": ["ssot-qa.mjs", "qa.mjs", "coverage-qa.mjs", "math-qa.mjs", "browser-qa.mjs", "GitHub Actions", "PNG/PDF exports"],
+      "testsPassed": ["SSOT QA", "contract QA", "coverage/inventory QA", "math QA", "subsection DOM QA", "browser QA", "asset/font QA", "console error QA"],
       "remaining": ["add true baseline visual regression comparison rather than screenshots-only evidence"],
-      "lastCommit": "026c165c28732e6589756d1b014c1629fadfad95"
+      "lastCommit": "0bfc943ed1a14a11eb0c1b518d2178900973044f"
     },
     {
       "id": "G11",
@@ -147,34 +147,34 @@
       "completionPercent": 95,
       "status": "partial",
       "covers": ["P07", "P13"],
-      "evidence": ["content.js / app.js / styles.css separation", "stable question IDs", "ID-based lookups", "shared footer/grid/diagram helpers"],
+      "evidence": ["content.js / app.js / styles.css separation", "stable question IDs", "ID-based lookups", "shared footer/grid/answer/subpart/diagram helpers"],
       "testsPassed": ["no index-based question lookup contract", "unique IDs QA"],
       "remaining": ["finish high-ROI parameterization/tokens only where repeated magic values remain"],
-      "lastCommit": "f9859224e65fdbe09e90124534b57f9592ffff71"
+      "lastCommit": "a9e0d51ba32f0a924d80eba81ced041899eb8877"
     },
     {
       "id": "G12",
       "name": "Requirement traceability",
       "weight": 3,
-      "completionPercent": 60,
+      "completionPercent": 85,
       "status": "partial",
       "covers": ["P08"],
-      "evidence": ["README owner map", "QA files", "AI Studio execution plan"],
-      "testsPassed": [],
-      "remaining": ["complete STUDENT_REQUIREMENT_TRACEABILITY.md for all material SSOT requirements", "link every requirement to owner + QA + evidence commit"],
-      "lastCommit": "6514c69021ea97670badb9886bc8c6dcac2333a7"
+      "evidence": ["STUDENT_REQUIREMENT_TRACEABILITY.md synced to verified ten-page state", "commit/test references for major closed requirements"],
+      "testsPassed": ["progress integrity QA"],
+      "remaining": ["attach final evidence/commit to every remaining partial row before final 100%"],
+      "lastCommit": "cce44ddc62457ecd1ff0f70fd564c81514c7d5d5"
     },
     {
       "id": "G13",
       "name": "SOURCE_OF_TRUTH hygiene and consistency",
       "weight": 3,
-      "completionPercent": 50,
-      "status": "partial",
+      "completionPercent": 100,
+      "status": "done",
       "covers": ["P10"],
-      "evidence": ["teacher-page iron rule exists"],
-      "testsPassed": [],
-      "remaining": ["replace stale specification-only phase text", "merge duplicated automation rules", "fix duplicate section numbering without changing meaning"],
-      "lastCommit": "5b3e2a43a40e48f98a2c9af0aec23bf0abb7b5eb"
+      "evidence": ["single numbered SOURCE_OF_TRUTH.md", "README navigation-only", "ssot-qa.mjs"],
+      "testsPassed": ["SSOT single-authority QA", "canonical rule semantics QA"],
+      "remaining": [],
+      "lastCommit": "b5738e8b9793eedfd8da67472b2098ab26aa37b2"
     },
     {
       "id": "G14",
@@ -183,34 +183,37 @@
       "completionPercent": 50,
       "status": "partial",
       "covers": ["P11"],
-      "evidence": ["Print / PDF button", "validated PDF stored in exports/student-pages"],
+      "evidence": ["Print / PDF button", "validated 10-page PDF stored in exports/student-pages"],
       "testsPassed": ["PDF generation QA"],
-      "remaining": ["provide direct stable PDF download UX or equivalent", "activate and smoke-test a stable public URL if permissions permit", "if externally blocked, record blocker evidence rather than claiming completion"],
-      "lastCommit": "026c165c28732e6589756d1b014c1629fadfad95"
+      "remaining": ["provide direct stable PDF download UX or equivalent", "activate and smoke-test a stable public URL if required and permissions permit", "if externally blocked, record blocker evidence rather than claiming completion"],
+      "lastCommit": "fcf2b06e0b7d7f43e38fd8c2e49bb0c9cba480f8"
     }
   ],
   "openExecutionItems": [
-    "P01 curriculum/source inventory completeness gate",
     "P02 table conversion + approximate pi rows",
     "P03 exact-to-approx pi bridge",
     "P04 dimension-change investigation completion",
     "P05 deterministic safe label zones",
-    "P06 final per-question workspace/answer-line audit",
     "P07 high-ROI design tokens cleanup",
-    "P08 full traceability",
+    "P08 final traceability evidence",
     "P09 visual regression baseline comparison",
-    "P10 SSOT hygiene",
     "P11 direct download/public URL",
     "P12 final all-gates QA",
     "P13 final architecture editability proof",
-    "P14 final 8-page set review"
+    "P14 final ten-page pedagogical/visual set review"
   ],
   "history": [
     {
       "date": "2026-10-08",
       "percent": 91.1,
       "commit": "6514c69021ea97670badb9886bc8c6dcac2333a7",
-      "note": "Canonical weighted baseline created before Google AI Studio continuation. Teacher pages remain forbidden."
+      "note": "Canonical weighted baseline created before continued student-page work. Teacher pages remain forbidden."
+    },
+    {
+      "date": "2026-10-08",
+      "percent": 93.35,
+      "commit": "cce44ddc62457ecd1ff0f70fd564c81514c7d5d5",
+      "note": "Curriculum inventory gate completed; SSOT QA repaired; fixed-eight-page limit removed; workbook expanded to 10 pages; every multi-part subsection now has dedicated work and answer areas; CI contract/browser/PDF gates passed."
     }
   ]
 }
