@@ -50,7 +50,8 @@ ${estimate?`<div class="task compact">${estimate.prompt}</div>${grid('small')}${
 addPage(`${header('זיהוי חרוטים במנחים שונים',6)}
 <div class="task first">${prompt('CONE-ORIENT-01')}</div>
 <div class="orientation-grid"><div>${orientedConeSvg(0)}</div><div>${orientedConeSvg(90)}</div><div>${orientedConeSvg(180)}</div></div>
-<div class="orientation-note">כתבו מתחת לכל שרטוט: בסיס, קודקוד, מעטפת וגובה.</div>${grid('orientation-work')}`);
+<div class="orientation-note">סמנו ישירות על כל שרטוט: בסיס, קודקוד, מעטפת וגובה.</div>
+<div class="task sketch-task">${prompt('CONE-ORIENT-DRAW-01')}</div><div class="sketch-box orientation-sketch"></div>`);
 
 const official=prompt('CURR-CONE-06');
 const splitMarker=' ג. בעל הגלידרייה';
