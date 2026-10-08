@@ -4,6 +4,7 @@ import vm from 'node:vm';
 const read=p=>fs.readFileSync(new URL(p,import.meta.url),'utf8');
 const content=read('./content.js');
 const app=read('./app.js');
+const inventory=JSON.parse(read('./curriculum-cone-inventory.json'));
 const failures=[];
 const ok=(cond,msg)=>{if(!cond)failures.push(msg)};
 
@@ -12,6 +13,27 @@ vm.runInNewContext(content,sandbox);
 const data=sandbox.window.CONE_DATA;
 const byId=new Map(data.questions.map(q=>[q.id,q]));
 const text=id=>`${byId.get(id)?.prompt||''} ${byId.get(id)?.answer||''}`;
+
+// Canonical curriculum inventory gate: prove that the cone workbook contains
+// every official cone question in the audited cylinder/cone curriculum range,
+// and no untracked CURR-CONE question can silently appear or disappear.
+const expectedPages=[14,15,16,17,18,19];
+ok(inventory?.authority==='SOURCE_OF_TRUTH.md','curriculum inventory must remain derived from SOURCE_OF_TRUTH.md');
+ok(inventory?.curriculumSource?.repository==='yanivmizrachiy/jerusalem2','curriculum inventory repository drifted');
+ok(inventory?.curriculumSource?.path==='src/content/curriculum-fragments/idkun-geometri-8/idkun-geometri-8-p001-025.json','curriculum inventory source path drifted');
+ok(JSON.stringify(inventory?.curriculumSource?.auditedSourcePages)===JSON.stringify(expectedPages),'curriculum inventory must prove pages 14–19 were audited');
+const includedNumbers=(inventory.classification||[]).filter(row=>row.includedInConeWorkbook===true).map(row=>row.questionNumber).sort((a,b)=>a-b);
+ok(JSON.stringify(includedNumbers)===JSON.stringify([6]),'official cone question-number inventory must contain exactly question 6');
+const excludedCylinderNumbers=(inventory.classification||[]).filter(row=>row.body==='cylinder'&&row.includedInConeWorkbook===false).map(row=>row.questionNumber).sort((a,b)=>a-b);
+ok(JSON.stringify(excludedCylinderNumbers)===JSON.stringify([1,2,3,4,5,7]),'questions 1–5 and 7 must remain classified as cylinder, not cone');
+const inventoryIds=[...(inventory.officialConeQuestionIds||[])].sort();
+ok(JSON.stringify(inventoryIds)===JSON.stringify(['CURR-CONE-06']),'official cone ID inventory drifted');
+for(const id of inventoryIds){
+  ok(Boolean(byId.get(id)),`official inventory question missing from canonical content: ${id}`);
+  ok(byId.get(id)?.locked===true,`official inventory question must remain locked=true: ${id}`);
+}
+const contentOfficialIds=[...byId.keys()].filter(id=>id.startsWith('CURR-CONE-')).sort();
+ok(JSON.stringify(contentOfficialIds)===JSON.stringify(inventoryIds),'CURR-CONE content IDs and curriculum inventory are out of sync');
 
 const coverage=[
   ['definition', content.includes('חרוט הוא גוף') || app.includes('חרוט הוא גוף')],
@@ -43,4 +65,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`COVERAGE QA PASS: ${coverage.length} mandatory student coverage checks satisfied.`);
+console.log(`COVERAGE QA PASS: ${coverage.length} mandatory student coverage checks + canonical curriculum inventory gate satisfied.`);
