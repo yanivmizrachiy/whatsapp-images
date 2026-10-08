@@ -1,0 +1,23 @@
+{
+  "schemaVersion": 1,
+  "project": "חרוט חדש",
+  "sourceCommit": "90257cdc5b7e746102abcdd03b652a716c4640f6",
+  "sourceWorkflowRun": 37853329815,
+  "artifact": "cone-visual-qa",
+  "reviewedBy": "ChatGPT",
+  "reviewedAt": "2026-10-09",
+  "pageCount": 11,
+  "pages": {
+    "page-01.png": {"sha256": "964f1587d68a12a3393c9e82c7617a1b94f3e28f05909229f643ad105bbcbca9", "bytes": 88659},
+    "page-02.png": {"sha256": "28f1d8643f2f94c002820eb6971e61265a0aa6f013c9cedd293d455baa82e341", "bytes": 54750},
+    "page-03.png": {"sha256": "9ffe0288c22c2a2e60928854e2f617bb3be2ec4f9ead6ed444190bc93c5d8736", "bytes": 42450},
+    "page-04.png": {"sha256": "079aaadba3f5deebd9a49184a9bf3963c830ee0c927a38c948c59e03d736b32a", "bytes": 50281},
+    "page-05.png": {"sha256": "581f6af82b23e9cf7250522c6601fd7739fc9f8e2d438a283620c6553fd04672", "bytes": 51390},
+    "page-06.png": {"sha256": "0d865819d6a222bd0ff791f668fbb4d2f9fee21515381f97a2d8539c9ffb9ce6", "bytes": 42326},
+    "page-07.png": {"sha256": "b6209711210fe9001b8683a1c34414b0ab9c25f07de4789bbeef64bd52ca7eed", "bytes": 43986},
+    "page-08.png": {"sha256": "808590cad95146a026d4c98b443e6ea9f91324563d48ee7d638d7c244c48c0d9", "bytes": 35704},
+    "page-09.png": {"sha256": "c8cd09583e1f39dc4c102adeaf61d78016e2dc3d076c19076bbbedc76e78f65f", "bytes": 49865},
+    "page-10.png": {"sha256": "c9a86de79c22ec6ec1c7e0c9628a4c4de9dbed1d769b61f1e8c5bd6df18fd3cf", "bytes": 80258},
+    "page-11.png": {"sha256": "7297b9f632ee079f5c4cecbdf02a7f19b0a19d7ea43e0026d1694aa3ba8a5cbe", "bytes": 48136}
+  }
+}
