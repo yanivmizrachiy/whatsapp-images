@@ -74,9 +74,13 @@ const reverseR=Math.sqrt((48*3)/9);
 ok(reverseR===4,'reverse-volume radius must be 4');
 ok(answer('CONE-REV-01').includes('r=4'),'reverse-volume stored result drifted');
 
-ok(volumeCoeff(6,16)/volumeCoeff(6,8)===2,'doubling height must double cone volume');
-ok(volumeCoeff(12,8)/volumeCoeff(6,8)===4,'doubling radius must quadruple cone volume');
-ok(answer('CONE-CHANGE-01').includes('פי 2')&&answer('CONE-CHANGE-01').includes('פי 4'),'dimension-change stored result drifted');
+const changeBase=volumeCoeff(3,8);
+const changeDoubleH=volumeCoeff(3,16);
+const changeDoubleR=volumeCoeff(6,8);
+ok(changeBase===24&&changeDoubleH===48&&changeDoubleR===96,'guided dimension-change π coefficients must be 24, 48 and 96');
+ok(changeDoubleH/changeBase===2,'guided investigation: doubling height must double cone volume');
+ok(changeDoubleR/changeBase===4,'guided investigation: doubling radius must quadruple cone volume');
+ok(answer('CONE-CHANGE-01').includes('24π')&&answer('CONE-CHANGE-01').includes('48π')&&answer('CONE-CHANGE-01').includes('96π'),'guided dimension-change stored values drifted');
 
 const officialBase=volumeCoeff(6,8);
 const officialLarge=volumeCoeff(12,8);
@@ -91,4 +95,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log('MATH QA PASS: table rows, volume, π estimation, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and dimension-change results verified.');
+console.log('MATH QA PASS: table rows, volume, π estimation, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and guided dimension-change results verified.');
