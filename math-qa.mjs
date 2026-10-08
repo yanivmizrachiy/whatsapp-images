@@ -9,6 +9,7 @@ const questions=new Map(data.questions.map(q=>[q.id,q]));
 const failures=[];
 const ok=(cond,msg)=>{if(!cond)failures.push(msg)};
 const answer=(id)=>questions.get(id)?.answer||'';
+const prompt=(id)=>questions.get(id)?.prompt||'';
 
 const volumeCoeff=(r,h)=>r*r*h/3;
 const coneVolumeApprox=(r,h,pi=3.14)=>volumeCoeff(r,h)*pi;
@@ -58,10 +59,16 @@ ok(axialArea(6,8)===48,'axial-section area must be 48');
 ok(answer('CONE-AX-01').includes('48'),'axial-section stored result drifted');
 
 const convertedRadiusCm=0.5*100;
+const convertedCoeff=volumeCoeff(convertedRadiusCm,120);
 const convertedVolume=coneVolumeApprox(convertedRadiusCm,120);
+const roughVolume=convertedCoeff*3;
 ok(convertedRadiusCm===50,'0.5 m must convert to 50 cm');
+ok(convertedCoeff===100000,'converted cone π coefficient must be 100000');
+ok(roughVolume===300000,'π≈3 estimate must be 300000 cm³');
+ok(Math.abs(convertedVolume-300000)<Math.abs(convertedVolume-600000),'estimate must be closer to 300000 than 600000');
 ok(convertedVolume===314000,'converted cone volume must be 314000 cm³');
-ok(answer('CONE-CONV-01').includes('314000'),'conversion stored result drifted');
+ok(prompt('CONE-CONV-01').includes('300,000')&&prompt('CONE-CONV-01').includes('600,000'),'conversion prompt estimate options drifted');
+ok(answer('CONE-CONV-01').includes('314000')&&answer('CONE-CONV-01').includes('300000'),'conversion estimate stored result drifted');
 
 const reverseR=Math.sqrt((48*3)/9);
 ok(reverseR===4,'reverse-volume radius must be 4');
@@ -84,4 +91,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log('MATH QA PASS: canonical table rows, volume, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and dimension-change results verified.');
+console.log('MATH QA PASS: table rows, volume, π estimation, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and dimension-change results verified.');
