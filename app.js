@@ -26,22 +26,23 @@ addPage(`${header('היכרות עם החרוט',2)}
 addPage(`${header(`נפח חרוט — השלימו: ${tex('V=\\underline{\\hspace{28mm}}')}`,3)}
 <div class="task">${D.questions[2].prompt}</div>${grid('medium')}${answerLine('סמ״ק')}
 <div class="task">${D.questions[3].prompt}</div>
-<table class="practice-table"><thead><tr><th>${tex('r')}</th><th>${tex('d')}</th><th>${tex('h')}</th><th>${tex('V')}</th></tr></thead><tbody><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></tbody></table>`);
+<table class="practice-table"><thead><tr><th>${tex('r')}</th><th>${tex('d')}</th><th>${tex('h')}</th><th>${tex('V')}</th></tr></thead><tbody><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></tbody></table>
+<div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
 
 addPage(`${header('חתך צירי ומשפט פיתגורס',4)}
 <div class="concept-note">חתך צירי של חרוט הוא משולש שווה שוקיים שקודקוד הראש שלו הוא קודקוד החרוט והבסיס שלו הוא קוטר העיגול.</div>
-<div class="two-column"><div>${axialSvg()}</div><div><div class="task first">${D.questions[4].prompt}</div>${grid('medium')}${answerLine('ס״מ')}</div></div>
-<div class="task">${D.questions[5].prompt}</div>${grid('medium')}${answerLine('סמ״ר')}`);
+<div class="two-column"><div>${axialSvg()}</div><div><div class="task first">${D.questions[4].prompt}</div>${grid('pythagoras')}${answerLine('ס״מ')}</div></div>
+<div class="task">${D.questions[5].prompt}</div>${grid('axial-work')}${answerLine('סמ״ר')}`);
 
 addPage(`${header('נפח חרוט — השלימו את דרך החישוב',5)}
-<div class="task first">${D.questions[6].prompt}</div>${grid('small')}${answerLine('סמ״ק')}
-<div class="task">${D.questions[7].prompt}</div>${grid('small')}${answerLine('ס״מ')}
-<div class="task">${D.questions[8].prompt}</div>${grid('small')}${answerLine()}`);
+<div class="task first">${D.questions[6].prompt}</div>${grid('conversion')}${answerLine('סמ״ק')}
+<div class="task">${D.questions[7].prompt}</div>${grid('reverse')}${answerLine('ס״מ')}
+<div class="task">${D.questions[8].prompt}</div>${grid('change')}${answerLine()}`);
 
 addPage(`${header('זיהוי חרוטים במנחים שונים',6)}
 <div class="task first">${D.questions[9].prompt}</div>
 <div class="orientation-grid"><div>${orientedConeSvg(0)}</div><div>${orientedConeSvg(90)}</div><div>${orientedConeSvg(180)}</div></div>
-<div class="orientation-note">כתבו מתחת לכל שרטוט: בסיס, קודקוד וגובה.</div>${grid('medium')}`);
+<div class="orientation-note">כתבו מתחת לכל שרטוט: בסיס, קודקוד וגובה.</div>${grid('orientation-work')}`);
 
 const official=D.questions[10].prompt;
 const splitMarker=' ג. בעל הגלידרייה';
@@ -51,11 +52,12 @@ const officialCD=cut>0?official.slice(cut+1):'';
 
 addPage(`${header('שאלות מתוך תוכנית הלימודים',7)}
 <div class="official-layout"><div class="official-question">${officialAB}</div><div class="official-diagram">${coneSvg({r:'6 ס״מ',h:'h',slant:'10 ס״מ'})}</div></div>
-${grid('large')}`);
+<div class="work-caption">מרחב פתרון לסעיפים א׳–ב׳</div>${grid('official-ab')}`);
 
 if(officialCD){addPage(`${header('שאלות מתוך תוכנית הלימודים',8)}
 <div class="official-question official-continuation">${officialCD}</div>
-${grid('large')}${answerLine()}`)}
+<table class="comparison-table"><thead><tr><th></th><th>אפשרות א׳</th><th>אפשרות ב׳</th></tr></thead><tbody><tr><th>${tex('r')}</th><td></td><td></td></tr><tr><th>${tex('h')}</th><td></td><td></td></tr><tr><th>${tex('V')}</th><td></td><td></td></tr><tr><th>פי כמה מהנפח המקורי</th><td></td><td></td></tr></tbody></table>
+<div class="work-caption">מרחב חישוב והסבר</div>${grid('official-cd')}${answerLine()}`)}
 
 let idx=0;
 const students=[...document.querySelectorAll('[data-kind="student"]')];
