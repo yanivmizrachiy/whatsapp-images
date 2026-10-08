@@ -19,13 +19,17 @@ vm.runInNewContext(content,sandbox);
 const data=sandbox.window.CONE_DATA;
 const officialQuestion=data.questions.find(q=>q.id==='CURR-CONE-06');
 const orientationQuestion=data.questions.find(q=>q.id==='CONE-ORIENT-01');
+const axialSketchQuestion=data.questions.find(q=>q.id==='CONE-AX-SKETCH-01');
 const conversionQuestion=data.questions.find(q=>q.id==='CONE-CONV-01');
 const ids=data.questions.map(q=>q.id);
 
-ok(ids.length>=11,'expected at least 11 canonical question IDs');
+ok(ids.length>=12,'expected at least 12 canonical question IDs');
 ok(new Set(ids).size===ids.length,'duplicate question IDs found');
 ok(officialQuestion?.locked===true,'official curriculum question is not locked');
 ok(Boolean(orientationQuestion),'varied-orientation identification task missing');
+ok(orientationQuestion?.prompt.includes('מעטפת החרוט'),'varied-orientation task must include mantle identification');
+ok(Boolean(axialSketchQuestion),'axial-section sketch task missing from canonical data');
+ok(app.includes("prompt('CONE-AX-SKETCH-01')")&&app.includes('sketch-box'),'axial-section sketch task is not rendered on the student page');
 ok(Array.isArray(data.volumeTableRows)&&data.volumeTableRows.length===5,'canonical volume table must contain five rows');
 ok(data.volumeTableRows.filter(r=>r.vPi!=null).length>=2,'canonical volume table must include reverse rows with V given');
 ok(normalize(data.page1)===normalize(page1Lock),'locked page-1 source wording changed');
@@ -46,6 +50,7 @@ const studentPageBuilders=(app.match(/addPage\(/g)||[]).length;
 ok(studentPageBuilders>=8,'expected at least 8 student A4 pages');
 ok(app.includes('volumeTableRows()'),'student volume table is not rendered from canonical data');
 ok(app.includes('orientedConeSvg(90)')&&app.includes('orientedConeSvg(180)'),'varied cone orientations are not rendered');
+ok(app.includes('בסיס, קודקוד, מעטפת וגובה'),'orientation page must visibly ask for base, vertex, mantle and height');
 ok(app.includes("splitMarker=' ג. בעל הגלידרייה'"),'official curriculum task is not split safely across A4 pages');
 ok(app.includes('const q=id=>D.questions.find'),'student renderer must resolve questions by stable ID');
 ok(!app.includes('D.questions['),'student renderer must not depend on question array positions');
@@ -62,6 +67,11 @@ ok(css.includes('min-height:44px')&&css.includes('min-width:44px'),'touch target
 ok(css.includes('@media print'),'print CSS missing');
 ok(css.includes('--page-scale'),'mobile A4 scaling missing');
 ok(css.includes('.orientation-grid'),'orientation exercise layout missing');
+ok(css.includes('.sketch-box{height:42mm'),'dedicated axial-section sketch workspace missing');
+ok(css.includes('#counter{min-width:56px;text-align:center;direction:ltr;unicode-bidi:isolate}'),'page counter must remain LTR inside RTL reader');
+ok(css.includes('.page h1{font-size:24px;font-weight:500'),'student h1 weight must stay within approved 400-500 range');
+ok(css.includes('.page h2{font-size:18px;font-weight:500'),'student h2 weight must stay within approved 400-500 range');
+ok(!css.includes('.page h1{font-size:24px;font-weight:700'),'student h1 must not regress to heavy weight');
 ok(index.includes('content.js')&&index.includes('app.js')&&index.includes('styles.css'),'canonical assets are not wired from index');
 
 ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
@@ -85,4 +95,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; estimate/stable-ID/active-completion contracts present; teacher phase locked.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; live-browser findings locked; teacher phase locked.`);
