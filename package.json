@@ -4,7 +4,7 @@
   "scripts": {
     "start": "node server.mjs",
     "preview": "node server.mjs",
-    "qa": "node qa.mjs && node math-qa.mjs && node coverage-qa.mjs",
+    "qa": "node progress-qa.mjs && node qa.mjs && node math-qa.mjs && node coverage-qa.mjs",
     "qa:browser": "node browser-qa.mjs"
   },
   "devDependencies": {
