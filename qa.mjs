@@ -16,6 +16,8 @@ ok(new Set(ids).size===ids.length,'duplicate question IDs found');
 ok(content.includes("id:'CURR-CONE-06'")&&content.includes('locked:true'),'official curriculum question is not locked');
 ok(content.includes('שאלות מתוך תוכנית הלימודים')||app.includes('שאלות מתוך תוכנית הלימודים'),'official curriculum heading missing');
 ok(content.includes('96π')&&content.includes('384π')&&content.includes('h=8'),'official cone QA values missing');
+ok(content.includes('מעטפת החרוט'),'mantle identification is missing from student content');
+ok(app.includes('חתך צירי של חרוט הוא משולש שווה שוקיים'),'explicit axial-section definition is missing');
 ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew-voice-notes/main/worksheets/assets/ayelet-original-cone.png'),'verified companion-sheet image asset is not wired');
 ok(!content.includes('src=\\"assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');
 
@@ -49,4 +51,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student page builders; teacher phase locked; A4/mobile/print/logo/typography contracts present.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student page builders; teacher phase locked; cone-concepts/A4/mobile/print/logo/typography contracts present.`);
