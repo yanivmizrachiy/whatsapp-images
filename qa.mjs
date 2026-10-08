@@ -19,15 +19,18 @@ vm.runInNewContext(content,sandbox);
 const data=sandbox.window.CONE_DATA;
 const officialQuestion=data.questions.find(q=>q.id==='CURR-CONE-06');
 const orientationQuestion=data.questions.find(q=>q.id==='CONE-ORIENT-01');
+const orientationDrawQuestion=data.questions.find(q=>q.id==='CONE-ORIENT-DRAW-01');
 const axialSketchQuestion=data.questions.find(q=>q.id==='CONE-AX-SKETCH-01');
 const conversionQuestion=data.questions.find(q=>q.id==='CONE-CONV-01');
 const ids=data.questions.map(q=>q.id);
 
-ok(ids.length>=12,'expected at least 12 canonical question IDs');
+ok(ids.length>=13,'expected at least 13 canonical question IDs');
 ok(new Set(ids).size===ids.length,'duplicate question IDs found');
 ok(officialQuestion?.locked===true,'official curriculum question is not locked');
 ok(Boolean(orientationQuestion),'varied-orientation identification task missing');
 ok(orientationQuestion?.prompt.includes('מעטפת החרוט'),'varied-orientation task must include mantle identification');
+ok(Boolean(orientationDrawQuestion),'orientation drawing task missing from canonical data');
+ok(app.includes("prompt('CONE-ORIENT-DRAW-01')")&&app.includes('orientation-sketch'),'orientation drawing task is not rendered with its own workspace');
 ok(Boolean(axialSketchQuestion),'axial-section sketch task missing from canonical data');
 ok(app.includes("prompt('CONE-AX-SKETCH-01')")&&app.includes('sketch-box'),'axial-section sketch task is not rendered on the student page');
 ok(Array.isArray(data.volumeTableRows)&&data.volumeTableRows.length===5,'canonical volume table must contain five rows');
@@ -68,6 +71,7 @@ ok(css.includes('@media print'),'print CSS missing');
 ok(css.includes('--page-scale'),'mobile A4 scaling missing');
 ok(css.includes('.orientation-grid'),'orientation exercise layout missing');
 ok(css.includes('.sketch-box{height:42mm'),'dedicated axial-section sketch workspace missing');
+ok(css.includes('.sketch-box.orientation-sketch{height:70mm}'),'dedicated orientation drawing workspace missing');
 ok(css.includes('#counter{min-width:56px;text-align:center;direction:ltr;unicode-bidi:isolate}'),'page counter must remain LTR inside RTL reader');
 ok(css.includes('.page h1{font-size:24px;font-weight:500'),'student h1 weight must stay within approved 400-500 range');
 ok(css.includes('.page h2{font-size:18px;font-weight:500'),'student h2 weight must stay within approved 400-500 range');
@@ -95,4 +99,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; live-browser findings locked; teacher phase locked.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; student drawing tasks locked; teacher phase locked.`);
