@@ -24,7 +24,7 @@ const coverage=[
   ['explicit estimation / order of magnitude', text('CONE-CONV-01').includes('שערו') && text('CONE-CONV-01').includes('300,000') && text('CONE-CONV-01').includes('600,000')],
   ['exact pi', text('CONE-VOL-01').includes('π')],
   ['approximate pi', text('CONE-CONV-01').includes('π ≈ 3.14')],
-  ['Pythagoras inside cone', Boolean(byId.get('CONE-PYT-01')) && text('CONE-PYT-01').includes('פיתגורס')],
+  ['Pythagoras inside cone', Boolean(byId.get('CONE-PYT-01')) && text('CONE-PYT-01').includes('h²+6²=10²') && app.includes('חתך צירי ומשפט פיתגורס')],
   ['axial-section area', Boolean(byId.get('CONE-AX-01'))],
   ['dimension changes', Boolean(byId.get('CONE-CHANGE-01')) && text('CONE-CHANGE-01').includes('פי 2')],
   ['varied cone orientations', Boolean(byId.get('CONE-ORIENT-01')) && app.includes('orientedConeSvg(90)') && app.includes('orientedConeSvg(180)')],
