@@ -1,0 +1,7 @@
+{
+  "name": "cone-workbook",
+  "private": true,
+  "scripts": {
+    "qa": "node qa.mjs"
+  }
+}
