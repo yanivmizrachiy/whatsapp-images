@@ -2,7 +2,7 @@
   "name": "cone-workbook",
   "private": true,
   "scripts": {
-    "qa": "node qa.mjs",
+    "qa": "node qa.mjs && node math-qa.mjs",
     "qa:browser": "node browser-qa.mjs"
   },
   "devDependencies": {
