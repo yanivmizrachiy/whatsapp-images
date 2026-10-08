@@ -57,12 +57,19 @@ ok(css.includes('width:10mm')&&css.includes('height:10mm'),'district logo must r
 ok(css.includes('family=Rubik')&&css.includes('family=Heebo'),'canonical Google font import missing');
 ok(css.includes('font-family:"Rubik","Heebo"'),'canonical typography stack missing');
 
+ok(index.includes('mathjax@3.2.2/es5/tex-svg.js'),'pinned MathJax 3.2.2 TeX-SVG renderer missing');
+ok(index.includes("inlineMath:[['\\\\(','\\\\)']]"),'MathJax inline TeX delimiters missing');
+ok(app.includes("const tex=(s)=>`\\\\(${s}\\\\)`"),'shared TeX helper missing');
+ok(app.includes('\\\\underline{\\\\hspace{28mm}}'),'volume-page active TeX completion missing');
+ok(app.includes("tex('r')")&&app.includes("tex('d')")&&app.includes("tex('h')")&&app.includes("tex('V')"),'table math labels are not consistently rendered through TeX');
+
 const forbiddenMath=/[×✕✖]/;
 ok(!forbiddenMath.test(app),'forbidden multiplication glyph found in app.js');
+ok(!app.includes('\\\\times'),'forbidden \\times found in app.js; use \\cdot');
 
 if(failures.length){
   console.error('QA FAIL');
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student A4 pages; locked source wording intact; teacher phase locked; varied orientations/A4/mobile/print/logo/typography contracts present.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student A4 pages; locked source wording intact; teacher phase locked; varied orientations/A4/mobile/print/logo/typography/MathJax contracts present.`);
