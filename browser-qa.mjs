@@ -55,6 +55,19 @@ async function waitForAssets(){
 await waitForAssets();
 const canonicalPageCount=await page.locator('.page').count();
 ok(canonicalPageCount>=8,`canonical workbook must have at least 8 student pages, got ${canonicalPageCount}`);
+const subsectionAudit=await page.evaluate(()=>{
+  const parts=[...document.querySelectorAll('.subpart')];
+  return {
+    count:parts.length,
+    invalid:parts.filter(part=>!part.querySelector('.work-grid')||!part.querySelector('.final-answer')).map(part=>part.dataset.subpart||'?'),
+    emptyMarkers:parts.filter(part=>!part.dataset.subpart).length,
+    answerLabels:parts.filter(part=>(part.querySelector('.final-answer')?.textContent||'').includes('תשובה:')).length
+  };
+});
+ok(subsectionAudit.count>=11,`expected at least 11 independently rendered subsections, got ${subsectionAudit.count}`);
+ok(subsectionAudit.invalid.length===0,`subsections without dedicated work grid + answer: ${subsectionAudit.invalid.join(', ')}`);
+ok(subsectionAudit.emptyMarkers===0,'every subsection must have a stable data-subpart marker');
+ok(subsectionAudit.answerLabels===subsectionAudit.count,'every subsection must visibly include its own תשובה: label');
 
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
@@ -145,4 +158,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; canonical fonts/images; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);
+console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);
