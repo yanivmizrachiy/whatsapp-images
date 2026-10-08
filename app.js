@@ -4,6 +4,7 @@ const book=document.querySelector('#book');
 const DISTRICT_LOGO='https://raw.githubusercontent.com/yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png';
 const footer=()=>`<footer class="gz-footer"><div class="footer-inner"><img class="district-logo" src="${DISTRICT_LOGO}" alt="סמל מחוז ירושלים"><div class="footer-copy"><div class="f1">${D.footer[0]}</div><div class="f2">${D.footer[1]}</div></div></div></footer>`;
 const header=(title,n)=>`<header class="page-header"><h1>${title}</h1><b>${n}</b></header>`;
+const tex=(s)=>`\\(${s}\\)`;
 const grid=(size='medium')=>`<div class="work-grid ${size}"></div>`;
 const answerLine=(unit='')=>`<div class="final-answer">תשובה: <span></span>${unit?` <em>${unit}</em>`:''}</div>`;
 const coneSvg=({r='r',h='h',slant='',large=false}={})=>`<svg class="cone-svg ${large?'cone-large':''}" viewBox="0 0 520 430" role="img" aria-label="חרוט ישר"><ellipse cx="260" cy="350" rx="178" ry="48" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M260 42 L82 350 M260 42 L438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 48 0 0 0 438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 48 0 0 1 438 350" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="42" x2="260" y2="350" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="350" x2="438" y2="350" stroke="#111827" stroke-width="3"/><circle cx="260" cy="42" r="5" fill="#111827"/><circle cx="260" cy="350" r="4" fill="#111827"/><text class="label" x="277" y="200">${h}</text><text class="label" x="344" y="338">${r}</text>${slant?`<text class="label" x="365" y="190">${slant}</text>`:''}</svg>`;
@@ -19,10 +20,10 @@ addPage(`${header('היכרות עם החרוט',2)}
 <div class="task compact">${D.questions[0].prompt} <span class="answer-line short"></span></div>
 <div class="task compact">${D.questions[1].prompt}</div>`);
 
-addPage(`${header('נפח חרוט — השלימו: V = ________',3)}
+addPage(`${header(`נפח חרוט — השלימו: ${tex('V=\\underline{\\hspace{28mm}}')}`,3)}
 <div class="task">${D.questions[2].prompt}</div>${grid('medium')}${answerLine('סמ״ק')}
 <div class="task">${D.questions[3].prompt}</div>
-<table class="practice-table"><thead><tr><th>r</th><th>d</th><th>h</th><th>V</th></tr></thead><tbody><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></tbody></table>`);
+<table class="practice-table"><thead><tr><th>${tex('r')}</th><th>${tex('d')}</th><th>${tex('h')}</th><th>${tex('V')}</th></tr></thead><tbody><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></tbody></table>`);
 
 addPage(`${header('חתך צירי ומשפט פיתגורס',4)}
 <div class="concept-note">חתך צירי של חרוט הוא משולש שווה שוקיים שקודקוד הראש שלו הוא קודקוד החרוט והבסיס שלו הוא קוטר העיגול.</div>
