@@ -92,6 +92,12 @@ ok(css.includes('.page h2{font-size:18px;font-weight:500'),'student h2 weight mu
 ok(!css.includes('.page h1{font-size:24px;font-weight:700'),'student h1 must not regress to heavy weight');
 ok(index.includes('content.js')&&index.includes('app.js')&&index.includes('styles.css'),'canonical assets are not wired from index');
 
+// Direct student-PDF download control (R40): a stable download action wired to
+// the validated canonical PDF that CI regenerates on main.
+ok(index.includes('download-pdf'),'reader must keep the direct-download control (download-pdf class)');
+ok(index.includes(' download>')||index.includes(' download '),'direct-download link must carry the HTML download attribute');
+ok(index.includes('exports/student-pages/cone-student.pdf'),'direct download must point to the validated canonical student PDF');
+
 ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
 ok(css.includes('width:10mm')&&css.includes('height:10mm'),'district logo must render at 10mm square');
 ok(css.includes('family=Rubik')&&css.includes('family=Heebo'),'canonical Google font import missing');
