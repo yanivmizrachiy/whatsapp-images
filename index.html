@@ -1,42 +1,24 @@
 <!doctype html>
 <html lang="he" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>חרוט חדש</title>
-<style>
-body{font-family:Arial,sans-serif;margin:0;background:#f4f9fc;color:#102a43}main{max-width:900px;margin:auto;padding:24px}
-h1{text-align:center;color:#075985;font-size:2.4rem}.card{background:#fff;border:1px solid #bae6fd;border-radius:18px;padding:22px;margin:18px 0;box-shadow:0 8px 28px #0c4a6e14}
-h2{color:#0369a1}.cone{display:block;margin:20px auto;max-width:360px;width:100%}.q{padding:10px 0;border-bottom:1px solid #e5e7eb;line-height:1.7}
-.math{direction:ltr;unicode-bidi:isolate;font-weight:700}.note{background:#e0f2fe;border-radius:12px;padding:12px}
-</style></head><body><main>
-<h1>חרוט חדש</h1>
-<div class="card"><h2>הגדרת החרוט</h2>
-<p>חרוט הוא גוף המורכב מעיגול ונקודה שמחוץ למישור העיגול, ומכל הקטעים המחברים את הנקודה עם נקודות הנמצאות על היקף העיגול.</p>
-<div class="q">1. מה נקרא בסיס החרוט?</div><div class="q">2. מה נקרא קודקוד החרוט?</div><div class="q">3. מה יוצרים הקטעים המחברים את הקודקוד עם נקודות הנמצאות על היקף העיגול?</div><div class="q">4. בחרוט ישר, איזה קטע הוא גובה החרוט?</div>
-</div>
-<div class="card"><h2>זיהוי חלקי החרוט</h2>
-<svg class="cone" viewBox="0 0 360 300" aria-label="שרטוט חרוט">
-<ellipse cx="180" cy="235" rx="120" ry="34" fill="none" stroke="#075985" stroke-width="3"/>
-<line x1="180" y1="35" x2="60" y2="235" stroke="#075985" stroke-width="3"/><line x1="180" y1="35" x2="300" y2="235" stroke="#075985" stroke-width="3"/>
-<line x1="180" y1="35" x2="180" y2="235" stroke="#64748b" stroke-width="2" stroke-dasharray="7 6"/>
-<line x1="180" y1="235" x2="300" y2="235" stroke="#dc2626" stroke-width="3"/>
-<circle cx="180" cy="35" r="5"/><circle cx="180" cy="235" r="5"/><circle cx="300" cy="235" r="5"/>
-<text x="190" y="30" font-size="18">A</text><text x="188" y="258" font-size="18">O</text><text x="310" y="240" font-size="18">B</text>
-</svg>
-<div class="q">5. איזו נקודה היא קודקוד החרוט?</div><div class="q">6. איזה קטע הוא גובה החרוט?</div><div class="q">7. איזה קטע הוא רדיוס בסיס החרוט?</div>
-</div>
-<div class="card"><h2>חישובים קלים</h2>
-<p class="note">בכל החישובים השתמשו ב־π. סימן הכפל הוא נקודה: <span class="math">·</span></p>
-<div class="q">8. רדיוס בסיס החרוט הוא 3 ס״מ. חשבו את היקף הבסיס.</div>
-<div class="q">9. רדיוס בסיס החרוט הוא 4 ס״מ. חשבו את שטח הבסיס.</div>
-<div class="q">10. רדיוס בסיס החרוט הוא 3 ס״מ וגובהו 6 ס״מ. חשבו את נפח החרוט.</div>
-<div class="q">11. קוטר בסיס החרוט הוא 8 ס״מ וגובהו 12 ס״מ. חשבו את רדיוס הבסיס, שטח הבסיס ונפח החרוט.</div>
-</div>
-<div class="card"><h2>שאלות הפוכות</h2>
-<div class="q">12. נפח החרוט הוא 48π סמ״ק וגובהו 9 ס״מ. חשבו את שטח הבסיס.</div>
-<div class="q">13. נפח החרוט הוא 100π סמ״ק וגובהו 12 ס״מ. חשבו את שטח הבסיס ואת רדיוס הבסיס.</div>
-<div class="q">14. שטח בסיס החרוט הוא 49π סמ״ר. חשבו את רדיוס הבסיס.</div>
-<div class="q">15. שטח בסיס החרוט הוא 25π סמ״ר ונפחו 100π סמ״ק. חשבו את גובה החרוט.</div>
-<div class="q">16. היקף בסיס החרוט הוא 12π ס״מ. חשבו את רדיוס הבסיס ואת שטח הבסיס.</div>
-</div>
-</main></body></html>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>חרוט — דפי עבודה</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="reader">
+    <strong>חרוט — כיתה ח׳</strong>
+    <div>
+      <button id="prev">הקודם</button>
+      <span id="counter"></span>
+      <button id="next">הבא</button>
+      <button onclick="print()">הדפסה / PDF</button>
+      <button id="teacher">פתרונות למורה</button>
+    </div>
+  </header>
+  <main id="book"></main>
+  <script src="content.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
