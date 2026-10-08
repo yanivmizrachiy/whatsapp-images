@@ -24,6 +24,7 @@ addPage(`${header('נפח חרוט — השלימו: V = ________',3)}
 <table class="practice-table"><thead><tr><th>r</th><th>d</th><th>h</th><th>V</th></tr></thead><tbody><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></tbody></table>`);
 
 addPage(`${header('חתך צירי ומשפט פיתגורס',4)}
+<div class="concept-note">חתך צירי של חרוט הוא משולש שווה שוקיים שקודקוד הראש שלו הוא קודקוד החרוט והבסיס שלו הוא קוטר העיגול.</div>
 <div class="two-column"><div>${axialSvg()}</div><div><div class="task first">${D.questions[4].prompt}</div>${grid('medium')}${answerLine('ס״מ')}</div></div>
 <div class="task">${D.questions[5].prompt}</div>${grid('medium')}${answerLine('סמ״ר')}`);
 
