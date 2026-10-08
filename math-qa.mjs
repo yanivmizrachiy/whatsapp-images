@@ -79,6 +79,22 @@ ok(convertedVolume===314000,'converted cone volume must be 314000 cm³');
 ok(prompt('CONE-CONV-01').includes('300,000')&&prompt('CONE-CONV-01').includes('600,000'),'conversion prompt estimate options drifted');
 ok(answer('CONE-CONV-01').includes('314000')&&answer('CONE-CONV-01').includes('300000'),'conversion estimate stored result drifted');
 
+// Supplement table rows: unit conversion before exact volume, and an explicit
+// kπ exact result -> numeric approximation bridge (SSOT §9/§11; execution P02/P03).
+const convTable=questions.get('CONE-TAB-CONV-01')?.table||{};
+ok(convTable.rCm===20,'conversion table row: converted radius must be 20 cm');
+ok(convTable.rCm===Math.round(parseFloat(convTable.rGiven)*100),'conversion table row: 0.2 m must convert to 20 cm');
+ok(volumeCoeff(convTable.rCm,convTable.h)===convTable.vPiCoeff,'conversion table row: exact π coefficient must match the converted dimensions');
+ok(convTable.vPiCoeff===4000,'conversion table row exact coefficient must be 4000');
+ok(answer('CONE-TAB-CONV-01').includes('20 ס״מ')&&answer('CONE-TAB-CONV-01').includes('4000π'),'conversion table row stored result drifted');
+
+const approxTable=questions.get('CONE-TAB-APPROX-01')?.table||{};
+ok(approxTable.piApprox===3.14,'approximation table row must use π≈3.14');
+ok((approxTable.vPiCoeff*314)/100===approxTable.approx,'approximation table row: kπ coefficient · 3.14 must equal the numeric approximation');
+ok(approxTable.vPiCoeff===50&&approxTable.approx===157,'approximation table row: 50π must approximate to 157');
+ok(answer('CONE-TAB-APPROX-01').includes('50π')&&answer('CONE-TAB-APPROX-01').includes('157'),'approximation table row stored kπ→numeric bridge drifted');
+ok(/≈/.test(answer('CONE-TAB-APPROX-01')),'approximation table row must use the ≈ sign for the numeric value');
+
 const reverseR=Math.sqrt((48*3)/9);
 ok(reverseR===4,'reverse-volume radius must be 4');
 ok(answer('CONE-REV-01').includes('r=4'),'reverse-volume stored result drifted');

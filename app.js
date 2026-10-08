@@ -56,6 +56,16 @@ addPage(`${nextHeader(`נפח חרוט — השלימו: ${tex('V=\\underline{\\
 <table class="practice-table"><thead><tr><th>${tex('r')}</th><th>${tex('d')}</th><th>${tex('h')}</th><th>${tex('V')}</th></tr></thead><tbody>${volumeTableRows()}</tbody></table>
 <div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
 
+const convRow=q('CONE-TAB-CONV-01');
+const approxRow=q('CONE-TAB-APPROX-01');
+addPage(`${nextHeader('המרת יחידות וקירוב מספרי')}
+<div class="task">${convRow.prompt}</div>
+<table class="practice-table"><thead><tr><th>רדיוס נתון</th><th>${tex('r')} בס״מ</th><th>${tex('h')}</th><th>${tex('V')} מדויק</th></tr></thead><tbody><tr><td>${convRow.table.rGiven}</td><td></td><td>${convRow.table.h} ס״מ</td><td></td></tr></tbody></table>
+<div class="work-caption">מרחב חישוב להמרה ולנפח</div>${grid('table-work')}${answerLine('סמ״ק')}
+<div class="task">${approxRow.prompt}</div>
+<table class="practice-table"><thead><tr><th>${tex('V')} מדויק</th><th>${tex('\\pi')}</th><th>${tex('V')} מקורב</th></tr></thead><tbody><tr><td>${tableCell(approxRow.table.vPiCoeff,true)}</td><td>${tex('\\approx 3.14')}</td><td></td></tr></tbody></table>
+<div class="work-caption">מרחב חישוב לקירוב</div>${grid('medium')}${answerLine('סמ״ק')}`);
+
 addPage(`${nextHeader('חתך צירי ומשפט פיתגורס')}
 <div class="concept-note">חתך צירי של חרוט הוא משולש שווה שוקיים שקודקוד הראש שלו הוא קודקוד החרוט והבסיס שלו הוא קוטר העיגול.</div>
 <div class="two-column"><div>${axialSvg()}</div><div><div class="task first">${prompt('CONE-PYT-01')}</div>${grid('pythagoras')}${answerLine('ס״מ')}</div></div>
