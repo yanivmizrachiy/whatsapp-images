@@ -1,0 +1,72 @@
+/* Dedicated phone reading mode. Activated only with ?mobile=1.
+   The printed workbook remains canonical A4 because these rules are screen-only. */
+@media screen and (max-width:850px){
+  body.mobile-reader{background:#eef2f7;}
+  body.mobile-reader #book{padding:8px;overflow:visible;direction:rtl;}
+  body.mobile-reader .page{
+    width:100%;
+    max-width:100%;
+    height:auto;
+    min-height:0;
+    transform:none!important;
+    transform-origin:initial;
+    margin:0 0 12px!important;
+    padding:18px 14px 20px;
+    border-radius:14px;
+    overflow:visible;
+    box-shadow:0 4px 18px #1e293b1c;
+  }
+  body.mobile-reader .scroll-view .page,
+  body.mobile-reader .page:last-child{margin-bottom:12px!important;}
+  body.mobile-reader .page-header{padding-bottom:10px;align-items:center;gap:8px;}
+  body.mobile-reader .page h1,
+  body.mobile-reader .ayelet-source-title{font-size:20px!important;line-height:1.25;}
+  body.mobile-reader .page h2{font-size:17px;}
+  body.mobile-reader .source-sheet,
+  body.mobile-reader .task,
+  body.mobile-reader .final-answer,
+  body.mobile-reader .question-intro,
+  body.mobile-reader .concept-note,
+  body.mobile-reader .official-question,
+  body.mobile-reader .official-continuation,
+  body.mobile-reader .orientation-note{font-size:15px;line-height:1.6;}
+  body.mobile-reader .definition{font-size:16px;line-height:1.65;}
+  body.mobile-reader .work-caption{font-size:13px;}
+  body.mobile-reader .two-column,
+  body.mobile-reader .official-layout,
+  body.mobile-reader .ayelet-middle-source{grid-template-columns:1fr;gap:14px;}
+  body.mobile-reader .orientation-grid{grid-template-columns:1fr;gap:12px;margin-top:16px;}
+  body.mobile-reader .orientation-grid>div{height:auto;min-height:220px;}
+  body.mobile-reader .cone-svg,
+  body.mobile-reader .cone-svg.cone-large,
+  body.mobile-reader .axial-svg,
+  body.mobile-reader .ayelet-original-cone{width:100%;max-width:100%;height:auto;}
+  body.mobile-reader .intro-cone{height:auto;min-height:250px;padding:12px 0;}
+  body.mobile-reader .practice-table,
+  body.mobile-reader .comparison-table{width:100%;table-layout:fixed;font-size:12px;}
+  body.mobile-reader .practice-table th,
+  body.mobile-reader .practice-table td,
+  body.mobile-reader .comparison-table th,
+  body.mobile-reader .comparison-table td{padding:7px 4px;height:auto;overflow-wrap:anywhere;}
+  body.mobile-reader .gz-footer{
+    position:static;
+    right:auto;
+    left:auto;
+    bottom:auto;
+    width:100%;
+    height:auto;
+    margin-top:24px;
+    padding-top:12px;
+  }
+  body.mobile-reader .footer-inner{width:100%;grid-template-columns:32px minmax(0,1fr);gap:8px;}
+  body.mobile-reader .district-logo{width:32px;height:32px;}
+  body.mobile-reader .footer-copy{min-width:0;}
+  body.mobile-reader .gz-footer .f1{font-size:11px;}
+  body.mobile-reader .gz-footer .f2{font-size:10px;}
+  body.mobile-reader .reader{padding:8px 10px;gap:6px;}
+  body.mobile-reader .reader>div{width:100%;gap:4px;}
+  body.mobile-reader .reader button,
+  body.mobile-reader .reader-action{min-height:40px;min-width:40px;padding:0 8px;font-size:12px;}
+  body.mobile-reader #view-toggle{display:none;}
+  body.mobile-reader #counter{min-width:48px;}
+}
