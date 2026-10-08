@@ -76,7 +76,7 @@
 
 לכל שלב:
 
-**Inspect → Change → Verify → QA → Preview → Fix if needed → Evidence → Commit → Push → Verify remote SHA → Update progress → Continue**
+**Inspect → Change → Verify → QA → Preview → Fix if needed → Evidence → Update progress → Commit → Push → Verify remote SHA → Continue**
 
 אסור לעצור בדוח מצב אם קיים פער בטוח וברור שניתן לתקן בלי החלטה חדשה מיניב.
 
@@ -91,16 +91,15 @@ npm run qa:browser
 
 אסור לעקוף QA על ידי החלשת בדיקה שמייצגת דרישה אמיתית. מותר לתקן QA ישן רק כאשר הוא סותר בפועל את `SOURCE_OF_TRUTH.md`.
 
-## 10. מנגנון התקדמות משותף
+## 10. מנגנון התקדמות משותף — חובה בכל מחזור
 
-אחרי שלב שהושלם והוכח בלבד:
-
-- לעדכן `STUDENT_PROGRESS.json` באחוז מבוסס ראיות בלבד.
-- לעדכן `STUDENT_REQUIREMENT_TRACEABILITY.md` רק בשורות שהשתנו בפועל.
-- לכל מעבר ל־✅ לצרף QA/ראיה/commit אמיתי.
-- לא להעלות אחוז כדי „להראות התקדמות”.
-- אם מתגלה פער חדש — מותר וחובה להוריד אחוז אם זו האמת.
-- GPT יקרא את העדכונים האלה וימשיך מאותו מצב; זה מנגנון הסנכרון המשותף.
+- `STUDENT_PROGRESS.json` הוא tracker ההתקדמות הקנוני היחיד לדפי התלמיד; הוא אינו מקור דרישות.
+- אחרי **כל שינוי מהותי** במימוש, ב־QA, בראיות או ב־SSOT, חובה לחשב מחדש את מצב הקבוצות שנגעו בהן ולעדכן את `STUDENT_PROGRESS.json` **באותו מחזור עבודה ובאותו commit/PR**.
+- העדכון מבוסס רק על evidence אמיתי: קובץ, Preview, QA, CI, commit או Production evidence רלוונטי.
+- אם האחוז לא השתנה, עדיין יש לבדוק מחדש את הקבוצה ולרשום evidence/remaining מעודכנים כאשר השתנו; אסור להעלות אחוז רק כדי להראות התקדמות.
+- לכל מעבר ל־100% בקבוצה נדרשים status=`done`, ראיות ובדיקות קבלה. 100% כללי אסור כל עוד קיימת קבוצה שאינה done.
+- `progress-qa.mjs` ו־CI חוסמים שינוי מהותי בקוד/תוכן/QA שאינו כולל את `STUDENT_PROGRESS.json` באותו change.
+- GPT קורא את אותו tracker וממשיך מאותו מצב; אין tracker, TODO או progress log מתחרה.
 
 ## 11. Git / שמירה
 
@@ -108,11 +107,12 @@ npm run qa:browser
 
 1. להריץ QA.
 2. `git status` + בדיקת diff.
-3. לבצע commit ברור ל־`claude/harut-work`.
-4. push ל־GitHub.
-5. `git fetch origin` ואימות שה־SHA קיים ב־remote.
-6. למסור SHA מדויק.
-7. לא למזג ל־`main` בעצמך אלא אם יניב הורה מפורשות.
+3. לוודא שה־tracker עודכן באותו change כאשר נדרש.
+4. לבצע commit ברור ל־`claude/harut-work`.
+5. push ל־GitHub.
+6. `git fetch origin` ואימות שה־SHA קיים ב־remote.
+7. למסור SHA מדויק.
+8. לא למזג ל־`main` בעצמך אלא אם יניב הורה מפורשות.
 
 שלב שלא הגיע ל־GitHub עם SHA מאומת אינו נחשב שמור.
 
@@ -123,7 +123,7 @@ npm run qa:browser
 - מה שונה.
 - אילו בדיקות עברו.
 - איזה פער נסגר.
-- אחוז התקדמות מעודכן אם השתנה.
+- אחוז ההתקדמות העדכני והאחוז הנותר מתוך `STUDENT_PROGRESS.json`.
 - SHA של ה־commit.
 - blocker אמיתי, אם קיים.
 
