@@ -8,6 +8,7 @@ const grid=(size='medium')=>`<div class="work-grid ${size}"></div>`;
 const answerLine=(unit='')=>`<div class="final-answer">תשובה: <span></span>${unit?` <em>${unit}</em>`:''}</div>`;
 const coneSvg=({r='r',h='h',slant='',large=false}={})=>`<svg class="cone-svg ${large?'cone-large':''}" viewBox="0 0 520 430" role="img" aria-label="חרוט ישר"><ellipse cx="260" cy="350" rx="178" ry="48" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M260 42 L82 350 M260 42 L438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 48 0 0 0 438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 48 0 0 1 438 350" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="42" x2="260" y2="350" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="350" x2="438" y2="350" stroke="#111827" stroke-width="3"/><circle cx="260" cy="42" r="5" fill="#111827"/><circle cx="260" cy="350" r="4" fill="#111827"/><text class="label" x="277" y="200">${h}</text><text class="label" x="344" y="338">${r}</text>${slant?`<text class="label" x="365" y="190">${slant}</text>`:''}</svg>`;
 const axialSvg=()=>`<svg class="axial-svg" viewBox="0 0 520 310" role="img" aria-label="חתך צירי של חרוט"><path d="M260 35 L75 270 L445 270 Z" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><line x1="260" y1="35" x2="260" y2="270" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="270" x2="445" y2="270" stroke="#111827" stroke-width="3"/><text class="label" x="276" y="160">h</text><text class="label" x="350" y="258">r</text><text class="label" x="365" y="150">ℓ</text></svg>`;
+const orientedConeSvg=(angle=0)=>`<svg class="orientation-cone" viewBox="0 0 260 240" role="img" aria-label="חרוט ישר במנח שונה"><g transform="rotate(${angle} 130 120)"><ellipse cx="130" cy="185" rx="72" ry="22" fill="#f8fafc" stroke="#1d4ed8" stroke-width="3"/><path d="M130 34 L58 185 M130 34 L202 185" fill="none" stroke="#1d4ed8" stroke-width="3"/><path d="M58 185 A72 22 0 0 1 202 185" fill="none" stroke="#64748b" stroke-width="2" stroke-dasharray="6 5"/><line x1="130" y1="34" x2="130" y2="185" stroke="#475569" stroke-width="2.5" stroke-dasharray="6 5"/><circle cx="130" cy="34" r="4" fill="#111827"/><circle cx="130" cy="185" r="3" fill="#111827"/></g></svg>`;
 const addPage=(html)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+footer();book.append(p);return p};
 
 addPage(`<div class="source-sheet">${D.page1}</div>`);
@@ -33,17 +34,22 @@ addPage(`${header('נפח חרוט — השלימו את דרך החישוב',5)
 <div class="task">${D.questions[7].prompt}</div>${grid('small')}${answerLine('ס״מ')}
 <div class="task">${D.questions[8].prompt}</div>${grid('small')}${answerLine()}`);
 
-const official=D.questions[9].prompt;
+addPage(`${header('זיהוי חרוטים במנחים שונים',6)}
+<div class="task first">${D.questions[9].prompt}</div>
+<div class="orientation-grid"><div>${orientedConeSvg(0)}</div><div>${orientedConeSvg(90)}</div><div>${orientedConeSvg(180)}</div></div>
+<div class="orientation-note">כתבו מתחת לכל שרטוט: בסיס, קודקוד וגובה.</div>${grid('medium')}`);
+
+const official=D.questions[10].prompt;
 const splitMarker=' ג. בעל הגלידרייה';
 const cut=official.indexOf(splitMarker);
 const officialAB=cut>0?official.slice(0,cut):official;
 const officialCD=cut>0?official.slice(cut+1):'';
 
-addPage(`${header('שאלות מתוך תוכנית הלימודים',6)}
+addPage(`${header('שאלות מתוך תוכנית הלימודים',7)}
 <div class="official-layout"><div class="official-question">${officialAB}</div><div class="official-diagram">${coneSvg({r:'6 ס״מ',h:'h',slant:'10 ס״מ'})}</div></div>
 ${grid('large')}`);
 
-if(officialCD){addPage(`${header('שאלות מתוך תוכנית הלימודים',7)}
+if(officialCD){addPage(`${header('שאלות מתוך תוכנית הלימודים',8)}
 <div class="official-question official-continuation">${officialCD}</div>
 ${grid('large')}${answerLine()}`)}
 
