@@ -20,15 +20,22 @@ const mmPx=96/25.4;
 const expectedW=210*mmPx;
 const expectedH=297*mmPx;
 
-async function waitForMath(){
-  await page.evaluate(async()=>{if(window.MathJax?.startup?.promise)await window.MathJax.startup.promise});
+async function waitForAssets(){
+  await page.evaluate(async()=>{
+    if(window.MathJax?.startup?.promise)await window.MathJax.startup.promise;
+    if(document.fonts?.ready)await document.fonts.ready;
+    await Promise.all([...document.images].map(img=>img.complete?Promise.resolve():new Promise(resolve=>{
+      img.addEventListener('load',resolve,{once:true});
+      img.addEventListener('error',resolve,{once:true});
+    })));
+  });
 }
 
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});
   await page.waitForTimeout(150);
-  await waitForMath();
+  await waitForAssets();
   const result=await page.evaluate(()=>{
     const pages=[...document.querySelectorAll('.page')];
     const visible=pages.filter(p=>getComputedStyle(p).display!=='none');
@@ -45,7 +52,10 @@ async function inspectViewport(width,height,label){
       bodyOverflow:document.documentElement.scrollWidth>innerWidth+1,
       pageOverflow:pages.some(p=>p.scrollWidth>p.clientWidth+1||p.scrollHeight>p.clientHeight+1),
       controls,
-      counter:document.querySelector('#counter')?.textContent||''
+      counter:document.querySelector('#counter')?.textContent||'',
+      rubik:document.fonts?.check('16px "Rubik"')??true,
+      heebo:document.fonts?.check('16px "Heebo"')??true,
+      imagesOk:[...document.images].every(img=>img.complete&&img.naturalWidth>0)
     };
   });
   ok(result.total===8,`${label}: expected 8 student pages, got ${result.total}`);
@@ -56,7 +66,9 @@ async function inspectViewport(width,height,label){
   ok(!result.bodyOverflow,`${label}: shell horizontal overflow detected`);
   ok(result.controls.every(c=>c.w>=44&&c.h>=44),`${label}: touch target below 44px`);
   ok(result.counter==='1 / 8',`${label}: initial counter mismatch: ${result.counter}`);
-  if(width<=850) ok(result.transformedW<=width-8,`${label}: scaled A4 wider than viewport`);
+  ok(result.rubik&&result.heebo,`${label}: canonical Rubik/Heebo fonts did not load`);
+  ok(result.imagesOk,`${label}: one or more required images failed to load`);
+  if(width<=850)ok(result.transformedW<=width-8,`${label}: scaled A4 wider than viewport`);
 }
 
 await inspectViewport(1440,1200,'desktop');
@@ -67,7 +79,7 @@ await inspectViewport(844,390,'iphone-landscape');
 
 await page.setViewportSize({width:1440,height:1200});
 await page.reload({waitUntil:'load'});
-await waitForMath();
+await waitForAssets();
 fs.mkdirSync('qa-artifacts',{recursive:true});
 for(let i=1;i<=8;i++){
   const pageEl=page.locator('.page:not([hidden])');
@@ -76,7 +88,7 @@ for(let i=1;i<=8;i++){
 }
 ok((await page.textContent('#counter'))?.trim()==='8 / 8','navigation did not reach page 8');
 ok(await page.isDisabled('#next'),'next button should disable on final page');
-for(let i=1;i<8;i++) await page.click('#prev');
+for(let i=1;i<8;i++)await page.click('#prev');
 ok((await page.textContent('#counter'))?.trim()==='1 / 8','navigation did not return to page 1');
 
 await page.emulateMedia({media:'print'});
@@ -107,4 +119,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`BROWSER QA PASS: 8 A4 pages; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / 8 A4 pages; no internal overflow.`);
+console.log(`BROWSER QA PASS: 8 A4 pages; canonical fonts/images; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; PDF ${pdfBytes.length} bytes / 8 A4 pages; no internal overflow.`);
