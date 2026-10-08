@@ -45,6 +45,14 @@ ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew
 ok(app.includes('7121dfeaa9d8dc9f4101eea155c23a24374a0a2a/worksheets/assets/ayelet-original-cone.png'),'rendered companion-sheet artwork is not pinned to the verified immutable source commit');
 ok(!content.includes('src="assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');
 
+// SSOT §13.5: the בס"ד line is not part of the locked page-1 content.
+ok(!/בס['"״]ד/.test(data.page1)&&!/בס['"״]ד/.test(page1Lock),'page 1 and its lock must not contain the בס"ד line (SSOT §13.5)');
+// SSOT §18.3: page 1 carries the Ayelet credit line only; other pages keep the shared footer.
+ok(typeof data.page1Credit==='string'&&data.page1Credit.includes('איילת קריספין')&&data.page1Credit.includes('מתכללת')&&data.page1Credit.includes('מנח"י'),'page-1 credit line missing from canonical data (SSOT §18.3)');
+ok(app.includes('const page1Footer=')&&app.includes('${D.page1Credit}')&&app.includes('class="gz-footer page1-credit"'),'page 1 credit footer is not rendered from canonical data');
+ok(app.includes('addPage(`<div class="source-sheet">${page1Html}</div>`,page1Footer)'),'page 1 must use the credit footer instead of the shared district footer');
+ok(app.includes('const addPage=(html,foot=footer)=>'),'shared district footer must remain the default for every other page');
+
 ok(!index.includes('פתרונות למורה'),'teacher UI must not exist during student phase');
 ok(!app.includes('teacher-page')&&!app.includes('פתרונות למורה'),'teacher pages must not be rendered during student phase');
 const teacherIronRule=

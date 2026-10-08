@@ -11,7 +11,7 @@
 | ID | תחום שנבדק | מקור סמכות | בעלים/מימוש | QA/ראיה | מצב | מה עוד נדרש |
 |---|---|---|---|---|---|---|
 | R01 | חוברת דפי תלמיד בלבד; מספר עמודים נגזר מהדרישות ולא יעד קבוע | SSOT — מצב הפרויקט | `app.js`, `styles.css` | `browser-qa.mjs`; CI #103 | ✅ בוצע | אין להתחיל עמודי מורה |
-| R02 | עמוד 1 — תוכן מקור נעול 1:1 | SSOT — עמוד 1 | `content.js`, `tests/page1-source-lock.txt` | comparator ב־`qa.mjs` | ✅ בוצע | לשמר lock |
+| R02 | עמוד 1 — תוכן מקור נעול 1:1; שורת „בס״ד” מחוץ לנעילה (§13.5, הוראת יניב 2026-10-09) | SSOT — עמוד 1 | `content.js`, `tests/page1-source-lock.txt` | comparator + גייט בס״ד ב־`qa.mjs`; browser QA | ✅ בוצע | לשמר lock |
 | R03 | נכס ההמחשה המאומת בעמוד 1 | SSOT — עמוד 1 | pinned asset ב־`app.js` | image/assets QA | ✅ בוצע | לשמר pin |
 | R04 | הגדרת חרוט ומונחים: בסיס, קודקוד, מעטפת, גובה | SSOT — כיסוי פדגוגי | `content.js`, עמוד 2 | `coverage-qa.mjs` | ✅ בוצע | אין |
 | R05 | חתך צירי — הגדרה, חישוב ושרטוט תלמיד | SSOT — כיסוי + פיתגורס | עמוד 4; `CONE-AX-01`, `CONE-AX-SKETCH-01` | coverage + math + browser QA | ✅ בוצע | בדיקת שרטוטים חזותית מתמשכת |
@@ -43,7 +43,7 @@
 | R31 | רשת 5×5 מ״מ | SSOT — מרחב עבודה | `styles.css` | contract QA | ✅ בוצע | אין |
 | R32 | כל סעיף בנפרד: תרגיל → מרחב עבודה → תשובה | SSOT — כלל סעיפים | `splitHebrewSubsections`, `renderSubpart`, עמודים 5–7 ו־9–10 | static QA + browser DOM gate; 11 יחידות סעיף לפחות; CI #103 | ✅ בוצע | לשמור על הכלל בכל סעיף חדש |
 | R33 | ניצול A4 ללא צפיפות/overflow | SSOT — A4 ועיצוב | layouts/workspaces | 10-page browser overflow QA + screenshots | 🟡 כמעט | ביקורת חזותית ידנית סופית של סט הדפים |
-| R34 | footer מחוזי אחיד | SSOT — כותרת תחתית | shared `footer()` + CSS | asset/browser QA | ✅ בוצע | אין |
+| R34 | footer מחוזי אחיד בכל דף; בעמוד 1 בלבד שורת איילת קריספין (§18.3, הוראת יניב 2026-10-09) | SSOT — כותרת תחתית | shared `footer()` + `page1Footer()` + `page1Credit` ב־`content.js` | footer audit ב־`qa.mjs` + `browser-qa.mjs` | ✅ בוצע | אין |
 | R35 | סמל מחוז מאומת | SSOT — כותרת תחתית | pinned logo | image-load QA | ✅ בוצע | אין |
 | R36 | קורא: הקודם/הבא/מונה | SSOT — מובייל/ניווט | `index.html`, `app.js` | dynamic navigation QA | ✅ בוצע | אין |
 | R37 | touch targets ≥44px | SSOT — מובייל | CSS | browser QA | ✅ בוצע | אין |

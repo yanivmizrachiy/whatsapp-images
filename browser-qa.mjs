@@ -69,6 +69,27 @@ ok(subsectionAudit.invalid.length===0,`subsections without dedicated work grid +
 ok(subsectionAudit.emptyMarkers===0,'every subsection must have a stable data-subpart marker');
 ok(subsectionAudit.answerLabels===subsectionAudit.count,'every subsection must visibly include its own תשובה: label');
 
+// SSOT §13.5 + §18.3: page 1 shows no בס"ד line and carries the Ayelet credit
+// footer only; every later page keeps the shared two-line district footer.
+const footerAudit=await page.evaluate(()=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const text=p=>(p.querySelector('.gz-footer')?.textContent||'').replace(/\s+/g,' ').trim();
+  const first=pages[0].querySelector('.gz-footer');
+  return {
+    first:text(pages[0]),
+    firstHasLogo:Boolean(first?.querySelector('.district-logo')),
+    firstOverflow:first?(first.scrollWidth>first.clientWidth+1||first.scrollHeight>first.clientHeight+1):true,
+    othersShared:pages.slice(1).filter(p=>text(p).includes('יניב רז')&&text(p).includes('בהובלת איילת קריספין')).length,
+    others:pages.length-1,
+    bsd:pages.some(p=>/בס['"״]ד/.test(p.textContent))
+  };
+});
+ok(footerAudit.first.includes('איילת קריספין')&&footerAudit.first.includes('מתכללת')&&!footerAudit.first.includes('יניב רז'),`page 1 footer must carry the Ayelet credit only, got: ${footerAudit.first}`);
+ok(footerAudit.firstHasLogo,'page 1 footer must keep the verified district logo');
+ok(!footerAudit.firstOverflow,'page 1 credit footer overflows its footer box');
+ok(footerAudit.othersShared===footerAudit.others,`every page after page 1 must keep the shared district footer (${footerAudit.othersShared}/${footerAudit.others})`);
+ok(!footerAudit.bsd,'no student page may show the בס"ד line (SSOT §13.5)');
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});

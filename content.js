@@ -3,8 +3,8 @@ window.CONE_DATA = {
     'יניב רז - מדריך מחוזי חט"ב בעיר ירושלים',
     'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין'
   ],
-  page1: `<p class="ayelet-bsd">בס'ד</p>
-      <h1 class="ayelet-source-title">דף מלווה המחשה</h1>
+  page1Credit: 'איילת קריספין - מתכללת את תחום המתמטיקה במחוז ירושלים והעיר ירושלים - מנח"י',
+  page1: `<h1 class="ayelet-source-title">דף מלווה המחשה</h1>
 
       <p class="ayelet-equipment"><strong>ציוד:</strong> פלסטלינה, קשיות השוות באורכן, מספרים, שמרדף, דף שבו מצוירים מעגלים.</p>
       <div class="ayelet-source-steps">
