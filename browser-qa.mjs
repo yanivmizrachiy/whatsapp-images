@@ -1,4 +1,5 @@
 import { chromium } from 'playwright';
+import fs from 'node:fs';
 import path from 'node:path';
 import { pathToFileURL } from 'node:url';
 
@@ -18,10 +19,15 @@ const mmPx=96/25.4;
 const expectedW=210*mmPx;
 const expectedH=297*mmPx;
 
+async function waitForMath(){
+  await page.evaluate(async()=>{if(window.MathJax?.startup?.promise)await window.MathJax.startup.promise});
+}
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});
   await page.waitForTimeout(150);
+  await waitForMath();
   const result=await page.evaluate(()=>{
     const pages=[...document.querySelectorAll('.page')];
     const visible=pages.filter(p=>getComputedStyle(p).display!=='none');
@@ -60,7 +66,13 @@ await inspectViewport(844,390,'iphone-landscape');
 
 await page.setViewportSize({width:1440,height:1200});
 await page.reload({waitUntil:'load'});
-for(let i=1;i<8;i++) await page.click('#next');
+await waitForMath();
+fs.mkdirSync('qa-artifacts',{recursive:true});
+for(let i=1;i<=8;i++){
+  const pageEl=page.locator('.page:not([hidden])');
+  await pageEl.screenshot({path:`qa-artifacts/page-${String(i).padStart(2,'0')}.png`});
+  if(i<8)await page.click('#next');
+}
 ok((await page.textContent('#counter'))?.trim()==='8 / 8','navigation did not reach page 8');
 ok(await page.isDisabled('#next'),'next button should disable on final page');
 for(let i=1;i<8;i++) await page.click('#prev');
@@ -82,4 +94,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log('BROWSER QA PASS: 8 A4 pages; desktop + Android + iPhone portrait/landscape; navigation; print; no internal overflow.');
+console.log('BROWSER QA PASS: 8 A4 pages; desktop + Android + iPhone portrait/landscape; navigation; print; screenshots; no internal overflow.');
