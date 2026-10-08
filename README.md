@@ -8,6 +8,14 @@
 
 כל קובץ אחר בריפו — קוד, תוכן, QA, מעקב, Traceability, תוכניות ביצוע או מסמכי עזר — חייב להיגזר מ־`SOURCE_OF_TRUTH.md` ואינו מקור סמכות עצמאי.
 
+## ניווט
+
+- [`SOURCE_OF_TRUTH.md`](SOURCE_OF_TRUTH.md) — מקור הדרישות היחיד.
+- [`CLAUDE.md`](CLAUDE.md) — הוראות תפעול ל־Claude Code בלבד.
+- [`STUDENT_PROGRESS.json`](STUDENT_PROGRESS.json) — מצב ביצוע נגזר בלבד.
+- [`STUDENT_REQUIREMENT_TRACEABILITY.md`](STUDENT_REQUIREMENT_TRACEABILITY.md) — מפת ראיות בלבד.
+- [`curriculum-cone-inventory.json`](curriculum-cone-inventory.json) — מלאי מקור רשמי נגזר בלבד.
+
 ## כניסה לעבודה
 
 לפני כל שינוי:
