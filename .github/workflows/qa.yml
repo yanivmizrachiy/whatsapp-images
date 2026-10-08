@@ -19,5 +19,11 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run student workbook QA
+      - name: Install QA dependencies
+        run: npm install --no-audit --no-fund
+      - name: Install Chromium
+        run: npx playwright install --with-deps chromium
+      - name: Run student workbook contract QA
         run: npm run qa
+      - name: Run browser A4/mobile/print QA
+        run: npm run qa:browser
