@@ -1,6 +1,8 @@
 import fs from 'node:fs';
+import { execFileSync } from 'node:child_process';
 
-const p=JSON.parse(fs.readFileSync(new URL('./STUDENT_PROGRESS.json',import.meta.url),'utf8'));
+const TRACKER='STUDENT_PROGRESS.json';
+const p=JSON.parse(fs.readFileSync(new URL(`./${TRACKER}`,import.meta.url),'utf8'));
 const failures=[];
 const ok=(cond,msg)=>{if(!cond)failures.push(msg)};
 const allowed=new Set(['done','partial','todo','blocked','failed']);
@@ -33,9 +35,47 @@ if(Number(p.overallPercent)===100){
   ok(p.groups.every(g=>g.status==='done'&&g.completionPercent===100),'overallPercent=100 is forbidden while any group is not fully done');
 }
 
+const meaningful=(file)=>[
+  /^SOURCE_OF_TRUTH\.md$/,
+  /^content\.js$/,
+  /^app\.js$/,
+  /^styles\.css$/,
+  /^index\.html$/,
+  /^math-qa\.mjs$/,
+  /^coverage-qa\.mjs$/,
+  /^qa\.mjs$/,
+  /^browser-qa\.mjs$/,
+  /^tests\//,
+  /^assets\//
+].some(rx=>rx.test(file));
+
+function git(args){
+  return execFileSync('git',args,{encoding:'utf8',maxBuffer:20*1024*1024}).trim();
+}
+function changedFiles(base,head='HEAD'){
+  if(base && !/^0+$/.test(base)){
+    return git(['diff','--name-only',base,head]).split(/\r?\n/).filter(Boolean);
+  }
+  const changed=git(['diff','--name-only','HEAD']).split(/\r?\n/).filter(Boolean);
+  const untracked=git(['ls-files','--others','--exclude-standard']).split(/\r?\n/).filter(Boolean);
+  return [...new Set([...changed,...untracked])];
+}
+
+try{
+  const [baseArg,headArg='HEAD']=process.argv.slice(2);
+  const changed=changedFiles(baseArg,headArg);
+  const projectChanged=changed.some(meaningful);
+  const trackerChanged=changed.includes(TRACKER);
+  if(projectChanged&&!trackerChanged){
+    failures.push(`meaningful Harut change without ${TRACKER} in the same work cycle/change`);
+  }
+}catch(error){
+  failures.push(`unable to verify progress coupling: ${error.message}`);
+}
+
 if(failures.length){
   console.error('PROGRESS QA FAIL');
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`PROGRESS QA PASS: ${p.groups.length} groups, weights=100, weighted completion=${computed}%, teacher pages locked.`);
+console.log(`PROGRESS QA PASS: ${p.groups.length} groups, weights=100, weighted completion=${computed}%, tracker coupling enforced, teacher pages locked.`);
