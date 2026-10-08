@@ -1,14 +1,55 @@
-const D=window.CONE_DATA,book=document.querySelector('#book');
-const footer=()=>'<footer class="gz-footer"><div class="f1">'+D.footer[0]+'</div><div class="f2">'+D.footer[1]+'</div></footer>';
-const p1=document.createElement('section');p1.className='page';p1.dataset.kind='student';p1.innerHTML='<div class="source-sheet">'+D.page1+'</div>'+footer();book.append(p1);
-const p2=document.createElement('section');p2.className='page';p2.dataset.kind='student';p2.innerHTML='<header class="page-header"><h1>היכרות עם החרוט</h1><b>2</b></header><div class="hero"><div><div class="definition">חרוט הוא גוף המורכב מעיגול ונקודה שמחוץ למישור העיגול וכל הקטעים המחברים את הנקודה עם נקודות הנמצאות על היקף העיגול (מעגל). הנקודה נקראת קודקוד החרוט, העיגול נקרא בסיס החרוט. כל הקטעים הנ"ל יוצרים מעטפת החרוט.</div><div class="task">'+D.questions[0].prompt+' <span class="answer-line"></span></div><div class="task">'+D.questions[1].prompt+'</div></div><svg class="cone-svg" viewBox="0 0 420 470"><ellipse cx="210" cy="370" rx="150" ry="45" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M210 45 L60 370 M210 45 L360 370" fill="none" stroke="#1d4ed8" stroke-width="4"/><line x1="210" y1="45" x2="210" y2="370" stroke="#475569" stroke-width="3" stroke-dasharray="7 6"/><line x1="210" y1="370" x2="360" y2="370" stroke="#111827" stroke-width="3"/><text class="label" x="224" y="210">h</text><text class="label" x="282" y="358">r</text></svg></div>'+footer();book.append(p2);
-const p3=document.createElement('section');p3.className='page';p3.dataset.kind='student';p3.innerHTML='<header class="page-header"><h1>נפח חרוט — השלימו: V = ________</h1><b>3</b></header><div class="task">'+D.questions[2].prompt+'</div><div class="work-grid"></div><div class="task">'+D.questions[3].prompt+'</div><table class="practice-table"><tr><th>r</th><th>d</th><th>h</th><th>V</th></tr><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></table>'+footer();book.append(p3);
-const p4=document.createElement('section');p4.className='page';p4.dataset.kind='student';p4.innerHTML='<header class="page-header"><h1>חתך צירי ומשפט פיתגורס</h1><b>4</b></header><div class="task">'+D.questions[4].prompt+'</div><div class="work-grid"></div><div class="task">'+D.questions[5].prompt+'</div><div class="work-grid"></div>'+footer();book.append(p4);
-const p5=document.createElement('section');p5.className='page';p5.dataset.kind='student';p5.innerHTML='<header class="page-header"><h1>נפח חרוט — השלימו את דרך החישוב</h1><b>5</b></header><div class="task">'+D.questions[6].prompt+'</div><div class="work-grid"></div><div class="task">'+D.questions[7].prompt+'</div><div class="work-grid"></div><div class="task">'+D.questions[8].prompt+'</div><div class="work-grid"></div>'+footer();book.append(p5);
-const p6=document.createElement('section');p6.className='page';p6.dataset.kind='student';p6.innerHTML='<header class="page-header"><h1>שאלות מתוך תוכנית הלימודים</h1><b>6</b></header><div class="task official-question">'+D.questions[9].prompt+'</div><div class="work-grid"></div>'+footer();book.append(p6);
-const tp=document.createElement('section');tp.className='page teacher-page';tp.dataset.kind='teacher';tp.innerHTML='<header class="page-header"><h1>פתרונות למורה</h1><b>מורה</b></header>'+D.questions.map(q=>'<div class="teacher-answer"><strong>'+q.id+'</strong><div>'+q.answer+'</div></div>').join('')+footer();book.append(tp);
-let teacher=false,idx=0;const students=[...document.querySelectorAll('[data-kind="student"]')],teachers=[...document.querySelectorAll('[data-kind="teacher"]')];
-function show(){students.forEach((p,i)=>p.hidden=teacher||i!==idx);teachers.forEach(p=>{p.hidden=!teacher;p.classList.toggle('teacher-on',teacher)});document.querySelector('#counter').textContent=teacher?'פתרונות למורה':(idx+1)+' / '+students.length;document.querySelector('#teacher').textContent=teacher?'חזרה לדפי תלמיד':'פתרונות למורה'}
-document.querySelector('#prev').onclick=()=>{idx=Math.max(0,idx-1);show()};document.querySelector('#next').onclick=()=>{idx=Math.min(students.length-1,idx+1);show()};function fitPage(){if(innerWidth>850){book.style.removeProperty('--page-scale');return}book.style.setProperty('--page-scale',Math.min(1,(innerWidth-16)/794))}
+const D=window.CONE_DATA;
+const book=document.querySelector('#book');
+
+const footer=()=>`<footer class="gz-footer"><div class="f1">${D.footer[0]}</div><div class="f2">${D.footer[1]}</div></footer>`;
+const header=(title,n)=>`<header class="page-header"><h1>${title}</h1><b>${n}</b></header>`;
+const grid=(size='medium')=>`<div class="work-grid ${size}"></div>`;
+const answerLine=(unit='')=>`<div class="final-answer">תשובה: <span></span>${unit?` <em>${unit}</em>`:''}</div>`;
+const coneSvg=({r='r',h='h',slant='',large=false}={})=>`<svg class="cone-svg ${large?'cone-large':''}" viewBox="0 0 520 430" role="img" aria-label="חרוט ישר"><ellipse cx="260" cy="350" rx="178" ry="48" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M260 42 L82 350 M260 42 L438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 48 0 0 0 438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 48 0 0 1 438 350" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="42" x2="260" y2="350" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="350" x2="438" y2="350" stroke="#111827" stroke-width="3"/><circle cx="260" cy="42" r="5" fill="#111827"/><circle cx="260" cy="350" r="4" fill="#111827"/><text class="label" x="277" y="200">${h}</text><text class="label" x="344" y="338">${r}</text>${slant?`<text class="label" x="365" y="190">${slant}</text>`:''}</svg>`;
+const axialSvg=()=>`<svg class="axial-svg" viewBox="0 0 520 310" role="img" aria-label="חתך צירי של חרוט"><path d="M260 35 L75 270 L445 270 Z" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><line x1="260" y1="35" x2="260" y2="270" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="270" x2="445" y2="270" stroke="#111827" stroke-width="3"/><text class="label" x="276" y="160">h</text><text class="label" x="350" y="258">r</text><text class="label" x="365" y="150">ℓ</text></svg>`;
+const addPage=(html)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+footer();book.append(p);return p};
+
+addPage(`<div class="source-sheet">${D.page1}</div>`);
+
+addPage(`${header('היכרות עם החרוט',2)}
+<section class="definition intro-definition">חרוט הוא גוף המורכב מעיגול ונקודה שמחוץ למישור העיגול וכל הקטעים המחברים את הנקודה עם נקודות הנמצאות על היקף העיגול (מעגל). הנקודה נקראת קודקוד החרוט, העיגול נקרא בסיס החרוט. כל הקטעים הנ״ל יוצרים מעטפת החרוט.</section>
+<div class="intro-cone">${coneSvg({large:true})}</div>
+<div class="task compact">${D.questions[0].prompt} <span class="answer-line short"></span></div>
+<div class="task compact">${D.questions[1].prompt}</div>`);
+
+addPage(`${header('נפח חרוט — השלימו: V = ________',3)}
+<div class="task">${D.questions[2].prompt}</div>${grid('medium')}${answerLine('סמ״ק')}
+<div class="task">${D.questions[3].prompt}</div>
+<table class="practice-table"><thead><tr><th>r</th><th>d</th><th>h</th><th>V</th></tr></thead><tbody><tr><td>3</td><td></td><td>8</td><td></td></tr><tr><td></td><td>8</td><td>12</td><td></td></tr><tr><td>5</td><td></td><td>12</td><td></td></tr></tbody></table>`);
+
+addPage(`${header('חתך צירי ומשפט פיתגורס',4)}
+<div class="two-column"><div>${axialSvg()}</div><div><div class="task first">${D.questions[4].prompt}</div>${grid('medium')}${answerLine('ס״מ')}</div></div>
+<div class="task">${D.questions[5].prompt}</div>${grid('medium')}${answerLine('סמ״ר')}`);
+
+addPage(`${header('נפח חרוט — השלימו את דרך החישוב',5)}
+<div class="task first">${D.questions[6].prompt}</div>${grid('small')}${answerLine('סמ״ק')}
+<div class="task">${D.questions[7].prompt}</div>${grid('small')}${answerLine('ס״מ')}
+<div class="task">${D.questions[8].prompt}</div>${grid('small')}${answerLine()}`);
+
+const official=D.questions[9].prompt;
+const splitMarker=' ג. בעל הגלידרייה';
+const cut=official.indexOf(splitMarker);
+const officialAB=cut>0?official.slice(0,cut):official;
+const officialCD=cut>0?official.slice(cut+1):'';
+
+addPage(`${header('שאלות מתוך תוכנית הלימודים',6)}
+<div class="official-layout"><div class="official-question">${officialAB}</div><div class="official-diagram">${coneSvg({r:'6 ס״מ',h:'h',slant:'10 ס״מ'})}</div></div>
+${grid('large')}`);
+
+if(officialCD){addPage(`${header('שאלות מתוך תוכנית הלימודים',7)}
+<div class="official-question official-continuation">${officialCD}</div>
+${grid('large')}${answerLine()}`)}
+
+let idx=0;
+const students=[...document.querySelectorAll('[data-kind="student"]')];
+function show(){students.forEach((p,i)=>p.hidden=i!==idx);document.querySelector('#counter').textContent=`${idx+1} / ${students.length}`;document.querySelector('#prev').disabled=idx===0;document.querySelector('#next').disabled=idx===students.length-1;fitPage()}
+function fitPage(){if(innerWidth>850){book.style.removeProperty('--page-scale');return}book.style.setProperty('--page-scale',Math.min(1,(innerWidth-16)/794))}
+document.querySelector('#prev').onclick=()=>{idx=Math.max(0,idx-1);show()};
+document.querySelector('#next').onclick=()=>{idx=Math.min(students.length-1,idx+1);show()};
 addEventListener('resize',fitPage);
-const teacherBtn=document.querySelector('#teacher');if(teacherBtn)teacherBtn.onclick=()=>{teacher=!teacher;show()};fitPage();show();
+show();
