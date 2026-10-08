@@ -16,13 +16,13 @@
 | R04 | הגדרת חרוט ומונחים: בסיס, קודקוד, מעטפת, גובה | SSOT — כיסוי פדגוגי | `content.js`, עמוד 2 | `coverage-qa.mjs` | ✅ בוצע | אין |
 | R05 | חתך צירי — הגדרה, חישוב ושרטוט תלמיד | SSOT — כיסוי + פיתגורס | עמוד 4; `CONE-AX-01`, `CONE-AX-SKETCH-01` | coverage + math + browser QA | ✅ בוצע | בדיקת שרטוטים חזותית מתמשכת |
 | R06 | נפח חרוט | SSOT — כיסוי פדגוגי | עמוד 3; `CONE-VOL-01` | `math-qa.mjs` | ✅ בוצע | אין |
-| R07 | טבלת r/d/h/V עם חסרים משתנים | SSOT — טבלאות השלמה | `volumeTableRows` | table solver ב־`math-qa.mjs` | 🟡 חלקי | להוסיף שורת conversion ושורת approximation מתאימות |
+| R07 | טבלת r/d/h/V עם חסרים משתנים | SSOT — טבלאות השלמה | `volumeTableRows` + שורות השלמה `CONE-TAB-CONV-01`/`CONE-TAB-APPROX-01` | table solver + supplement-row QA ב־`math-qa.mjs`; PR #1 CI 37845048203 | ✅ בוצע | אין |
 | R08 | קשר r↔d בתוך התרגול | SSOT — טבלאות השלמה | `volumeTableRows` | math QA | ✅ בוצע | אין |
 | R09 | חישוב הפוך מנפח | SSOT — כיסוי פדגוגי | `CONE-REV-01` + reverse rows | math/coverage QA | ✅ בוצע | אין |
-| R10 | המרת מידות | SSOT — כיסוי פדגוגי | `CONE-CONV-01` | math QA | 🟡 חלקי | לשלב גם בתוך שורת טבלה מתאימה |
+| R10 | המרת מידות | SSOT — כיסוי פדגוגי | `CONE-CONV-01` + שורת טבלה `CONE-TAB-CONV-01` | math QA (conversion-row gate); PR #1 CI 37845048203 | ✅ בוצע | אין |
 | R11 | תשובה מדויקת עם π | SSOT — עבודה עם π | `CONE-VOL-01` ועוד | math QA | ✅ בוצע | אין |
 | R12 | π≈3.14 | SSOT — עבודה עם π | `CONE-CONV-01` | math QA | ✅ בוצע | אין |
-| R13 | אומדן/סדר גודל | SSOT — עבודה עם π | `CONE-CONV-01` | math QA | 🟡 חלקי | לחבר לפחות פעם אחת ישירות מתוצאת kπ לקירוב המספרי |
+| R13 | אומדן/סדר גודל + גשר kπ→קירוב | SSOT — עבודה עם π | `CONE-CONV-01` + שורת טבלה `CONE-TAB-APPROX-01` | math QA (kπ→approximation gate: 50π→157); PR #1 CI 37845048203 | ✅ בוצע | אין |
 | R14 | קירוב משתמש ב־≈ ולא ב־= | SSOT — עבודה עם π | authored math content | deterministic gate ב־`math-qa.mjs`; commit `8167313` | ✅ בוצע | שאלה רשמית נעולה נשמרת 1:1 |
 | R15 | סימן כפל · / `\cdot` בלבד | SSOT — סימנים וכתיבה | `app.js`, MathJax | forbidden-glyph QA | ✅ בוצע | אין |
 | R16 | משפט פיתגורס בתוך שאלת חרוט | SSOT — פיתגורס וחתך צירי | `CONE-PYT-01`, official Q6 | math + coverage QA | ✅ בוצע | אין |
@@ -56,12 +56,12 @@
 | R44 | design tokens מרכזיים | SSOT — ארכיטקטורה | `:root` חלקי | code audit | 🟡 חלקי | לרכז רק ערכים חוזרים עם ROI ברור |
 | R45 | רכיבים משותפים | SSOT — ארכיטקטורה | footer/grid/answer/subpart/diagram helpers | code audit | ✅ בוצע | הרחבה רק אם יש דפוס חוזר אמיתי |
 | R46 | visual regression | SSOT — QA | screenshots נשמרים | screenshots-only | 🟡 חלקי | baseline comparison אוטומטי |
-| R47 | חישוב מתמטי דטרמיניסטי | SSOT — QA | `math-qa.mjs` | CI #103 | ✅ בוצע | להרחיב לכל שורות טבלה חדשות |
+| R47 | חישוב מתמטי דטרמיניסטי | SSOT — QA | `math-qa.mjs` | CI #103; שורות הטבלה החדשות מכוסות ב‑PR #1 CI 37845048203 | ✅ בוצע | אין |
 | R48 | assets/fonts/console errors | SSOT — QA | `browser-qa.mjs` | CI #103 | ✅ בוצע | אין |
 | R49 | Requirement Traceability | SSOT — Traceability | מסמך זה | updated against verified commits/CI | 🟡 מתקדם | להשלים ראיית commit לכל פער שנותר לפני final 100% |
 | R50 | SOURCE_OF_TRUTH ללא מקור מתחרה/drift | SSOT — סמכות יחידה | `SOURCE_OF_TRUTH.md`, `ssot-qa.mjs` | SSOT QA PASS; commits `34bc363`, `b5738e8` | ✅ בוצע | כל דרישה חדשה ממוזגת רק שם |
 | R51 | Evidence before claim | SSOT — QA/ביצוע | GitHub commits + Actions | contract + browser + export evidence ב־CI #103 | ✅ פעיל ומוכח | להמשיך כך בכל שלב |
-| R52 | 100% רק כשכל השערים סגורים | SSOT — תנאי סיום | `STUDENT_PROGRESS.json` + CI | progress guard | 🟡 פעיל | אסור לטעון 100% כל עוד קיימים R07/R10/R13/R17/R25/R33/R40/R41/R44/R46/R49 |
+| R52 | 100% רק כשכל השערים סגורים | SSOT — תנאי סיום | `STUDENT_PROGRESS.json` + CI | progress guard | 🟡 פעיל | אסור לטעון 100% כל עוד קיימים R17/R25/R33/R40/R41/R44/R46/R49 |
 
 ## כללי עדכון ראיות
 

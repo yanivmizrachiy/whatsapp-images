@@ -9,9 +9,9 @@
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
   "weightsSum": 100,
   "baselinePercent": 91.1,
-  "overallPercent": 93.35,
-  "updatedAt": "2026-10-08",
-  "headCommit": "cce44ddc62457ecd1ff0f70fd564c81514c7d5d5",
+  "overallPercent": 94.85,
+  "updatedAt": "2026-10-09",
+  "headCommit": "7731d14ccd202260c08dbaf7c81c161c131f42da",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
     "partial": "work exists but at least one acceptance criterion is still open",
@@ -60,13 +60,13 @@
       "id": "G04",
       "name": "Volume table, radius/diameter, pi, conversion and estimation",
       "weight": 10,
-      "completionPercent": 85,
-      "status": "partial",
+      "completionPercent": 100,
+      "status": "done",
       "covers": ["P02", "P03"],
-      "evidence": ["5 canonical r/d/h/V rows", "direct and reverse rows", "CONE-CONV-01", "math-qa.mjs"],
-      "testsPassed": ["table solver QA", "exact pi QA", "pi≈3.14 QA", "approximation-sign semantics QA", "estimation QA", "unit conversion QA"],
-      "remaining": ["include unit conversion inside an appropriate table row", "include approximate numeric pi workflow inside an appropriate table row", "explicitly connect kπ result to numerical approximation in at least one task"],
-      "lastCommit": "81673137ef17ec9dcf459e23b2f617b6acd39cf1"
+      "evidence": ["5 canonical r/d/h/V rows", "direct and reverse rows", "CONE-CONV-01", "supplement page: CONE-TAB-CONV-01 unit-conversion row (0.2 m -> 20 cm -> 4000π)", "supplement page: CONE-TAB-APPROX-01 exact kπ -> numeric approximation row (50π -> 157 via π≈3.14)", "math-qa.mjs"],
+      "testsPassed": ["table solver QA", "exact pi QA", "pi≈3.14 QA", "approximation-sign semantics QA", "estimation QA", "unit conversion QA", "supplement conversion-row QA", "supplement kπ→approximation-row QA", "PR #1 CI run 37845048203 (contract + browser A4/mobile/print/PDF)"],
+      "remaining": [],
+      "lastCommit": "7731d14ccd202260c08dbaf7c81c161c131f42da"
     },
     {
       "id": "G05",
@@ -190,8 +190,6 @@
     }
   ],
   "openExecutionItems": [
-    "P02 table conversion + approximate pi rows",
-    "P03 exact-to-approx pi bridge",
     "P04 dimension-change investigation completion",
     "P05 deterministic safe label zones",
     "P07 high-ROI design tokens cleanup",
@@ -214,6 +212,12 @@
       "percent": 93.35,
       "commit": "cce44ddc62457ecd1ff0f70fd564c81514c7d5d5",
       "note": "Curriculum inventory gate completed; SSOT QA repaired; fixed-eight-page limit removed; workbook expanded to 10 pages; every multi-part subsection now has dedicated work and answer areas; CI contract/browser/PDF gates passed."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 94.85,
+      "commit": "7731d14ccd202260c08dbaf7c81c161c131f42da",
+      "note": "G04 closed: added a dedicated supplement page with a unit-conversion table row (CONE-TAB-CONV-01) and an explicit kπ→numeric-approximation table row (CONE-TAB-APPROX-01); deterministic math-qa checks added; locked five-row table and official question untouched; PR #1 CI green (contract + browser A4/mobile/print/PDF)."
     }
   ]
 }
