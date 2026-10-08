@@ -69,6 +69,27 @@ ok(subsectionAudit.invalid.length===0,`subsections without dedicated work grid +
 ok(subsectionAudit.emptyMarkers===0,'every subsection must have a stable data-subpart marker');
 ok(subsectionAudit.answerLabels===subsectionAudit.count,'every subsection must visibly include its own תשובה: label');
 
+// SSOT §13.5 + §18.3: page 1 shows no בס"ד line and carries the Ayelet credit
+// footer only; every later page keeps the shared two-line district footer.
+const footerAudit=await page.evaluate(()=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const text=p=>(p.querySelector('.gz-footer')?.textContent||'').replace(/\s+/g,' ').trim();
+  const first=pages[0].querySelector('.gz-footer');
+  return {
+    first:text(pages[0]),
+    firstHasLogo:Boolean(first?.querySelector('.district-logo')),
+    firstOverflow:first?(first.scrollWidth>first.clientWidth+1||first.scrollHeight>first.clientHeight+1):true,
+    othersShared:pages.slice(1).filter(p=>text(p).includes('יניב רז')&&text(p).includes('בהובלת איילת קריספין')).length,
+    others:pages.length-1,
+    bsd:pages.some(p=>/בס['"״]ד/.test(p.textContent))
+  };
+});
+ok(footerAudit.first.includes('איילת קריספין')&&footerAudit.first.includes('מתכללת')&&!footerAudit.first.includes('יניב רז'),`page 1 footer must carry the Ayelet credit only, got: ${footerAudit.first}`);
+ok(footerAudit.firstHasLogo,'page 1 footer must keep the verified district logo');
+ok(!footerAudit.firstOverflow,'page 1 credit footer overflows its footer box');
+ok(footerAudit.othersShared===footerAudit.others,`every page after page 1 must keep the shared district footer (${footerAudit.othersShared}/${footerAudit.others})`);
+ok(!footerAudit.bsd,'no student page may show the בס"ד line (SSOT §13.5)');
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});
@@ -114,6 +135,58 @@ await inspectViewport(360,800,'android-portrait');
 await inspectViewport(915,412,'android-landscape');
 await inspectViewport(390,844,'iphone-portrait');
 await inspectViewport(844,390,'iphone-landscape');
+
+// Continuous scroll view: every student page visible in one scrollable flow,
+// counter follows navigation, A4 geometry/overflow rules still hold, print
+// pagination unchanged, and the toggle returns to the single-page reader.
+async function inspectScrollView(width,height,label){
+  await page.setViewportSize({width,height});
+  await page.goto(`${url}?view=scroll`,{waitUntil:'load'});
+  await page.waitForTimeout(150);
+  await waitForAssets();
+  const result=await page.evaluate(()=>{
+    const pages=[...document.querySelectorAll('.page')];
+    return {
+      scrollClass:document.body.classList.contains('scroll-view'),
+      pressed:document.querySelector('#view-toggle')?.getAttribute('aria-pressed'),
+      visible:pages.filter(p=>getComputedStyle(p).display!=='none').length,
+      bodyOverflow:document.documentElement.scrollWidth>innerWidth+1,
+      pageOverflow:pages.some(p=>p.scrollWidth>p.clientWidth+1||p.scrollHeight>p.clientHeight+1),
+      scrollable:document.documentElement.scrollHeight>innerHeight+1,
+      counter:document.querySelector('#counter')?.textContent||'',
+      toggle:(()=>{const r=document.querySelector('#view-toggle').getBoundingClientRect();return {w:r.width,h:r.height}})()
+    };
+  });
+  ok(result.scrollClass&&result.pressed==='true',`${label}: ?view=scroll did not activate the scroll view`);
+  ok(result.visible===canonicalPageCount,`${label}: scroll view must show all ${canonicalPageCount} pages, got ${result.visible}`);
+  ok(result.counter===`1 / ${canonicalPageCount}`,`${label}: scroll view initial counter mismatch: ${result.counter}`);
+  ok(!result.pageOverflow,`${label}: scroll view internal A4 overflow detected`);
+  ok(!result.bodyOverflow,`${label}: scroll view horizontal overflow detected`);
+  ok(result.scrollable,`${label}: scroll view must be vertically scrollable`);
+  ok(result.toggle.w>=44&&result.toggle.h>=44,`${label}: view toggle below 44px touch target`);
+  await page.click('#next');
+  await page.waitForTimeout(300);
+  ok((await page.textContent('#counter'))?.trim()===`2 / ${canonicalPageCount}`,`${label}: scroll view next did not move the counter to page 2`);
+  await page.evaluate(()=>{const p=document.querySelectorAll('.page')[4];scrollTo({top:p.getBoundingClientRect().top+scrollY-document.querySelector('.reader').offsetHeight-8})});
+  await page.waitForTimeout(300);
+  ok((await page.textContent('#counter'))?.trim()===`5 / ${canonicalPageCount}`,`${label}: counter did not follow a manual scroll to page 5`);
+  await page.emulateMedia({media:'print'});
+  const printMargins=await page.evaluate(()=>[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).marginBottom));
+  ok(printMargins.every(m=>m==='0px'),`${label}: scroll view must print without inter-page margins (${[...new Set(printMargins)].join(',')})`);
+  await page.emulateMedia({media:null});
+  await page.click('#view-toggle');
+  await page.waitForTimeout(150);
+  const paged=await page.evaluate(()=>({
+    visible:[...document.querySelectorAll('.page')].filter(p=>getComputedStyle(p).display!=='none').length,
+    scrollClass:document.body.classList.contains('scroll-view'),
+    view:new URL(location.href).searchParams.get('view')
+  }));
+  ok(paged.visible===1&&!paged.scrollClass&&paged.view==='paged',`${label}: toggle did not return to the single-page reader`);
+  await page.evaluate(()=>{try{localStorage.clear()}catch{}});
+}
+await inspectScrollView(1440,1200,'desktop-scroll');
+await inspectScrollView(360,800,'android-portrait-scroll');
+await page.goto(url,{waitUntil:'load'});
 
 await page.setViewportSize({width:1440,height:1200});
 await page.reload({waitUntil:'load'});

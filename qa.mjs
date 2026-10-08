@@ -45,6 +45,14 @@ ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew
 ok(app.includes('7121dfeaa9d8dc9f4101eea155c23a24374a0a2a/worksheets/assets/ayelet-original-cone.png'),'rendered companion-sheet artwork is not pinned to the verified immutable source commit');
 ok(!content.includes('src="assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');
 
+// SSOT §13.5: the בס"ד line is not part of the locked page-1 content.
+ok(!/בס['"״]ד/.test(data.page1)&&!/בס['"״]ד/.test(page1Lock),'page 1 and its lock must not contain the בס"ד line (SSOT §13.5)');
+// SSOT §18.3: page 1 carries the Ayelet credit line only; other pages keep the shared footer.
+ok(typeof data.page1Credit==='string'&&data.page1Credit.includes('איילת קריספין')&&data.page1Credit.includes('מתכללת')&&data.page1Credit.includes('מנח"י'),'page-1 credit line missing from canonical data (SSOT §18.3)');
+ok(app.includes('const page1Footer=')&&app.includes('${D.page1Credit}')&&app.includes('class="gz-footer page1-credit"'),'page 1 credit footer is not rendered from canonical data');
+ok(app.includes('addPage(`<div class="source-sheet">${page1Html}</div>`,page1Footer)'),'page 1 must use the credit footer instead of the shared district footer');
+ok(app.includes('const addPage=(html,foot=footer)=>'),'shared district footer must remain the default for every other page');
+
 ok(!index.includes('פתרונות למורה'),'teacher UI must not exist during student phase');
 ok(!app.includes('teacher-page')&&!app.includes('פתרונות למורה'),'teacher pages must not be rendered during student phase');
 const teacherIronRule=
@@ -91,6 +99,22 @@ ok(css.includes('.page h1{font-size:24px;font-weight:500'),'student h1 weight mu
 ok(css.includes('.page h2{font-size:18px;font-weight:500'),'student h2 weight must stay within approved 400-500 range');
 ok(!css.includes('.page h1{font-size:24px;font-weight:700'),'student h1 must not regress to heavy weight');
 ok(index.includes('content.js')&&index.includes('app.js')&&index.includes('styles.css'),'canonical assets are not wired from index');
+
+// Direct student-PDF download control (R40): a stable download action wired to
+// the validated canonical PDF that CI regenerates on main.
+ok(index.includes('download-pdf'),'reader must keep the direct-download control (download-pdf class)');
+ok(index.includes(' download>')||index.includes(' download '),'direct-download link must carry the HTML download attribute');
+ok(index.includes('exports/student-pages/cone-student.pdf'),'direct download must point to the validated canonical student PDF');
+
+// Continuous scroll view (reader shell only): every student page stacked for
+// review via ?view=scroll or the toggle; the default reader stays single-page
+// and print pagination must not change.
+ok(index.includes('id="view-toggle"'),'reader must keep the scroll-view toggle control (view-toggle)');
+ok(app.includes("get('view')")&&app.includes("urlView==='scroll'"),'reader must honour ?view=scroll');
+ok(app.includes("classList.toggle('scroll-view',scrollView)"),'reader must expose the scroll-view body class');
+ok(app.includes("addEventListener('scroll',syncCounterToScroll"),'scroll view counter must follow the page in view');
+ok(css.includes('.scroll-view .page{margin-bottom:18px}'),'scroll-view page stacking style missing');
+ok(css.includes('@media print{.scroll-view .page,.scroll-view .page:last-child{margin:0}}'),'scroll view must not alter print pagination');
 
 ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
 ok(css.includes('width:10mm')&&css.includes('height:10mm'),'district logo must render at 10mm square');
