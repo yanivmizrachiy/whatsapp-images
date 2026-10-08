@@ -1,0 +1,28 @@
+{
+  "schemaVersion": 1,
+  "project": "חרוט חדש",
+  "authority": "SOURCE_OF_TRUTH.md",
+  "curriculumSource": {
+    "repository": "yanivmizrachiy/jerusalem2",
+    "path": "src/content/curriculum-fragments/idkun-geometri-8/idkun-geometri-8-p001-025.json",
+    "auditedSourcePages": [14, 15, 16, 17, 18, 19]
+  },
+  "scope": "כל שאלות הגליל/חרוט הממוספרות באזור התוכנית נסרקו כדי לקבוע אילו שאלות הן שאלות חרוט מחייבות.",
+  "classification": [
+    { "questionNumber": 1, "body": "cylinder", "includedInConeWorkbook": false },
+    { "questionNumber": 2, "body": "cylinder", "includedInConeWorkbook": false },
+    { "questionNumber": 3, "body": "cylinder", "includedInConeWorkbook": false },
+    { "questionNumber": 4, "body": "cylinder", "includedInConeWorkbook": false },
+    { "questionNumber": 5, "body": "cylinder", "includedInConeWorkbook": false },
+    { "questionNumber": 6, "body": "cone", "includedInConeWorkbook": true, "sourcePages": [17, 18], "repoQuestionId": "CURR-CONE-06" },
+    { "questionNumber": 7, "body": "cylinder", "includedInConeWorkbook": false, "sourcePages": [19] }
+  ],
+  "officialConeQuestionNumbers": [6],
+  "officialConeQuestionIds": ["CURR-CONE-06"],
+  "completenessRule": "החוברת חייבת להכיל בדיוק את כל הרשומות המסומנות includedInConeWorkbook=true, וכל אחת מהן חייבת להיות locked=true בתוכן הקנוני. שינוי במקור או הוספת שאלה רשמית מחייבים עדכון מלאי זה לפני טענת השלמה.",
+  "notes": [
+    "שאלות 1–5 ו-7 אינן נכנסות לחרוט משום שהן שאלות גליל.",
+    "שאלה 6 היא שאלת החרוט הרשמית באזור זה של תוכנית הלימודים והיא נשמרת 1:1 לפי SOURCE_OF_TRUTH.md.",
+    "קובץ זה הוא ראיית inventory נגזרת בלבד ואינו מקור דרישות נוסף."
+  ]
+}
