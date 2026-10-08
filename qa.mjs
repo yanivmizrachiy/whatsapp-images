@@ -30,7 +30,8 @@ ok(content.includes('שאלות מתוך תוכנית הלימודים')||app.in
 ok(content.includes('96π')&&content.includes('384π')&&content.includes('h=8'),'official cone QA values missing');
 ok(content.includes('מעטפת החרוט'),'mantle identification is missing from student content');
 ok(app.includes('חתך צירי של חרוט הוא משולש שווה שוקיים'),'explicit axial-section definition is missing');
-ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew-voice-notes/main/worksheets/assets/ayelet-original-cone.png'),'verified companion-sheet image asset is not wired');
+ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew-voice-notes/main/worksheets/assets/ayelet-original-cone.png'),'verified companion-sheet source asset reference is missing');
+ok(app.includes('7121dfeaa9d8dc9f4101eea155c23a24374a0a2a/worksheets/assets/ayelet-original-cone.png'),'rendered companion-sheet artwork is not pinned to the verified immutable source commit');
 ok(!content.includes('src=\\"assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');
 
 ok(!index.includes('פתרונות למורה'),'teacher UI must not exist during student phase');
@@ -72,4 +73,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student A4 pages; locked source wording intact; teacher phase locked; varied orientations/A4/mobile/print/logo/typography/MathJax contracts present.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student A4 pages; locked source wording/artwork intact; teacher phase locked; varied orientations/A4/mobile/print/logo/typography/MathJax contracts present.`);
