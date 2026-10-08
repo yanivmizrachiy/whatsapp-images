@@ -57,7 +57,14 @@ ok(studentPageBuilders>=8,'expected at least 8 student A4 pages');
 ok(app.includes('volumeTableRows()'),'student volume table is not rendered from canonical data');
 ok(app.includes('orientedConeSvg(90)')&&app.includes('orientedConeSvg(180)'),'varied cone orientations are not rendered');
 ok(app.includes('בסיס, קודקוד, מעטפת וגובה'),'orientation page must visibly ask for base, vertex, mantle and height');
-ok(app.includes("splitMarker=' ג. בעל הגלידרייה'"),'official curriculum task is not split safely across A4 pages');
+ok(app.includes('splitHebrewSubsections')&&app.includes('renderSubpart'),'multi-part questions must use the canonical subsection renderer');
+ok(app.includes('data-subpart="${part.letter}"'),'subsection renderer must expose a stable per-part marker');
+ok(app.includes('${grid(size)}${answerLine(unit)}'),'each subsection renderer must include its own work grid and answer line');
+for(const letter of ['א','ב','ג'])ok(app.includes(`renderSubpart(findPart(conversionParts,'${letter}')`),`conversion subsection ${letter} is not independently rendered`);
+for(const letter of ['א','ב','ג','ד'])ok(app.includes(`renderSubpart(findPart(changeParts,'${letter}')`),`dimension-change subsection ${letter} is not independently rendered`);
+for(const name of ['officialA','officialB','officialC','officialD'])ok(app.includes(`renderSubpart(${name}`),`${name} is not independently rendered`);
+ok(!app.includes('מרחב פתרון לסעיפים א׳–ב׳'),'official a-b must not share one combined workspace');
+ok(!app.includes('מרחב חישוב והסבר'),'official c-d must not share one combined workspace');
 ok(app.includes('const q=id=>D.questions.find'),'student renderer must resolve questions by stable ID');
 ok(!app.includes('D.questions['),'student renderer must not depend on question array positions');
 
@@ -75,6 +82,9 @@ ok(css.includes('--page-scale'),'mobile A4 scaling missing');
 ok(css.includes('.orientation-grid'),'orientation exercise layout missing');
 ok(css.includes('.sketch-box{height:42mm'),'dedicated axial-section sketch workspace missing');
 ok(css.includes('.sketch-box.orientation-sketch{height:105mm}'),'dedicated orientation drawing workspace missing');
+ok(css.includes('.subpart{')&&css.includes('.subpart-task{'),'independent subsection visual structure missing');
+ok(css.includes('.work-grid.subpart-small{height:20mm}')&&css.includes('.work-grid.subpart-medium{height:28mm}'),'subsection work-grid sizing missing');
+ok(css.includes('.work-grid.official-part-a{height:27mm}')&&css.includes('.work-grid.official-part-d{height:29mm}'),'official subsection work-grid sizing missing');
 ok(css.includes('#counter{min-width:56px;text-align:center;direction:ltr;unicode-bidi:isolate}'),'page counter must remain LTR inside RTL reader');
 ok(css.includes('.page-header>b{font-weight:500}'),'student page number must stay within approved 400-500 range');
 ok(css.includes('.page h1{font-size:24px;font-weight:500'),'student h1 weight must stay within approved 400-500 range');
@@ -103,4 +113,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; student drawing tasks locked; teacher phase locked.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; every multi-part task independently rendered; teacher phase locked.`);
