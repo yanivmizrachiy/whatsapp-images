@@ -2,6 +2,10 @@
   "name": "cone-workbook",
   "private": true,
   "scripts": {
-    "qa": "node qa.mjs"
+    "qa": "node qa.mjs",
+    "qa:browser": "node browser-qa.mjs"
+  },
+  "devDependencies": {
+    "playwright": "1.55.0"
   }
 }
