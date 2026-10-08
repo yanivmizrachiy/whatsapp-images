@@ -4,7 +4,8 @@ import vm from 'node:vm';
 const content=fs.readFileSync(new URL('./content.js',import.meta.url),'utf8');
 const sandbox={window:{}};
 vm.runInNewContext(content,sandbox);
-const questions=new Map(sandbox.window.CONE_DATA.questions.map(q=>[q.id,q]));
+const data=sandbox.window.CONE_DATA;
+const questions=new Map(data.questions.map(q=>[q.id,q]));
 const failures=[];
 const ok=(cond,msg)=>{if(!cond)failures.push(msg)};
 const answer=(id)=>questions.get(id)?.answer||'';
@@ -17,16 +18,38 @@ const axialArea=(r,h)=>(2*r*h)/2;
 ok(volumeCoeff(3,8)===24,'CONE-VOL-01 coefficient must be 24π');
 ok(answer('CONE-VOL-01').includes('24π'),'CONE-VOL-01 stored result drifted');
 
-const table=[
-  {r:3,d:6,h:8,v:volumeCoeff(3,8)},
-  {r:4,d:8,h:12,v:volumeCoeff(4,12)},
-  {r:5,d:10,h:12,v:volumeCoeff(5,12)}
-];
-ok(table[0].v===24&&table[1].v===64&&table[2].v===100,'completion-table cone volumes are wrong');
-for(const row of table){
-  ok(row.d===2*row.r,'radius/diameter relation failed');
-  ok(answer('CONE-TAB-01').includes(`${row.v}π`),`table answer missing ${row.v}π`);
+function solveTableRow(row){
+  let r=row.r ?? (row.d!=null ? row.d/2 : null);
+  let d=row.d ?? (r!=null ? 2*r : null);
+  let h=row.h;
+  let vPi=row.vPi;
+  if(vPi==null && r!=null && h!=null) vPi=volumeCoeff(r,h);
+  if(h==null && vPi!=null && r!=null) h=(3*vPi)/(r*r);
+  if(r==null && vPi!=null && h!=null){r=Math.sqrt((3*vPi)/h);d=2*r;}
+  if(d==null && r!=null)d=2*r;
+  return {id:row.id,r,d,h,vPi};
 }
+
+ok(Array.isArray(data.volumeTableRows)&&data.volumeTableRows.length===5,'volume table must have five canonical rows');
+ok(data.volumeTableRows.filter(r=>r.vPi!=null).length>=2,'volume table must include reverse rows with V given');
+const solvedRows=data.volumeTableRows.map(solveTableRow);
+const expected={
+  A:{r:3,d:6,h:8,vPi:24},
+  B:{r:4,d:8,h:12,vPi:64},
+  C:{r:5,d:10,h:12,vPi:100},
+  D:{r:3,d:6,h:6,vPi:18},
+  E:{r:5,d:10,h:6,vPi:50}
+};
+for(const row of solvedRows){
+  const exp=expected[row.id];
+  ok(Boolean(exp),`unexpected table row id ${row.id}`);
+  if(!exp)continue;
+  ok(row.r===exp.r&&row.d===exp.d&&row.h===exp.h&&row.vPi===exp.vPi,`table row ${row.id} solved incorrectly`);
+  ok(row.d===2*row.r,`table row ${row.id}: radius/diameter relation failed`);
+  ok(volumeCoeff(row.r,row.h)===row.vPi,`table row ${row.id}: cone volume relation failed`);
+}
+ok(answer('CONE-TAB-01').includes('שורה ד: d=6, h=6'),'table answer missing reverse row D');
+ok(answer('CONE-TAB-01').includes('שורה ה: r=5, h=6'),'table answer missing reverse row E');
 
 const h=rightLeg(10,6);
 ok(h===8,'Pythagoras height must be 8');
@@ -61,4 +84,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log('MATH QA PASS: volume, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and dimension-change results verified.');
+console.log('MATH QA PASS: canonical table rows, volume, radius/diameter, Pythagoras, axial section, conversions, reverse calculation and dimension-change results verified.');
