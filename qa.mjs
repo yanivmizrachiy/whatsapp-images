@@ -73,6 +73,7 @@ ok(css.includes('.orientation-grid'),'orientation exercise layout missing');
 ok(css.includes('.sketch-box{height:42mm'),'dedicated axial-section sketch workspace missing');
 ok(css.includes('.sketch-box.orientation-sketch{height:70mm}'),'dedicated orientation drawing workspace missing');
 ok(css.includes('#counter{min-width:56px;text-align:center;direction:ltr;unicode-bidi:isolate}'),'page counter must remain LTR inside RTL reader');
+ok(css.includes('.page-header>b{font-weight:500}'),'student page number must stay within approved 400-500 range');
 ok(css.includes('.page h1{font-size:24px;font-weight:500'),'student h1 weight must stay within approved 400-500 range');
 ok(css.includes('.page h2{font-size:18px;font-weight:500'),'student h2 weight must stay within approved 400-500 range');
 ok(!css.includes('.page h1{font-size:24px;font-weight:700'),'student h1 must not regress to heavy weight');
