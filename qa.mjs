@@ -19,6 +19,7 @@ vm.runInNewContext(content,sandbox);
 const data=sandbox.window.CONE_DATA;
 const officialQuestion=data.questions.find(q=>q.id==='CURR-CONE-06');
 const orientationQuestion=data.questions.find(q=>q.id==='CONE-ORIENT-01');
+const conversionQuestion=data.questions.find(q=>q.id==='CONE-CONV-01');
 const ids=data.questions.map(q=>q.id);
 
 ok(ids.length>=11,'expected at least 11 canonical question IDs');
@@ -46,6 +47,12 @@ ok(studentPageBuilders>=8,'expected at least 8 student A4 pages');
 ok(app.includes('volumeTableRows()'),'student volume table is not rendered from canonical data');
 ok(app.includes('orientedConeSvg(90)')&&app.includes('orientedConeSvg(180)'),'varied cone orientations are not rendered');
 ok(app.includes("splitMarker=' ג. בעל הגלידרייה'"),'official curriculum task is not split safely across A4 pages');
+ok(app.includes('const q=id=>D.questions.find'),'student renderer must resolve questions by stable ID');
+ok(!app.includes('D.questions['),'student renderer must not depend on question array positions');
+
+ok(Boolean(conversionQuestion),'conversion/estimate question missing');
+ok(conversionQuestion?.prompt.includes('שערו')&&conversionQuestion?.prompt.includes('300,000')&&conversionQuestion?.prompt.includes('600,000'),'explicit π estimation practice missing');
+ok(conversionQuestion?.answer.includes('314000')&&conversionQuestion?.answer.includes('300000'),'estimate answer/verification missing');
 
 ok(css.includes('@page{size:A4;margin:0}'),'A4 print rule missing');
 ok(css.includes('width:210mm')&&css.includes('height:297mm'),'canonical A4 geometry missing');
@@ -65,7 +72,8 @@ ok(css.includes('font-family:"Rubik","Heebo"'),'canonical typography stack missi
 ok(index.includes('mathjax@3.2.2/es5/tex-svg.js'),'pinned MathJax 3.2.2 TeX-SVG renderer missing');
 ok(index.includes("inlineMath:[['\\\\(','\\\\)']]"),'MathJax inline TeX delimiters missing');
 ok(app.includes("const tex=(s)=>`\\\\(${s}\\\\)`"),'shared TeX helper missing');
-ok(app.includes('\\\\underline{\\\\hspace{28mm}}'),'volume-page active TeX completion missing');
+ok(app.includes('\\\\underline{\\\\hspace{28mm}}'),'volume formula active completion missing');
+ok(app.includes('\\\\pi\\\\approx\\\\underline{\\\\hspace{14mm}}'),'volume approximation heading must contain a real student completion blank');
 ok(app.includes("tex('r')")&&app.includes("tex('d')")&&app.includes("tex('h')")&&app.includes("tex('V')"),'math labels are not consistently rendered through TeX');
 
 const forbiddenMath=/[×✕✖]/;
@@ -77,4 +85,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked source wording/artwork intact; teacher phase locked; A4/mobile/print/logo/typography/MathJax contracts present.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${data.volumeTableRows.length} canonical volume-table rows; ${studentPageBuilders} student A4 pages; locked sources intact; estimate/stable-ID/active-completion contracts present; teacher phase locked.`);
