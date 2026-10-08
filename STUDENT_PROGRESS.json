@@ -10,9 +10,9 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-09T01:55:00+03:00",
+  "updatedAt": "2026-10-09T02:02:00+03:00",
   "updatedBy": "ChatGPT + Claude Code shared workflow",
-  "headCommit": "577941c39655547915c0504e176dbc40d8ea8314",
+  "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
     "partial": "work exists but at least one acceptance criterion is still open",
@@ -21,38 +21,185 @@
     "failed": "implementation or QA currently fails"
   },
   "groups": [
-    {"id":"G01","name":"Core student content and current workbook","weight":20,"completionPercent":100,"status":"done","covers":["P14"],"evidence":["11 active student A4 pages","content.js","app.js","reviewed CI artifact 37853329815"],"testsPassed":["dynamic page-count browser QA","PDF page-count QA","independent subsection work-unit gate"],"remaining":[],"lastCommit":"fa3f352"},
-    {"id":"G02","name":"Locked official sources and complete curriculum inventory","weight":10,"completionPercent":100,"status":"done","covers":["P01"],"evidence":["tests/page1-source-lock.txt","tests/official-cone-q6-lock.txt","curriculum-cone-inventory.json","CURR-CONE-06 locked=true"],"testsPassed":["locked page-1 comparator","locked official question comparator","curriculum inventory completeness gate"],"remaining":[],"lastCommit":"c33278422c29725d9bf77defe97c353e211e9325"},
-    {"id":"G03","name":"Pedagogical coverage and progression","weight":10,"completionPercent":100,"status":"done","covers":["P04","P14"],"evidence":["coverage-qa.mjs","definition -> identification -> calculation -> reverse -> combined -> application sequence","11-page final visual/pedagogical review","CONE-CHANGE-01 guided investigation"],"testsPassed":["mandatory coverage QA","subsection-separation QA","manual set-level review of CI artifact 37853329815"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"},
-    {"id":"G04","name":"Volume table, radius/diameter, pi, conversion and estimation","weight":10,"completionPercent":100,"status":"done","covers":["P02","P03"],"evidence":["5 canonical r/d/h/V rows","CONE-CONV-01","CONE-TAB-CONV-01","CONE-TAB-APPROX-01","math-qa.mjs"],"testsPassed":["table solver QA","exact/approx pi QA","unit conversion QA","estimation QA"],"remaining":[],"lastCommit":"7731d14ccd202260c08dbaf7c81c161c131f42da"},
-    {"id":"G05","name":"Guided numeric dimension-change investigation","weight":8,"completionPercent":100,"status":"done","covers":["P04"],"evidence":["CONE-CHANGE-01","24π -> 48π -> 96π","x2 height / x4 radius comparison","student generalization follows numeric cases"],"testsPassed":["doubling height x2 volume","doubling radius x4 volume","SSOT §8 review"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"},
-    {"id":"G06","name":"Vector graphics, orientations and label safety","weight":8,"completionPercent":100,"status":"done","covers":["P05"],"evidence":["coneSvg","axialSvg","orientedConeSvg","waffleConeSvg","manual full-resolution review page-02/page-05/page-10","11-page reviewed visual artifact"],"testsPassed":["desktop/mobile/PDF rendering","visual review confirms no active label overlap"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"},
-    {"id":"G07","name":"A4 geometry and student workspaces","weight":6,"completionPercent":100,"status":"done","covers":["P06"],"evidence":["210mm x 297mm pages","5x5mm grid","task-specific workspaces","dedicated grid + answer line per subsection"],"testsPassed":["A4 geometry QA","no internal overflow QA","subsection DOM QA","PDF A4 QA"],"remaining":[],"lastCommit":"0bfc943ed1a14a11eb0c1b518d2178900973044f"},
-    {"id":"G08","name":"Design language and typography","weight":5,"completionPercent":100,"status":"done","covers":["P07","P14"],"evidence":["Rubik/Heebo","student headings 500","district footer","shared visual language","11-page consistency review"],"testsPassed":["font load QA","heading-weight QA","manual visual consistency audit"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"},
-    {"id":"G09","name":"Reader, mobile, print and PDF","weight":5,"completionPercent":100,"status":"done","covers":["P11","P12"],"evidence":["prev/next reader","continuous scroll view","dynamic page count","print CSS","cone-student.pdf"],"testsPassed":["desktop","Android portrait/landscape","iPhone portrait/landscape","print","PDF"],"remaining":[],"lastCommit":"c8b5fd8"},
-    {"id":"G10","name":"Automated QA and visual evidence","weight":5,"completionPercent":100,"status":"done","covers":["P09","P12"],"evidence":["ssot-qa.mjs","qa.mjs","coverage-qa.mjs","math-qa.mjs","browser-qa.mjs","visual-baseline.json","visual-regression-qa.mjs","CI run 37856393919"],"testsPassed":["SSOT QA","contract QA","coverage/inventory QA","math QA","browser QA","11-page hash visual regression PASS"],"remaining":[],"lastCommit":"0ba061e34c033439415efe1ed53008263c14f41b"},
-    {"id":"G11","name":"Architecture and future editability","weight":4,"completionPercent":100,"status":"done","covers":["P07","P13"],"evidence":["content.js / app.js / styles.css separation","stable IDs","ID-based lookups","shared footer/grid/answer/subpart/diagram helpers"],"testsPassed":["no index-based question lookup contract","unique IDs QA","SSOT §19.4–19.5 ROI audit"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"},
-    {"id":"G12","name":"Requirement traceability","weight":3,"completionPercent":100,"status":"done","covers":["P08"],"evidence":["STUDENT_REQUIREMENT_TRACEABILITY.md fully reconciled R01–R52","commit 577941c39655547915c0504e176dbc40d8ea8314"],"testsPassed":["progress integrity QA","canonical-vs-derived requirement audit"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"},
-    {"id":"G13","name":"SOURCE_OF_TRUTH hygiene and consistency","weight":3,"completionPercent":100,"status":"done","covers":["P10"],"evidence":["single numbered SOURCE_OF_TRUTH.md","README navigation-only","ssot-qa.mjs"],"testsPassed":["SSOT single-authority QA","canonical rule semantics QA"],"remaining":[],"lastCommit":"b5738e8b9793eedfd8da67472b2098ab26aa37b2"},
-    {"id":"G14","name":"Direct PDF download and delivery readiness","weight":3,"completionPercent":100,"status":"done","covers":["P11"],"evidence":["download-pdf direct control","validated exports/student-pages/cone-student.pdf","R41 public URL audited as noncanonical derived-only item under SSOT §1.5"],"testsPassed":["PDF generation QA","direct-download contract QA","governance audit"],"remaining":[],"lastCommit":"577941c39655547915c0504e176dbc40d8ea8314"}
+    {
+      "id": "G01",
+      "name": "Core student content and current workbook",
+      "weight": 20,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P14"],
+      "evidence": ["11 active student A4 pages", "content.js", "app.js", "validated exports/student-pages"],
+      "testsPassed": ["dynamic page-count browser QA", "PDF page-count QA", "subsection work-unit gate"],
+      "remaining": []
+    },
+    {
+      "id": "G02",
+      "name": "Locked official sources and complete curriculum inventory",
+      "weight": 10,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P01"],
+      "evidence": ["tests/page1-source-lock.txt", "tests/official-cone-q6-lock.txt", "curriculum-cone-inventory.json", "CURR-CONE-06 locked=true"],
+      "testsPassed": ["page-1 lock comparator", "official-question lock comparator", "curriculum inventory completeness gate"],
+      "remaining": []
+    },
+    {
+      "id": "G03",
+      "name": "Pedagogical coverage and progression",
+      "weight": 10,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P04", "P14"],
+      "evidence": ["coverage-qa.mjs", "definition-to-application sequence", "11-page final pedagogical/visual review", "CONE-CHANGE-01 guided investigation"],
+      "testsPassed": ["mandatory coverage QA", "subsection-separation QA", "set-level visual/pedagogical review"],
+      "remaining": []
+    },
+    {
+      "id": "G04",
+      "name": "Volume table, radius/diameter, pi, conversion and estimation",
+      "weight": 10,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P02", "P03"],
+      "evidence": ["five canonical r/d/h/V rows", "CONE-CONV-01", "CONE-TAB-CONV-01", "CONE-TAB-APPROX-01", "math-qa.mjs"],
+      "testsPassed": ["table solver QA", "exact/approx pi QA", "unit conversion QA", "estimation QA"],
+      "remaining": []
+    },
+    {
+      "id": "G05",
+      "name": "Guided numeric dimension-change investigation",
+      "weight": 8,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P04"],
+      "evidence": ["CONE-CHANGE-01", "24π -> 48π -> 96π", "x2 height / x4 radius comparison", "student generalization after numeric cases"],
+      "testsPassed": ["doubling height x2 volume", "doubling radius x4 volume", "SSOT §8 review"],
+      "remaining": []
+    },
+    {
+      "id": "G06",
+      "name": "Vector graphics, orientations and label safety",
+      "weight": 8,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P05"],
+      "evidence": ["coneSvg", "axialSvg", "orientedConeSvg", "waffleConeSvg", "full-resolution diagram review", "11-page visual artifact"],
+      "testsPassed": ["desktop/mobile/PDF rendering", "visual review confirms no active label overlap"],
+      "remaining": []
+    },
+    {
+      "id": "G07",
+      "name": "A4 geometry and student workspaces",
+      "weight": 6,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P06"],
+      "evidence": ["210mm x 297mm pages", "5x5mm grid", "task-specific workspaces", "dedicated grid + answer per subsection"],
+      "testsPassed": ["A4 geometry QA", "no internal overflow QA", "subsection DOM QA", "PDF A4 QA"],
+      "remaining": []
+    },
+    {
+      "id": "G08",
+      "name": "Design language and typography",
+      "weight": 5,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P07", "P14"],
+      "evidence": ["Rubik/Heebo", "approved heading weights", "district footer", "shared visual language", "11-page consistency review"],
+      "testsPassed": ["font load QA", "heading-weight QA", "visual consistency audit"],
+      "remaining": []
+    },
+    {
+      "id": "G09",
+      "name": "Reader, mobile, print and PDF",
+      "weight": 5,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P11", "P12"],
+      "evidence": ["prev/next reader", "continuous scroll view", "dynamic page count", "print CSS", "validated cone-student.pdf"],
+      "testsPassed": ["desktop", "Android portrait/landscape", "iPhone portrait/landscape", "print", "PDF"],
+      "remaining": []
+    },
+    {
+      "id": "G10",
+      "name": "Automated QA and visual evidence",
+      "weight": 5,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P09", "P12"],
+      "evidence": ["ssot-qa.mjs", "qa.mjs", "coverage-qa.mjs", "math-qa.mjs", "browser-qa.mjs", "visual-baseline.json", "visual-regression-qa.mjs"],
+      "testsPassed": ["SSOT QA", "contract QA", "coverage/inventory QA", "math QA", "browser QA", "11-page visual regression"],
+      "remaining": []
+    },
+    {
+      "id": "G11",
+      "name": "Architecture and future editability",
+      "weight": 4,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P07", "P13"],
+      "evidence": ["content.js / app.js / styles.css separation", "stable IDs", "ID-based lookups", "shared footer/grid/answer/subpart/diagram helpers"],
+      "testsPassed": ["no index-based question lookup", "unique IDs QA", "ROI architecture audit"],
+      "remaining": []
+    },
+    {
+      "id": "G12",
+      "name": "Requirement traceability",
+      "weight": 3,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P08"],
+      "evidence": ["STUDENT_REQUIREMENT_TRACEABILITY.md fully reconciled R01-R52"],
+      "testsPassed": ["progress integrity QA", "canonical-vs-derived requirement audit"],
+      "remaining": []
+    },
+    {
+      "id": "G13",
+      "name": "SOURCE_OF_TRUTH hygiene and consistency",
+      "weight": 3,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P10"],
+      "evidence": ["single reconciled SOURCE_OF_TRUTH.md", "README navigation-only", "derived execution docs marked non-authoritative"],
+      "testsPassed": ["SSOT single-authority QA", "canonical status reconciliation"],
+      "remaining": []
+    },
+    {
+      "id": "G14",
+      "name": "Direct PDF download and delivery readiness",
+      "weight": 3,
+      "completionPercent": 100,
+      "status": "done",
+      "covers": ["P11"],
+      "evidence": ["download-pdf direct control", "validated exports/student-pages/cone-student.pdf", "public URL audited as noncanonical because it is absent from SSOT"],
+      "testsPassed": ["PDF generation QA", "direct-download contract QA", "governance audit"],
+      "remaining": []
+    }
   ],
   "openExecutionItems": [],
   "closure": {
     "studentRoundClosed": true,
+    "studentRoundApprovedByYaniv": true,
     "teacherPagesRemainForbiddenUntilNewExplicitInstruction": true,
     "canonicalRequirementsClosed": true,
+    "canonicalSourceSynchronized": true,
     "visualReviewCompleted": true,
     "visualRegressionEnabled": true,
-    "latestGreenCiRun": 37856393919,
-    "latestGreenHead": "0ba061e34c033439415efe1ed53008263c14f41b",
-    "userClosureInstruction": "Yaniv explicitly instructed to focus only on Harut and finish it to 100%.",
-    "nonCanonicalItemsExcluded": ["R41 public URL requirement existed only in a derived execution document and is not present in SOURCE_OF_TRUTH.md; SSOT §1.5 forbids derived documents from adding requirements."]
+    "mainMergeSha": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24",
+    "latestValidatedExportHead": "c38af8c4819d08d64df36d44d5d2280a043837db",
+    "latestGreenCiRun": 37856829705,
+    "latestGreenHead": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24",
+    "userClosureInstruction": "Yaniv instructed to finish Harut to 100%, then explicitly requested one contradiction-free source of truth and full reconciliation.",
+    "nonCanonicalItemsExcluded": [
+      "A stable public URL appeared only in a derived execution document and is not a requirement in SOURCE_OF_TRUTH.md; derived documents cannot add requirements."
+    ]
   },
   "history": [
-    {"date":"2026-10-08","percent":91.1,"commit":"6514c69021ea97670badb9886bc8c6dcac2333a7","note":"Canonical weighted baseline created."},
-    {"date":"2026-10-08","percent":93.35,"commit":"cce44ddc62457ecd1ff0f70fd564c81514c7d5d5","note":"Curriculum inventory, SSOT QA, page expansion and subsection workspaces verified."},
-    {"date":"2026-10-09","percent":94.85,"commit":"7731d14ccd202260c08dbaf7c81c161c131f42da","note":"Conversion and kπ approximation supplement closed G04 gaps."},
-    {"date":"2026-10-09","percent":95.6,"commit":"56bdc9992bf69ac06c780b155114fe90a014ad06","note":"Direct PDF download requirement closed."},
-    {"date":"2026-10-09","percent":100,"commit":"577941c39655547915c0504e176dbc40d8ea8314","note":"Final SSOT reconciliation: guided investigation, label safety, A4 visual audit, architecture/ROI audit and traceability closed; reviewed 11-page visual baseline added and CI run 37856393919 passed visual regression + full workbook QA. Derived-only public URL item removed as a blocker because it is not in SOURCE_OF_TRUTH.md."}
+    {"date": "2026-10-08", "percent": 91.1, "commit": "6514c69021ea97670badb9886bc8c6dcac2333a7", "note": "Canonical weighted baseline created."},
+    {"date": "2026-10-08", "percent": 93.35, "commit": "cce44ddc62457ecd1ff0f70fd564c81514c7d5d5", "note": "Curriculum inventory, SSOT QA, page expansion and subsection workspaces verified."},
+    {"date": "2026-10-09", "percent": 94.85, "commit": "7731d14ccd202260c08dbaf7c81c161c131f42da", "note": "Conversion and kπ approximation gaps closed."},
+    {"date": "2026-10-09", "percent": 95.6, "commit": "56bdc9992bf69ac06c780b155114fe90a014ad06", "note": "Direct PDF download requirement closed."},
+    {"date": "2026-10-09", "percent": 100, "commit": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24", "note": "Student workbook completion merged to main after evidence-backed closure and green CI."},
+    {"date": "2026-10-09", "percent": 100, "commit": "c38af8c4819d08d64df36d44d5d2280a043837db", "note": "Validated exports persisted after main CI; canonical status documents reconciled without changing completion."}
   ]
 }
