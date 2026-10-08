@@ -36,6 +36,11 @@ ok(css.includes('@media print'),'print CSS missing');
 ok(css.includes('--page-scale'),'mobile A4 scaling missing');
 ok(index.includes('content.js')&&index.includes('app.js')&&index.includes('styles.css'),'canonical assets are not wired from index');
 
+ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
+ok(css.includes('width:10mm')&&css.includes('height:10mm'),'district logo must render at 10mm square');
+ok(css.includes('family=Rubik')&&css.includes('family=Heebo'),'canonical Google font import missing');
+ok(css.includes('font-family:"Rubik","Heebo"'),'canonical typography stack missing');
+
 const forbiddenMath=/[×✕✖]/;
 ok(!forbiddenMath.test(app),'forbidden multiplication glyph found in app.js');
 
@@ -44,4 +49,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student page builders; teacher phase locked; A4/mobile/print contracts present.`);
+console.log(`QA PASS: ${ids.length} unique question IDs; ${studentPageBuilders} student page builders; teacher phase locked; A4/mobile/print/logo/typography contracts present.`);
