@@ -70,6 +70,11 @@ const coneCutsSvg=()=>`<svg class="cone-cuts-svg" viewBox="0 0 420 360" role="im
 const inlineBlanks=(id)=>prompt(id).replace(/_{3,}/g,'<span class="answer-line inline"></span>');
 const sortTable=(id)=>`<table class="practice-table sort-table"><thead><tr><th>חפץ</th><th>חרוט / גליל / גוף אחר</th><th>נימוק קצר</th></tr></thead><tbody>${(q(id)?.sortRows||[]).map(n=>`<tr><td>${n}</td><td></td><td></td></tr>`).join('')}</tbody></table>`;
 const secTable=(id)=>`<table class="practice-table sec-table"><thead><tr><th>רדיוס הבסיס r (ס״מ)</th><th>היקף הבסיס = אורך הקשת (ס״מ)</th></tr></thead><tbody>${(q(id)?.secRows||[]).map(n=>`<tr><td>${n}</td><td></td></tr>`).join('')}</tbody></table>`;
+// Cylinder vs cone with identical base (r) and height (h) — the 1/3-volume comparison (CONE-RATIO).
+const cylinderConeRatioSvg=()=>`<svg class="ratio-svg" viewBox="0 0 560 360" role="img" aria-label="גליל וחרוט בעלי אותו בסיס ואותו גובה, להשוואת נפחים"><g><path d="M60 290 A90 24 0 0 0 240 290" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><path d="M60 290 A90 24 0 0 1 240 290" fill="none" stroke="#1d4ed8" stroke-width="4"/><line x1="60" y1="70" x2="60" y2="290" stroke="#1d4ed8" stroke-width="4"/><line x1="240" y1="70" x2="240" y2="290" stroke="#1d4ed8" stroke-width="4"/><ellipse cx="150" cy="70" rx="90" ry="24" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><line x1="150" y1="70" x2="150" y2="290" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="150" y1="70" x2="240" y2="70" stroke="#111827" stroke-width="3"/><circle cx="150" cy="70" r="4" fill="#111827"/><text x="105" y="186" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">h</text><text x="196" y="62" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">r</text><text x="150" y="336" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#1d4ed8">גליל</text></g><g><path d="M320 290 A90 24 0 0 0 500 290" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><path d="M320 290 A90 24 0 0 1 500 290" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M410 70 L320 290 M410 70 L500 290" fill="none" stroke="#1d4ed8" stroke-width="4"/><line x1="410" y1="70" x2="410" y2="290" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="410" y1="290" x2="500" y2="290" stroke="#111827" stroke-width="3"/><circle cx="410" cy="70" r="5" fill="#111827"/><circle cx="410" cy="290" r="4" fill="#111827"/><text x="455" y="186" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">h</text><text x="455" y="284" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">r</text><text x="410" y="336" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#1d4ed8">חרוט</text></g></svg>`;
+// Cone labelled by its full base DIAMETER (not radius) — the diameter-vs-radius error (CONE-ERR-05).
+const diameterConeSvg=()=>`<svg class="diameter-cone-svg" viewBox="0 0 520 440" role="img" aria-label="חרוט ישר שקוטר בסיסו 12 סנטימטר וגובהו 10 סנטימטר"><ellipse cx="260" cy="350" rx="178" ry="46" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M260 54 L82 350 M260 54 L438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 46 0 0 0 438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 46 0 0 1 438 350" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="54" x2="260" y2="350" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="82" y1="350" x2="438" y2="350" stroke="#111827" stroke-width="3.5"/><circle cx="260" cy="54" r="5" fill="#111827"/><text x="288" y="210" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">10 ס״מ</text><text x="260" y="424" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">קוטר 12 ס״מ</text></svg>`;
+const ratioTable=(id)=>`<table class="practice-table ratio-table"><thead><tr><th>${tex('r')}</th><th>${tex('h')}</th><th>נפח הגליל</th><th>נפח החרוט</th></tr></thead><tbody>${(q(id)?.ratioTableRows||[]).map(row=>`<tr><td>${row.r} ס״מ</td><td>${row.h} ס״מ</td><td></td><td></td></tr>`).join('')}</tbody></table>`;
 const claimCheckList=(id)=>{const full=prompt(id);const cut=full.indexOf('(1)');const intro=full.slice(0,cut).trim();const items=full.slice(cut).split(/\(\d+\)\s*/).map(s=>s.trim()).filter(Boolean);return `<div class="task first">${intro}</div><ul class="claim-list">${items.map(t=>`<li><span class="claim-box"></span><span class="claim-text">${t}</span></li>`).join('')}</ul>`;};
 const addPage=(html,foot=footer)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+foot();book.append(p);return p};
 let pageNumber=1;
@@ -200,6 +205,44 @@ addPage(`${nextHeader(`נפח חרוט — השלימו: ${tex('V=\\underline{\\
 <div class="task">${prompt('CONE-TAB-01')}</div>
 <table class="practice-table"><thead><tr><th>${tex('r')}</th><th>${tex('d')}</th><th>${tex('h')}</th><th>${tex('V')}</th></tr></thead><tbody>${volumeTableRows()}</tbody></table>
 <div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
+
+// ===== Expansion phase 4 (SSOT §26): cone/cylinder 1/3 ratio + volume-error analysis, after the volume formula =====
+// RATIO — cone volume is a third of the same-base-same-height cylinder (student discovers the 1/3).
+addPage(`${nextHeader('חרוט וגליל — יחס השליש')}
+<div class="concept-note">לגליל ולחרוט שלפניכם אותו בסיס ואותו גובה. נזכיר שנפח גליל מחושב לפי ${tex('V=\\pi\\cdot r^{2}\\cdot h')}.</div>
+<div class="ratio-figure">${cylinderConeRatioSvg()}</div>
+<div class="task first">${prompt('CONE-RATIO-01')}</div>${grid('small')}${answerLine('פעמים')}
+<div class="task">${prompt('CONE-RATIO-02')}</div>${grid('small')}${answerLine('סמ״ק')}
+<div class="task">${prompt('CONE-RATIO-03')}</div>${grid('small')}${answerLine('סמ״ק')}`);
+
+const ratioParts=splitHebrewSubsections(prompt('CONE-RATIO-04'),['א','ב','ג']);
+addPage(`${nextHeader('חרוט וגליל — חישוב נפחים')}
+<div class="concept-note">בחרו רדיוס וגובה נתונים, חשבו את נפח הגליל ואת נפח החרוט בעלי אותו בסיס ואותו גובה, והשוו ביניהם.</div>
+<div class="question-intro">${ratioParts.intro}</div>
+${renderSubpart(findPart(ratioParts,'א'),{size:'subpart-small',unit:'סמ״ק'})}
+${renderSubpart(findPart(ratioParts,'ב'),{size:'subpart-small',unit:'סמ״ק'})}
+${renderSubpart(findPart(ratioParts,'ג'),{size:'subpart-small'})}`);
+
+addPage(`${nextHeader('חרוט וגליל — טבלת נפחים')}
+<div class="task first">${prompt('CONE-RATIO-05')}</div>
+${ratioTable('CONE-RATIO-05')}
+<div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
+
+addPage(`${nextHeader('יחס השליש — הכללה ובדיקת טענה')}
+<div class="task first">${prompt('CONE-RATIO-06')}</div>${grid('subpart-explain')}${answerLine()}
+<div class="task">${prompt('CONE-RATIO-07')}</div>${grid('claim')}${answerLine()}`);
+
+// ERR — diagnose & fix common volume-calculation mistakes (missing 1/3, un-squared r, times-3, diameter, units).
+addPage(`${nextHeader('ניתוח שגיאות נפוצות בחישוב הנפח')}
+<div class="concept-note">לפניכם פתרונות של תלמידים לאותה שאלה. בכל סעיף מצאו היכן נפלה הטעות ותקנו אותה עד לתשובה הנכונה.</div>
+<div class="two-column"><div class="diagram-box">${coneSvg()}</div><div><div class="task first">${prompt('CONE-ERR-01')}</div>${grid('medium')}${answerLine('סמ״ק')}</div></div>
+<div class="task">${prompt('CONE-ERR-02')}</div>${grid('small')}${answerLine('סמ״ק')}
+<div class="task">${prompt('CONE-ERR-03')}</div>${grid('small')}${answerLine('סמ״ק')}`);
+
+addPage(`${nextHeader('ניתוח שגיאות נפוצות בחישוב הנפח — המשך')}
+<div class="task first">${prompt('CONE-ERR-04')}</div>${grid('small')}${answerLine('סמ״ק')}
+<div class="two-column"><div class="diagram-box">${diameterConeSvg()}</div><div><div class="task first">${prompt('CONE-ERR-05')}</div>${grid('medium')}${answerLine('סמ״ק')}</div></div>
+<div class="task">${prompt('CONE-ERR-06')}</div>${grid('small')}${answerLine()}`);
 
 const convRow=q('CONE-TAB-CONV-01');
 const approxRow=q('CONE-TAB-APPROX-01');

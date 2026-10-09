@@ -9,9 +9,9 @@
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
   "weightsSum": 100,
   "baselinePercent": 91.1,
-  "overallPercent": 97.6,
-  "updatedAt": "2026-10-09T15:20:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — expansion round: phase 3 (NET/SEC/CUT nets, sector-angle & cross-section pages)",
+  "overallPercent": 98.8,
+  "updatedAt": "2026-10-09T16:10:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — expansion round: phase 4 (RATIO 1/3 cone/cylinder + ERR volume-mistake analysis)",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -351,7 +351,7 @@
       "id": "G15",
       "name": "Harut integration & graded expansion (SSOT §26)",
       "weight": 6,
-      "completionPercent": 60,
+      "completionPercent": 80,
       "status": "partial",
       "covers": [
         "P14",
@@ -368,7 +368,9 @@
         "Phase 2 diagrams: objectStripSvg, coneVsPyramidSvg, coneNetSvg, topViewSvg, sideViewSvg, bareTriangleSvg (deterministic, inside-viewBox labels)",
         "Phase 2 QA hardening: figure-containment gate + expansion-diagram viewBox label-clipping gate in browser-qa.mjs",
         "Phase 3: 17 graded questions (CONE-NET-01..06, CONE-SEC-01..06, CONE-CUT-01..05) across 8 new A4 pages after the views — nets (which net closes, label parts, arc=base circumference), sector angle↔base radius, parallel & axial cross-sections",
-        "Phase 3 diagrams: coneNetOptionsSvg, coneNetFigureSvg, coneSectorCompareSvg, coneSectorAngleSvg, sectorSvg, coneCutsSvg (deterministic, inside-viewBox labels, added to containment + clip selectors)"
+        "Phase 3 diagrams: coneNetOptionsSvg, coneNetFigureSvg, coneSectorCompareSvg, coneSectorAngleSvg, sectorSvg, coneCutsSvg (deterministic, inside-viewBox labels, added to containment + clip selectors)",
+        "Phase 4: 13 graded questions (CONE-RATIO-01..07, CONE-ERR-01..06) across 6 new A4 pages after the volume formula — cone = 1/3 of same-base-same-height cylinder (fill ratio, compute, table, generalize, Dani/Rotem claim) and common volume-mistake diagnosis (missing 1/3, un-squared r, ×3, diameter-vs-radius, wrong units)",
+        "Phase 4 diagrams: cylinderConeRatioSvg (same r & h cylinder vs cone), diameterConeSvg (base labelled by diameter) — deterministic, inside-viewBox labels, added to containment + clip selectors"
       ],
       "testsPassed": [
         "phase-1 local QA (ssot/progress/contract/math/coverage)",
@@ -377,10 +379,12 @@
         "phase-2 preview desktop: pages 4-11 reviewed page-by-page, colorful and uncrowded, content above footer",
         "phase-3 local QA: 53 unique IDs, 28 A4 pages, coverage + math green",
         "phase-3 browser QA: no internal overflow, no figure spill, no label clipping across all 28 pages; PDF 28 A4 pages",
-        "phase-3 preview desktop: pages 12-19 reviewed page-by-page (NET/SEC/CUT), colorful and uncrowded, figures inside boxes, content above footer"
+        "phase-3 preview desktop: pages 12-19 reviewed page-by-page (NET/SEC/CUT), colorful and uncrowded, figures inside boxes, content above footer",
+        "phase-4 local QA: 66 unique IDs, 34 A4 pages, coverage + math green",
+        "phase-4 browser QA: no internal overflow, no figure spill, no label clipping across all 34 pages; PDF 34 A4 pages",
+        "phase-4 preview desktop: pages 21-26 reviewed page-by-page (RATIO/ERR), colorful and uncrowded, cylinder/cone & diameter figures inside boxes, labels clean"
       ],
       "remaining": [
-        "Phase 4: cone/cylinder 1/3 ratio; volume error analysis (RATIO/ERR)",
         "Phase 5: applications (funnel/hat/cup/light beam); architectural exploration; grade-7 bridge (APP/ARCH/BRIDGE)",
         "Visual-regression baseline regeneration from CI for the expanded page set",
         "Heavy raster scene artwork (optimized) integration"
@@ -467,6 +471,18 @@
       "percent": 97.6,
       "commit": "pending-phase-3",
       "note": "Expansion phase 3 (SSOT §26): integrated 17 graded harut questions as 8 new A4 pages after the views — NET (which net closes to a cone, label the parts, sector arc = base circumference, sector angle↔base radius), SEC (unrolled mantle: radius=slant, arc=base circumference, compute sector angle α and base radius), CUT (parallel-to-base cut → circle, axial cut → isosceles triangle, rank cross-section circles, section area, truncated-part claim). Added deterministic colourful diagrams (net options, net with label boxes, two-sector arc comparison, sector-angle marker, large unrolled sector, three parallel cuts) and extended the containment + label-clipping selectors to cover them. All 28 pages: no overflow, no figure spill, no label clipping; PDF 28 A4 pages; pages 12-19 reviewed in browser. G15 40%→60%."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 97.6,
+      "commit": "f91e827e21331c5f43120f0c3754556899f9d362",
+      "note": "Regenerated the pixel-SHA visual baseline (visual-baseline.json) from CI run 37919501489 (headSha fb8e823) for the 28-page workbook (phases 1-3), replacing the stale 12-page baseline. Verified locally: visual-regression-qa PASS, 28 pages. Percent unchanged: CI housekeeping to bring PR #4 green, not phase progress."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 98.8,
+      "commit": "pending-phase-4",
+      "note": "Expansion phase 4 (SSOT §26): integrated 13 graded harut questions as 6 new A4 pages after the volume formula — RATIO (cone volume is a third of the same-base-same-height cylinder: fill ratio, two direct computations, three-part worked example, four-row volume table, student generalization, Dani/Rotem claim check) and ERR (diagnose & fix common volume mistakes: missing 1/3, un-squared radius, ×3 instead of ÷3, diameter instead of radius, area units for volume). Added deterministic colourful diagrams cylinderConeRatioSvg and diameterConeSvg and extended the containment + label-clipping selectors to cover them. Fixed two gate catches pre-commit (× glyph in a comment; a ratio answer tripping the π=3.14 regex). All 34 pages: no overflow, no figure spill, no label clipping; PDF 34 A4 pages; pages 21-26 reviewed in browser. G15 60%→80%."
     }
   ]
 }
