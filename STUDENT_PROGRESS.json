@@ -10,8 +10,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 95.2,
-  "updatedAt": "2026-10-09T12:00:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — harut integration round",
+  "updatedAt": "2026-10-09T13:20:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — expansion round: page-2 figure-containment fix + QA gate",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -177,6 +177,7 @@
       "testsPassed": [
         "A4 geometry QA",
         "no internal overflow QA",
+        "figure-containment QA (SSOT §16.2): no diagram paints outside its reserved box onto surrounding content",
         "subsection DOM QA",
         "PDF A4 QA"
       ],
@@ -249,7 +250,8 @@
         "math-qa.mjs",
         "browser-qa.mjs",
         "visual-baseline.json",
-        "visual-regression-qa.mjs"
+        "visual-regression-qa.mjs",
+        "figure-containment gate (browser-qa.mjs): every student-page diagram is painted inside its direct parent box; catches visual spill that scrollHeight-based overflow checks miss"
       ],
       "testsPassed": [
         "SSOT QA",
@@ -258,7 +260,8 @@
         "math QA",
         "browser QA",
         "11-page visual regression",
-        "geometric diagram label-safety gate"
+        "geometric diagram label-safety gate",
+        "figure-containment gate (SSOT §16.2): diagram cannot overflow its box onto neighbouring text"
       ],
       "remaining": []
     },
@@ -438,6 +441,12 @@
       "percent": 95.2,
       "commit": "pending-phase-1",
       "note": "Expansion round opened (SSOT §26): active-completion cone definition, colorful teaching comic, \"mark the cone parts\" page with imported 3D cone artwork; weight rebalanced G01→G15."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 95.2,
+      "commit": "pending-containment-fix",
+      "note": "Fixed page-2 intro cone painting ~25mm outside its 70mm box and colliding with the comic above and task text below (width-driven cone-large SVG). Height-bound the SVG to its container so it can never spill, and added a figure-containment browser-QA gate (SSOT §16.2) that fails when any student-page diagram paints outside its box — a class of visual collision the scrollHeight overflow gate cannot see. Percent unchanged: quality hardening, not phase progress."
     }
   ]
 }

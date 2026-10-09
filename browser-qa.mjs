@@ -139,6 +139,43 @@ const labelSafety=await page.evaluate((MIN)=>{
 },LABEL_CLEARANCE);
 ok(labelSafety.length===0,'SSOT 15.3 diagram label-safety: '+labelSafety.join(' | '));
 
+// SSOT §16.2: a diagram must stay inside the box reserved for it. A width-driven
+// SVG/image can paint far outside a fixed-height container (overflow:visible) and
+// silently collide with the text above/below it WITHOUT growing the page's
+// scrollHeight — so the A4-overflow gate above is blind to it. This geometric gate
+// asserts every student-page diagram's painted rect is contained within its direct
+// parent box, which is the root invariant that keeps diagrams off the surrounding
+// text. Scope is the curated student-diagram classes only: MathJax glyph <svg>s
+// (wrapped in mjx-container) and the locked page-1 source reproduction are guarded
+// by their own gates and are deliberately excluded to avoid false positives.
+const DIAGRAM_SELECTOR='svg.cone-svg,svg.axial-svg,svg.orientation-cone,svg.comic-scene,svg.object-strip-svg,svg.compare-svg,svg.net-svg,svg.top-view-svg,svg.side-view-svg,svg.bare-triangle-svg,img.cone-3d';
+const SPILL_TOLERANCE=2; // px (~0.5mm) for sub-pixel rounding
+const containment=await page.evaluate(({sel,EPS})=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const prevHidden=pages.map(p=>p.hidden);
+  pages.forEach(p=>{p.hidden=false;});
+  void document.body.offsetHeight; // force synchronous layout for every page
+  const bad=[];
+  pages.forEach((pg,pi)=>{
+    for(const fig of pg.querySelectorAll(sel)){
+      const parent=fig.parentElement;
+      if(!parent)continue;
+      const fr=fig.getBoundingClientRect();
+      if(fr.width===0&&fr.height===0)continue; // not laid out
+      const pr=parent.getBoundingClientRect();
+      const spill=Math.max(0,pr.top-fr.top,fr.bottom-pr.bottom,pr.left-fr.left,fr.right-pr.right);
+      if(spill>EPS){
+        const cls=fig.getAttribute('class')?'.'+fig.getAttribute('class').trim().replace(/\s+/g,'.'):'';
+        const pcls=parent.getAttribute('class')?'.'+parent.getAttribute('class').trim().replace(/\s+/g,'.'):'';
+        bad.push(`page ${pi+1}: <${fig.tagName.toLowerCase()}${cls}> spills ${Math.round(spill)}px out of <${parent.tagName.toLowerCase()}${pcls}>`);
+      }
+    }
+  });
+  pages.forEach((p,i)=>{p.hidden=prevHidden[i];});
+  return bad;
+},{sel:DIAGRAM_SELECTOR,EPS:SPILL_TOLERANCE});
+ok(containment.length===0,'SSOT 16.2 figure containment (diagram spills out of its box onto surrounding content): '+containment.join(' | '));
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});
