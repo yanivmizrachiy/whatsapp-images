@@ -90,6 +90,55 @@ ok(!footerAudit.firstOverflow,'page 1 credit footer overflows its footer box');
 ok(footerAudit.othersShared===footerAudit.others,`every page after page 1 must keep the shared district footer (${footerAudit.othersShared}/${footerAudit.others})`);
 ok(!footerAudit.bsd,'no student page may show the בס"ד line (SSOT §13.5)');
 
+// SSOT 15.1 + 15.3: diagram labels are deterministic and must not overlap
+// structural strokes, nor clip outside the viewBox (safe label zones). This
+// geometric gate replaces assertion-only "manual review" evidence for R25.
+// Pages are temporarily un-hidden so getBBox has a real layout for every SVG.
+const LABEL_CLEARANCE=2; // minimum user-unit gap between a label box and any stroke edge
+const labelSafety=await page.evaluate((MIN)=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const prevHidden=pages.map(p=>p.hidden);
+  pages.forEach(p=>{p.hidden=false;});
+  void document.body.offsetHeight; // force synchronous layout
+  const sample=(el)=>{
+    const tag=el.tagName.toLowerCase();const pts=[];
+    if(tag==='line'){
+      const x1=+el.getAttribute('x1'),y1=+el.getAttribute('y1'),x2=+el.getAttribute('x2'),y2=+el.getAttribute('y2');
+      for(let i=0;i<=40;i++){const t=i/40;pts.push([x1+(x2-x1)*t,y1+(y2-y1)*t]);}
+    }else{
+      try{
+        const len=el.getTotalLength?el.getTotalLength():0;
+        if(len>0){const n=Math.max(40,Math.round(len/4));for(let i=0;i<=n;i++){const q=el.getPointAtLength(len*i/n);pts.push([q.x,q.y]);}}
+        else if(tag==='ellipse'){const cx=+el.getAttribute('cx'),cy=+el.getAttribute('cy'),rx=+el.getAttribute('rx'),ry=+el.getAttribute('ry');for(let i=0;i<=80;i++){const a=2*Math.PI*i/80;pts.push([cx+rx*Math.cos(a),cy+ry*Math.sin(a)]);}}
+      }catch(e){}
+    }
+    return {pts,half:(parseFloat(getComputedStyle(el).strokeWidth)||0)/2};
+  };
+  const violations=[];
+  for(const svg of document.querySelectorAll('svg.cone-svg,svg.axial-svg,svg.orientation-cone')){
+    const vb=svg.viewBox.baseVal;
+    const strokes=[...svg.querySelectorAll('line,path,ellipse')]
+      .filter(el=>{const cs=getComputedStyle(el);return cs.stroke&&cs.stroke!=='none'&&cs.strokeWidth!=='0px';})
+      .map(sample);
+    for(const t of svg.querySelectorAll('text.label')){
+      const b=t.getBBox();const id=svg.getAttribute('aria-label')+':"'+t.textContent+'"';
+      if(b.width===0&&b.height===0)continue; // not laid out (should not happen after un-hide)
+      if(b.x<vb.x-0.5||b.y<vb.y-0.5||b.x+b.width>vb.x+vb.width+0.5||b.y+b.height>vb.y+vb.height+0.5)violations.push(id+' clipped outside viewBox');
+      let min=Infinity;
+      for(const st of strokes)for(const [px,py] of st.pts){
+        const dx=Math.max(b.x-px,0,px-(b.x+b.width));
+        const dy=Math.max(b.y-py,0,py-(b.y+b.height));
+        const d=Math.hypot(dx,dy)-st.half;
+        if(d<min)min=d;
+      }
+      if(min<MIN)violations.push(id+' clearance '+(Math.round(min*10)/10)+' < '+MIN);
+    }
+  }
+  pages.forEach((p,i)=>{p.hidden=prevHidden[i];});
+  return violations;
+},LABEL_CLEARANCE);
+ok(labelSafety.length===0,'SSOT 15.3 diagram label-safety: '+labelSafety.join(' | '));
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});

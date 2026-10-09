@@ -32,7 +32,7 @@
 | R22 | אוריינטציות חרוט מגוונות | עמוד 9; `orientedConeSvg` | coverage + reviewed screenshots | ✅ בוצע | אין |
 | R23 | שרטוט עצמאי של תלמיד | עמוד 9 | browser QA | ✅ בוצע | אין |
 | R24 | SVG/HTML וקטורי | diagram helpers | browser/PDF QA | ✅ בוצע | אין |
-| R25 | אזורי תווית בטוחים ללא חפיפות | `coneSvg`, `axialSvg`, `waffleConeSvg` | manual review של page-02/page-05/page-10 + full 11-page CI artifact; mobile/PDF QA | ✅ בוצע | אין חפיפת תוויות נראית בדיאגרמות הפעילות; אין צורך ב-refactor ללא ROI |
+| R25 | אזורי תווית בטוחים ללא חפיפות | `coneSvg`, `axialSvg`, `waffleConeSvg` | שער גאומטרי דטרמיניסטי ב־`browser-qa.mjs` — כל תווית שרטוט מרוחקת ≥2 יחידות מכל קו מבנה ואינה נחתכת מחוץ ל־viewBox; תוקנה חפיפת „10 ס״מ” בוופל ומרווח „ℓ” בחתך הצירי | ✅ בוצע | אין חפיפת תוויות |
 | R26 | A4 ‏210×297 ללא internal overflow | `styles.css` | 5 viewports + CI | ✅ בוצע | אין |
 | R27 | scale חיצוני במובייל | `fitPage`, CSS transform | browser QA | ✅ בוצע | אין |
 | R28 | RTL מלא | HTML/CSS | browser QA | ✅ בוצע | אין |
