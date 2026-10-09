@@ -68,6 +68,8 @@
 | R58 | שרטוט נשאר בקופסתו ואינו גולש/חופף תוכן (§16.7) | `styles.css` (`.intro-cone` חוסם SVG לגובה), `browser-qa.mjs` שער containment | containment gate: אפס גלישה של svg/img דיאגרמה מעבר לקופסת ההורה; תוקנה חפיפת חרוט עמוד 2 | ✅ בוצע | אין |
 | R59 | הרחבה שלב 2 — זיהוי/מושגים (§26.3.2/§26.7.2) | `content.js` (CONE-OBJ/WHO/VIEW), `app.js` (8 עמודים + 6 דיאגרמות) | QA 36 IDs/20 דפים + browser-QA (ללא overflow/spill/חיתוך) + ביקורת עמוד־עמוד | ✅ בוצע | שלבים 3–5 בהמשך |
 | R60 | תוויות דיאגרמות ההרחבה בתוך ה־viewBox (§15.3) | `browser-qa.mjs` שער label-clipping | clip gate: אפס `<text>` חתוך מחוץ ל־viewBox; תוקנו שתי תוויות VIEW | ✅ בוצע | אין |
+| R61 | הרחבה שלב 3 — פריסה/זווית הגזרה/חתכים (§26.3.2/§26.7.3) | `content.js` (CONE-NET/SEC/CUT), `app.js` (8 עמודים + 6 דיאגרמות), `styles.css` (`.diagram-box`, `.sec-table`) | QA 53 IDs/28 דפים + browser-QA (ללא overflow/spill/חיתוך, PDF 28 דפים) + ביקורת עמוד־עמוד (12–19) | ✅ בוצע | שלבים 4–5 בהמשך |
+| R62 | דיאגרמות שלב 3 בתוך הקופסה והתוויות בתוך ה־viewBox (§16.7/§15.3) | `browser-qa.mjs` (6 מחלקות SVG חדשות בבוררי containment + clip) | containment+clip gates ירוקים על כל 6 הדיאגרמות החדשות | ✅ בוצע | אין |
 
 ## כללי עדכון ראיות
 

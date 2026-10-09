@@ -54,9 +54,22 @@ const coneNetSvg=()=>`<svg class="net-svg" viewBox="0 0 520 300" role="img" aria
 const topViewSvg=()=>`<svg class="top-view-svg" viewBox="0 0 260 250" role="img" aria-label="מבט מלמעלה על חרוט ישר — עיגול"><circle cx="130" cy="115" r="85" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><line x1="130" y1="115" x2="215" y2="115" stroke="#2563eb" stroke-width="2.6" stroke-dasharray="7 5"/><circle cx="130" cy="115" r="4.5" fill="#111827"/><text class="label" x="165" y="104">r</text><text class="label" x="130" y="238" text-anchor="middle">היקף הבסיס</text></svg>`;
 const sideViewSvg=()=>`<svg class="side-view-svg" viewBox="0 0 280 245" role="img" aria-label="מבט מהצד על חרוט ישר — משולש שווה־שוקיים"><path d="M140 28 L55 200 L225 200 Z" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><line x1="92" y1="110" x2="104" y2="118" stroke="#1d4ed8" stroke-width="2.4"/><line x1="188" y1="110" x2="176" y2="118" stroke="#1d4ed8" stroke-width="2.4"/><text class="label" x="140" y="232" text-anchor="middle">בסיס = קוטר הבסיס</text></svg>`;
 const bareTriangleSvg=()=>`<svg class="bare-triangle-svg" viewBox="0 0 240 210" role="img" aria-label="משולש שווה־שוקיים בלבד, ללא בסיס עגול"><path d="M120 24 L40 180 L200 180 Z" fill="#ffffff" stroke="#64748b" stroke-width="3.2"/></svg>`;
+// Net options (CONE-NET-01): 1 = sector+base circle (closes), 2 = sector only, 3 = rectangle+circle (rolls to a cylinder).
+const coneNetOptionsSvg=()=>`<svg class="net-options-svg" viewBox="0 0 680 250" role="img" aria-label="שלוש פריסות מסומנות 1, 2 ו־3 לבדיקה איזו נסגרת לחרוט"><line x1="24" y1="212" x2="656" y2="212" stroke="#e2e8f0" stroke-width="2"/><text x="110" y="30" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="20" font-weight="800" fill="#1e293b">1</text><path d="M110 64 L154.7 127.9 A78 78 0 0 1 65.3 127.9 Z" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2.6"/><circle cx="110" cy="180" r="22" fill="#eff6ff" stroke="#1d4ed8" stroke-width="2.6"/><text x="340" y="30" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="20" font-weight="800" fill="#1e293b">2</text><path d="M340 64 L384.7 127.9 A78 78 0 0 1 295.3 127.9 Z" fill="#fef3c7" stroke="#d97706" stroke-width="2.6"/><text x="570" y="30" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="20" font-weight="800" fill="#1e293b">3</text><rect x="520" y="70" width="100" height="70" fill="#dcfce7" stroke="#15803d" stroke-width="2.6"/><circle cx="570" cy="182" r="22" fill="#f0fdf4" stroke="#15803d" stroke-width="2.6"/></svg>`;
+// Net with label boxes (CONE-NET-02): student names the sector (מעטפת) and circle (בסיס).
+const coneNetFigureSvg=()=>`<svg class="net-label-svg" viewBox="0 0 460 300" role="img" aria-label="פריסת חרוט לסימון שמות החלקים: גזרת עיגול ועיגול"><path d="M120 70 L170.3 150.6 A95 95 0 0 1 69.7 150.6 Z" fill="#dbeafe" stroke="#1d4ed8" stroke-width="3"/><circle cx="330" cy="140" r="46" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="120" y1="118" x2="120" y2="208" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5 4"/><rect x="60" y="210" width="120" height="36" rx="5" fill="#ffffff" stroke="#64748b" stroke-width="1.8"/><line x1="330" y1="186" x2="330" y2="208" stroke="#94a3b8" stroke-width="1.8" stroke-dasharray="5 4"/><rect x="270" y="210" width="120" height="36" rx="5" fill="#ffffff" stroke="#64748b" stroke-width="1.8"/></svg>`;
+// Two sectors, same radius, longer arc on ב (CONE-NET-04): bigger arc → bigger base circumference.
+const coneSectorCompareSvg=()=>`<svg class="sector-compare-svg" viewBox="0 0 460 250" role="img" aria-label="שתי גזרות עיגול באותו רדיוס; לגזרה ב׳ קשת ארוכה יותר"><path d="M120 55 L150.8 139.6 A90 90 0 0 1 89.2 139.6 Z" fill="#fde68a" stroke="#d97706" stroke-width="2.8"/><text x="120" y="182" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="20" font-weight="800" fill="#b45309">א</text><path d="M330 55 L387.9 123.9 A90 90 0 0 1 272.1 123.9 Z" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="2.8"/><text x="330" y="182" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="20" font-weight="800" fill="#1d4ed8">ב</text></svg>`;
+// Sector with the sector-angle α marked (CONE-NET-05): smaller angle → narrower base.
+const coneSectorAngleSvg=()=>`<svg class="sector-angle-svg" viewBox="0 0 420 260" role="img" aria-label="גזרת עיגול עם סימון זווית הגזרה אלפא"><path d="M210 60 L244 164.6 A110 110 0 0 1 176 164.6 Z" fill="#e0e7ff" stroke="#4338ca" stroke-width="2.8"/><path d="M220.5 92.3 A34 34 0 0 1 199.5 92.3" fill="none" stroke="#4338ca" stroke-width="2.4"/><text x="210" y="116" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#4338ca">α</text></svg>`;
+// Large single sector for the unrolled mantle (CONE-SEC): radius = slant s, arc = base circumference, angle α.
+const sectorSvg=()=>`<svg class="sector-svg" viewBox="0 0 460 360" role="img" aria-label="מעטפת פרוסה — גזרת עיגול עם רדיוס שווה לקו היוצר וקשת שווה להיקף הבסיס"><path d="M230 70 L320 225.9 A180 180 0 0 1 140 225.9 Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3.2"/><path d="M253 109.8 A46 46 0 0 1 207 109.8" fill="none" stroke="#1d4ed8" stroke-width="2.4"/><text x="230" y="132" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#1d4ed8">α</text><text x="296" y="150" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#1d4ed8">s</text><text x="230" y="300" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="15" font-weight="700" fill="#475569">הקשת = היקף הבסיס</text></svg>`;
+// Cone with three parallel cuts א/ב/ג (CONE-CUT-03): closer to the base → larger circle.
+const coneCutsSvg=()=>`<svg class="cone-cuts-svg" viewBox="0 0 420 360" role="img" aria-label="חרוט ישר עם שלושה חתכים מקבילים לבסיס, מסומנים א, ב, ג"><ellipse cx="210" cy="300" rx="140" ry="34" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3.5"/><path d="M210 30 L70 300 M210 30 L350 300" fill="none" stroke="#1d4ed8" stroke-width="3.5"/><path d="M70 300 A140 34 0 0 0 350 300" fill="none" stroke="#1d4ed8" stroke-width="3.5"/><path d="M70 300 A140 34 0 0 1 350 300" fill="none" stroke="#64748b" stroke-width="2.2" stroke-dasharray="8 6"/><line x1="210" y1="30" x2="210" y2="300" stroke="#475569" stroke-width="2.4" stroke-dasharray="7 6"/><ellipse cx="210" cy="110" rx="41.5" ry="10" fill="none" stroke="#dc2626" stroke-width="2.6"/><text x="267" y="115" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#dc2626">א</text><ellipse cx="210" cy="190" rx="83" ry="18" fill="none" stroke="#dc2626" stroke-width="2.6"/><text x="309" y="196" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#dc2626">ב</text><ellipse cx="210" cy="255" rx="116.7" ry="26" fill="none" stroke="#dc2626" stroke-width="2.6"/><text x="344" y="261" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#dc2626">ג</text><circle cx="210" cy="30" r="4.5" fill="#111827"/></svg>`;
 // Render helpers for the expansion pages.
 const inlineBlanks=(id)=>prompt(id).replace(/_{3,}/g,'<span class="answer-line inline"></span>');
 const sortTable=(id)=>`<table class="practice-table sort-table"><thead><tr><th>חפץ</th><th>חרוט / גליל / גוף אחר</th><th>נימוק קצר</th></tr></thead><tbody>${(q(id)?.sortRows||[]).map(n=>`<tr><td>${n}</td><td></td><td></td></tr>`).join('')}</tbody></table>`;
+const secTable=(id)=>`<table class="practice-table sec-table"><thead><tr><th>רדיוס הבסיס r (ס״מ)</th><th>היקף הבסיס = אורך הקשת (ס״מ)</th></tr></thead><tbody>${(q(id)?.secRows||[]).map(n=>`<tr><td>${n}</td><td></td></tr>`).join('')}</tbody></table>`;
 const claimCheckList=(id)=>{const full=prompt(id);const cut=full.indexOf('(1)');const intro=full.slice(0,cut).trim();const items=full.slice(cut).split(/\(\d+\)\s*/).map(s=>s.trim()).filter(Boolean);return `<div class="task first">${intro}</div><ul class="claim-list">${items.map(t=>`<li><span class="claim-box"></span><span class="claim-text">${t}</span></li>`).join('')}</ul>`;};
 const addPage=(html,foot=footer)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+foot();book.append(p);return p};
 let pageNumber=1;
@@ -129,6 +142,58 @@ addPage(`${nextHeader('תנוחה: החרוט על צדו')}
 <div class="two-column"><div class="view-figure">${coneAsset('cone-3d-side','חרוט ישר מונח על צדו, הקודקוד בצד')}</div><div><div class="task first">${prompt('CONE-VIEW-03')}</div>${grid('claim')}${answerLine()}</div></div>
 <div class="task sketch-task">${prompt('CONE-VIEW-04')}</div><div class="sketch-box"></div>
 <div class="two-column"><div class="view-figure">${bareTriangleSvg()}</div><div><div class="task first">${prompt('CONE-VIEW-05')}</div>${grid('medium')}${answerLine()}</div></div>`);
+
+// ===== Expansion phase 3 (SSOT §26): nets, sector angle and cross-sections, graded after the views =====
+// NET — which net closes into a cone; label the parts; arc length = base circumference.
+const netParts1=splitHebrewSubsections(prompt('CONE-NET-01'),['א','ב']);
+addPage(`${nextHeader('פריסות של חרוט — איזו נסגרת?')}
+<div class="concept-note">פְּרִיסָה היא ה״שיטוח״ של גוף: פורשׂים את פני החרוט על המישור. חרוט נסגר מגזרת עיגול (המעטפת) יחד עם עיגול (הבסיס).</div>
+<div class="question-intro">${netParts1.intro}</div>
+<div class="net-figure">${coneNetOptionsSvg()}</div>
+${renderSubpart(findPart(netParts1,'א'),{size:'subpart-small'})}
+${renderSubpart(findPart(netParts1,'ב'),{size:'subpart-medium'})}`);
+
+addPage(`${nextHeader('פריסת חרוט — חלקים וסגירה')}
+<div class="task first">${prompt('CONE-NET-02')}</div>
+<div class="net-figure">${coneNetFigureSvg()}</div>
+<div class="task">${prompt('CONE-NET-03')}</div>${grid('medium')}${answerLine()}`);
+
+const netParts6=splitHebrewSubsections(prompt('CONE-NET-06'),['א','ב']);
+addPage(`${nextHeader('זווית הגזרה והקשר לבסיס')}
+<div class="two-column"><div class="diagram-box">${coneSectorCompareSvg()}</div><div><div class="task first">${prompt('CONE-NET-04')}</div>${grid('medium')}${answerLine()}</div></div>
+<div class="two-column"><div class="diagram-box">${coneSectorAngleSvg()}</div><div><div class="task first">${prompt('CONE-NET-05')}</div>${grid('small')}${answerLine()}</div></div>
+<div class="task first">${findPart(netParts6,'א').text.replace(/_{3,}/g,'<span class="answer-line inline"></span>')}</div>
+${renderSubpart(findPart(netParts6,'ב'),{size:'subpart-medium'})}`);
+
+// SEC — from sector angle to base radius.
+addPage(`${nextHeader('מגזרה לחרוט — זווית הגזרה')}
+<div class="concept-note">כשפורסׂים את מעטפת החרוט ומשטחים אותה, מתקבלת גזרה של עיגול: רדיוס הגזרה שווה לקו היוצר ${tex('s')}, ואורך קשת הגזרה שווה להיקף בסיס החרוט.</div>
+<div class="two-column"><div class="diagram-box">${coneAsset('cone-3d-upright','חרוט ישר עומד על בסיסו')}</div><div class="diagram-box">${sectorSvg()}</div></div>
+<div class="work-caption">מודל החרוט (מימין) והמעטפת הפרוסה — גזרה (משמאל).</div>
+<section class="definition intro-definition">${inlineBlanks('CONE-SEC-01')}</section>
+<div class="task">${prompt('CONE-SEC-02')}</div>${grid('medium')}${answerLine()}`);
+
+addPage(`${nextHeader('זווית הגזרה — חישובים')}
+<div class="task first">${prompt('CONE-SEC-03')}</div>${grid('medium')}${answerLine()}
+<div class="task">${prompt('CONE-SEC-04')}</div>
+${secTable('CONE-SEC-04')}
+<div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
+
+addPage(`${nextHeader('מהגזרה אל רדיוס הבסיס')}
+<div class="concept-note">זכרו: הקו היוצר תמיד ארוך מרדיוס הבסיס, כי ${tex('s=\\sqrt{r^2+h^2}>r')}. לכן רדיוס הגזרה (${tex('s')}) גדול מרדיוס בסיס החרוט (${tex('r')}).</div>
+<div class="task first">${prompt('CONE-SEC-05')}</div>${grid('reverse')}${answerLine()}
+<div class="task">${prompt('CONE-SEC-06')}</div>${grid('claim')}${answerLine()}`);
+
+// CUT — parallel-to-base and axial cross-sections.
+addPage(`${nextHeader('חתכים בחרוט — מקביל וצירי')}
+<div class="concept-note">חותכים חרוט ישר במישור ומתבוננים בצורת החתך. נבדוק שני סוגי חתכים: מקביל לבסיס, ועובר דרך הקודקוד (חתך צירי).</div>
+<div class="two-column"><div class="diagram-box">${coneCutsSvg()}</div><div><div class="task first">${prompt('CONE-CUT-01')}</div>${grid('small')}${answerLine()}</div></div>
+<div class="two-column"><div class="view-figure">${axialSvg()}</div><div><div class="task first">${prompt('CONE-CUT-02')}</div>${grid('small')}${answerLine()}</div></div>`);
+
+addPage(`${nextHeader('חתכים מקבילים — גודל העיגול ובדיקת טענה')}
+<div class="two-column"><div class="diagram-box">${coneCutsSvg()}</div><div><div class="task first">${prompt('CONE-CUT-03')}</div>${grid('medium')}${answerLine()}</div></div>
+<div class="task">${prompt('CONE-CUT-04')}</div>${grid('medium')}${answerLine('סמ״ר')}
+<div class="task">${prompt('CONE-CUT-05')}</div>${grid('claim')}${answerLine()}`);
 
 addPage(`${nextHeader(`נפח חרוט — השלימו: ${tex('V=\\underline{\\hspace{28mm}}')}`)}
 <div class="task">${prompt('CONE-VOL-01')}</div>${grid('medium')}${answerLine('סמ״ק')}
