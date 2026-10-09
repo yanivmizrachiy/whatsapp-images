@@ -1,23 +1,24 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "5409bc16fece5f528e713f0a5ec71ec84a1d5057",
-  "sourceWorkflowRun": 37884901406,
+  "sourceCommit": "d7d9e03c21708eec9089a25fe4f207c8798b87a7",
+  "sourceWorkflowRun": 37903996339,
   "artifact": "cone-visual-qa",
-  "reviewedBy": "ChatGPT",
+  "reviewedBy": "Claude Code (Opus 4.8) — regenerated from CI render for the harut expansion",
   "reviewedAt": "2026-10-09",
-  "pageCount": 11,
+  "pageCount": 12,
   "pages": {
     "page-01.png": {"sha256": "964f1587d68a12a3393c9e82c7617a1b94f3e28f05909229f643ad105bbcbca9", "bytes": 88659},
-    "page-02.png": {"sha256": "28f1d8643f2f94c002820eb6971e61265a0aa6f013c9cedd293d455baa82e341", "bytes": 54750},
-    "page-03.png": {"sha256": "9ffe0288c22c2a2e60928854e2f617bb3be2ec4f9ead6ed444190bc93c5d8736", "bytes": 42450},
-    "page-04.png": {"sha256": "079aaadba3f5deebd9a49184a9bf3963c830ee0c927a38c948c59e03d736b32a", "bytes": 50281},
-    "page-05.png": {"sha256": "00d0c989d5dd4a6b35327f8f607b5bbcbb7f6b9d57986c5884f4a74c7442a917", "bytes": 51387},
-    "page-06.png": {"sha256": "0d865819d6a222bd0ff791f668fbb4d2f9fee21515381f97a2d8539c9ffb9ce6", "bytes": 42326},
-    "page-07.png": {"sha256": "b6209711210fe9001b8683a1c34414b0ab9c25f07de4789bbeef64bd52ca7eed", "bytes": 43986},
-    "page-08.png": {"sha256": "808590cad95146a026d4c98b443e6ea9f91324563d48ee7d638d7c244c48c0d9", "bytes": 35704},
-    "page-09.png": {"sha256": "c8cd09583e1f39dc4c102adeaf61d78016e2dc3d076c19076bbbedc76e78f65f", "bytes": 49865},
-    "page-10.png": {"sha256": "3237b1ff9d7ad32793d61a71b3c1e0d3afb3b430af82207feada4e6979e5d191", "bytes": 80408},
-    "page-11.png": {"sha256": "7297b9f632ee079f5c4cecbdf02a7f19b0a19d7ea43e0026d1694aa3ba8a5cbe", "bytes": 48136}
+    "page-02.png": {"sha256": "efececb0918aad87ab7b8780fc8939c59d13af4a37d654657ea57dabf51300c1", "bytes": 87746},
+    "page-03.png": {"sha256": "5440060856c2af5c9db6458374eff0b011ee5166a29cff7242fe89cce54aeccd", "bytes": 74733},
+    "page-04.png": {"sha256": "07b6e0564a3af9a57434a57233ac35fbfb4f4a04eb18d0aec940c8c4f61acb6d", "bytes": 42364},
+    "page-05.png": {"sha256": "8f9d298bca49817f643e728b5cbd9c6aba47b0e04b9385b05921fc53c2e91623", "bytes": 50342},
+    "page-06.png": {"sha256": "d914670d6ad71b23518c92e0f04d2c0c46167dbf48bfe39d27df33a919c1428d", "bytes": 51365},
+    "page-07.png": {"sha256": "4c63afbf7416fd8adcf6a0ab53b94bb71f62fc0dcc7b6b5cecb8d9b7aeef6229", "bytes": 42227},
+    "page-08.png": {"sha256": "e6e94d982b775345ece53629ce4c77b72e6811b54e564c551c1b621d70a6b2cb", "bytes": 44121},
+    "page-09.png": {"sha256": "5eeeb246065577b79f8a87335901e0839bf3db9a8456bb4673a3dc61171c4c93", "bytes": 35637},
+    "page-10.png": {"sha256": "ca7803bd8d5587c936993e773fbc9e30a2cadfb9b8970638655e95eac010e0f5", "bytes": 49999},
+    "page-11.png": {"sha256": "90b88cfc9e054572a8f64ab1a40d58dbdaa37774d6cc0cf95e4174db633cf01a", "bytes": 80111},
+    "page-12.png": {"sha256": "4579a8b997e9149004fd07ee9c27c5125ae591810e0c6119da4a4254163ac1c0", "bytes": 48380}
   }
 }
