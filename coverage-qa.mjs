@@ -37,6 +37,8 @@ ok(JSON.stringify(contentOfficialIds)===JSON.stringify(inventoryIds),'CURR-CONE 
 
 const coverage=[
   ['definition', content.includes('חרוט הוא גוף') || app.includes('חרוט הוא גוף')],
+  ['active-completion cone definition (SSOT §10.4)', app.includes('השלימו את שמות חלקי החרוט') && !app.includes('נקראת קודקוד החרוט') && !app.includes('נקרא בסיס החרוט')],
+  ['cone-parts identification page (SSOT §26)', Boolean(byId.get('CONE-PARTS-01')) && app.includes('מסמנים את חלקי החרוט')],
   ['base/vertex/mantle/height identification', text('CONE-ID-01').includes('בסיס החרוט') && text('CONE-ID-01').includes('קודקוד החרוט') && text('CONE-ID-01').includes('מעטפת החרוט') && text('CONE-ID-01').includes('גובה החרוט')],
   ['axial-section definition', app.includes('חתך צירי של חרוט הוא משולש שווה שוקיים')],
   ['axial-section student sketch', Boolean(byId.get('CONE-AX-SKETCH-01')) && app.includes("prompt('CONE-AX-SKETCH-01')") && app.includes('sketch-box')],

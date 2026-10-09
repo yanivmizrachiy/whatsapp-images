@@ -15,6 +15,9 @@ const tableCell=(value,isVPi=false)=>value==null?'':(isVPi?tex(`${value}\\pi`):S
 const volumeTableRows=()=>D.volumeTableRows.map(row=>`<tr><td>${tableCell(row.r)}</td><td>${tableCell(row.d)}</td><td>${tableCell(row.h)}</td><td>${tableCell(row.vPi,true)}</td></tr>`).join('');
 const q=id=>D.questions.find(item=>item.id===id)||null;
 const prompt=id=>q(id)?.prompt||'';
+// SSOT §26: colorful teaching comic and the imported 3D cone artwork.
+const comic=()=>D.comicStrip||'';
+const coneAsset=(name,alt,cls='')=>`<img class="cone-3d ${cls}" src="assets/${name}.svg" alt="${alt}">`;
 
 // A multi-part question is rendered as independent student work units. The
 // source wording is not changed: each part keeps its original Hebrew marker.
@@ -47,10 +50,17 @@ const page1Html=D.page1.replace(PAGE1_ASSET_MAIN,PAGE1_ASSET_PINNED);
 addPage(`<div class="source-sheet">${page1Html}</div>`,page1Footer);
 
 addPage(`${nextHeader('היכרות עם החרוט')}
-<section class="definition intro-definition">חרוט הוא גוף המורכב מעיגול ונקודה שמחוץ למישור העיגול וכל הקטעים המחברים את הנקודה עם נקודות הנמצאות על היקף העיגול (מעגל). הנקודה נקראת קודקוד החרוט, העיגול נקרא בסיס החרוט. כל הקטעים הנ״ל יוצרים מעטפת החרוט.</section>
+<section class="definition intro-definition">חרוט הוא גוף המורכב מעיגול ונקודה שמחוץ למישור העיגול וכל הקטעים המחברים את הנקודה עם נקודות הנמצאות על היקף העיגול (מעגל). <strong>השלימו את שמות חלקי החרוט לפי השרטוט:</strong> הנקודה נקראת <span class="answer-line inline"></span> החרוט, העיגול נקרא <span class="answer-line inline"></span> החרוט. כל הקטעים הנ״ל יוצרים <span class="answer-line inline"></span> החרוט.</section>
+${comic()}
 <div class="intro-cone">${coneSvg({large:true})}</div>
 <div class="task compact">${prompt('CONE-DEF-01')} <span class="answer-line short"></span></div>
 <div class="task compact">${prompt('CONE-ID-01')}</div>`);
+
+addPage(`${nextHeader('מסמנים את חלקי החרוט')}
+<div class="task first">${prompt('CONE-PARTS-01')}</div>
+<div class="parts-figure">${coneAsset('cone-3d-upright','חרוט ישר תלת־ממדי לסימון חלקיו')}<span class="callout c-apex"><span class="answer-line inline"></span></span><span class="callout c-mantle"><span class="answer-line inline"></span></span><span class="callout c-base"><span class="answer-line inline"></span></span></div>
+<div class="task">${prompt('CONE-INVAR-01')}</div>${grid('medium')}${answerLine()}
+<div class="task">${prompt('CONE-CLAIM-01')}</div>${grid('claim')}${answerLine()}`);
 
 addPage(`${nextHeader(`נפח חרוט — השלימו: ${tex('V=\\underline{\\hspace{28mm}}')}`)}
 <div class="task">${prompt('CONE-VOL-01')}</div>${grid('medium')}${answerLine('סמ״ק')}

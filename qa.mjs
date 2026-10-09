@@ -41,6 +41,20 @@ ok(app.includes('שאלות מתוך תוכנית הלימודים'),'official c
 ok(content.includes('96π')&&content.includes('384π')&&content.includes('h=8'),'official cone QA values missing');
 ok(content.includes('מעטפת החרוט'),'mantle identification is missing from student content');
 ok(app.includes('חתך צירי של חרוט הוא משולש שווה שוקיים'),'explicit axial-section definition is missing');
+
+// SSOT §10.4 + §26: intro definition is an active completion (not passive text),
+// the colorful teaching comic is integrated, and the cone-parts page exists.
+const introDef=app.match(/<section class="definition intro-definition">([\s\S]*?)<\/section>/);
+ok(Boolean(introDef),'intro definition section missing');
+const defHtml=introDef?introDef[1]:'';
+ok(/חרוט הוא גוף/.test(defHtml),'intro definition must keep the opening "חרוט הוא גוף"');
+ok((defHtml.match(/answer-line/g)||[]).length>=3,'intro definition must offer at least three completion blanks (SSOT §10.4)');
+ok(!/נקראת קודקוד החרוט/.test(defHtml)&&!/נקרא בסיס החרוט/.test(defHtml)&&!/יוצרים מעטפת החרוט/.test(defHtml),'intro definition must not hand over base/vertex/mantle as passive text (SSOT §10.4)');
+ok(typeof data.comicStrip==='string'&&data.comicStrip.includes('comic-scene')&&data.comicStrip.includes('אניס'),'colorful teaching comic missing from canonical data (SSOT §26)');
+ok(app.includes('comic()'),'comic strip is not rendered on the student page');
+for(const id of ['CONE-PARTS-01','CONE-INVAR-01','CONE-CLAIM-01'])ok(data.questions.some(x=>x.id===id),`expansion identity question missing: ${id}`);
+ok(app.includes("coneAsset('cone-3d-upright'"),'imported 3D cone artwork is not rendered on the cone-parts page');
+ok(app.includes('מסמנים את חלקי החרוט'),'cone-parts page heading missing (SSOT §26)');
 ok(content.includes('raw.githubusercontent.com/yanivmizrachiy/smartschool-hebrew-voice-notes/main/worksheets/assets/ayelet-original-cone.png'),'verified companion-sheet source asset reference is missing');
 ok(app.includes('7121dfeaa9d8dc9f4101eea155c23a24374a0a2a/worksheets/assets/ayelet-original-cone.png'),'rendered companion-sheet artwork is not pinned to the verified immutable source commit');
 ok(!content.includes('src="assets/ayelet-original-cone.png'),'broken local companion-sheet image path still present');

@@ -9,9 +9,9 @@
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
   "weightsSum": 100,
   "baselinePercent": 91.1,
-  "overallPercent": 100,
-  "updatedAt": "2026-10-09T03:30:00+03:00",
-  "updatedBy": "ChatGPT + Claude Code shared workflow",
+  "overallPercent": 95.2,
+  "updatedAt": "2026-10-09T12:00:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — harut integration round",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -24,7 +24,7 @@
     {
       "id": "G01",
       "name": "Core student content and current workbook",
-      "weight": 20,
+      "weight": 14,
       "completionPercent": 100,
       "status": "done",
       "covers": [
@@ -343,11 +343,42 @@
         "governance audit"
       ],
       "remaining": []
+    },
+    {
+      "id": "G15",
+      "name": "Harut integration & graded expansion (SSOT §26)",
+      "weight": 6,
+      "completionPercent": 20,
+      "status": "partial",
+      "covers": [
+        "P14",
+        "P04",
+        "P05"
+      ],
+      "evidence": [
+        "SOURCE_OF_TRUTH.md §2.7/§10.4/§26",
+        "content.js: comicStrip + CONE-PARTS-01/CONE-INVAR-01/CONE-CLAIM-01",
+        "app.js: active-completion definition, colorful comic band, \"מסמנים את חלקי החרוט\" page",
+        "assets/cone-3d-upright.svg, cone-3d-down.svg, cone-3d-side.svg",
+        "harut PROVENANCE: razpages cone workbook (Yaniv Raz / Ayelet Krispin), user-owned"
+      ],
+      "testsPassed": [
+        "phase-1 local QA (ssot/progress/contract/math/coverage)",
+        "preview desktop: pages 2-3 render, no overflow, content fits above footer"
+      ],
+      "remaining": [
+        "Phase 2: object identification & sorting; cone vs cylinder/pyramid; misconception \"מי צודק\" pages",
+        "Phase 3: nets & sector-angle↔base-circumference; parallel & axial cuts",
+        "Phase 4: cone/cylinder 1/3 ratio; volume error analysis; deeper unit conversion",
+        "Phase 5: applications (funnel/hat/cup/light beam); architectural exploration; grade-7 bridge",
+        "Full browser QA + visual-regression baseline regeneration for all expanded pages",
+        "Heavy raster scene artwork (optimized) integration"
+      ]
     }
   ],
   "openExecutionItems": [],
   "closure": {
-    "studentRoundClosed": true,
+    "studentRoundClosed": false,
     "studentRoundApprovedByYaniv": true,
     "teacherPagesRemainForbiddenUntilNewExplicitInstruction": true,
     "canonicalRequirementsClosed": true,
@@ -361,7 +392,9 @@
     "userClosureInstruction": "Yaniv instructed to finish Harut to 100%, then explicitly requested one contradiction-free source of truth and full reconciliation.",
     "nonCanonicalItemsExcluded": [
       "A stable public URL appeared only in a derived execution document and is not a requirement in SOURCE_OF_TRUTH.md; derived documents cannot add requirements."
-    ]
+    ],
+    "expansionRoundOpen": true,
+    "expansionInstruction": "Yaniv (2026-10-09): significantly expand the student workbook by integrating the harut cone workbook (questions + colorful graphics), graded easy→hard, each question in its best slot, document in SSOT §26. Round reopened per SSOT §2.6/§2.7."
   },
   "history": [
     {
@@ -399,6 +432,12 @@
       "percent": 100,
       "commit": "c38af8c4819d08d64df36d44d5d2280a043837db",
       "note": "Validated exports persisted after main CI; canonical status documents reconciled without changing completion."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 95.2,
+      "commit": "pending-phase-1",
+      "note": "Expansion round opened (SSOT §26): active-completion cone definition, colorful teaching comic, \"mark the cone parts\" page with imported 3D cone artwork; weight rebalanced G01→G15."
     }
   ]
 }

@@ -60,6 +60,11 @@
 | R50 | SOURCE_OF_TRUTH ללא מקור מתחרה/drift | `SOURCE_OF_TRUTH.md`, `ssot-qa.mjs` | SSOT QA | ✅ בוצע | אין |
 | R51 | Evidence before claim | GitHub commits + Actions | CI run 37856393919 + reviewed artifact | ✅ בוצע | אין |
 | R52 | 100% רק כשכל השערים סגורים | `STUDENT_PROGRESS.json` + CI | כל השערים הקנוניים סגורים; יניב הורה בשיחה לסיים את חרוט חדש למאה אחוז | ✅ בוצע | אין |
+| R53 | הגדרת חרוט כהשלמה פעילה (§10.4) | `app.js` עמוד היכרות, `qa.mjs`, `coverage-qa.mjs` | שער: ≥3 בלנקים, אין מסירה פסיבית של בסיס/קודקוד/מעטפת | ✅ בוצע | אין |
+| R54 | קומיקס צבעוני משולב (§26.5.1) | `content.js:comicStrip`, `app.js`, `styles.css` | שער comic + preview עמוד 2 | ✅ בוצע | אין |
+| R55 | עמוד „מסמנים את חלקי החרוט” (§26) | `CONE-PARTS-01/INVAR-01/CLAIM-01`, `app.js` | coverage QA + preview עמוד 3 (ללא overflow) | ✅ בוצע | אין |
+| R56 | איורי חרוט תלת־ממדי מיובאים (§26.5.2) | `assets/cone-3d-upright\|down\|side.svg` | preview עמוד 3; וקטורי בהדפסה | ✅ בוצע | אין |
+| R57 | סבב הרחבה מתועד ב־SSOT (§2.7/§26) | `SOURCE_OF_TRUTH.md`, `STUDENT_PROGRESS.json` G15 | progress coupling + ssot-qa | 🔄 בתהליך | שלבים 2–5 בהמשך |
 
 ## כללי עדכון ראיות
 
