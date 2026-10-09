@@ -391,7 +391,8 @@
         "phase-5 local QA: 82 unique IDs, 46 A4 pages, coverage + math green",
         "phase-5 browser QA: no internal overflow, no figure spill, no label clipping across all 46 pages; PDF 46 A4 pages; per-page scrollHeight/clientHeight probe shows no A4 overflow and no sub-45% sparse page",
         "phase-5 preview desktop: split pages 33 (funnel), 34 (hat), 40 (inversion), 41 (architectural roof), 45 (area+Pythagoras), 46 (axial section) reviewed page-by-page — colorful, uncrowded, figures inside boxes, labels collision-free",
-        "phase-5 visual regression: baseline regenerated from CI run 37924233196 (46 pages); visual-regression-qa PASS against the CI PNGs"
+        "phase-5 visual regression: baseline regenerated from CI run 37924233196 (46 pages); visual-regression-qa PASS against the CI PNGs",
+        "adversarial math/pedagogy review (background workflow, 11 agents / 6 strand buckets → independent high-effort skeptic re-derivation per finding): 0 confirmed mathematical errors across all 82 questions; every flagged item (5) verified as a non-defect (notation/duplication, no wrong answer/unit). CONE-SEC-01 answer-key slant symbol aligned to the canonical ℓ (metadata only; not student-rendered)"
       ],
       "remaining": []
     }
@@ -506,6 +507,12 @@
       "percent": 100,
       "commit": "pending-phase-5-baseline",
       "note": "Expansion closure: regenerated the CI-environment-locked pixel baseline (visual-baseline.json) from CI run 37924233196 (headSha 5c93d7c) for the full 46-page workbook — the prior commit's CI confirmed BROWSER QA PASS (46 pages, no overflow, PDF 46) and failed only on the stale 28-page visual baseline (expected). visual-regression-qa verified locally against the exact CI PNGs (46/46 match). Baseline commit changes only visual-baseline.json + tracker + SSOT (no page content), so CI re-render is byte-identical and goes fully green. G15 95%→100% (done); overall 99.7→100. Expansion round (SSOT §26) reaches evidence-backed 100%: the full §26.4.2 harut ladder integrated across 46 A4 pages; heavy raster scenes (§26.5.4) remain intentionally deferred and are not a requirement of this round."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 100,
+      "commit": "pending-review-notation",
+      "note": "Adversarial math/pedagogy verification (background workflow, 11 agents across 6 strand buckets with independent high-effort skeptic re-derivation per finding) found 0 confirmed mathematical errors across all 82 questions; all 5 flagged items were verified as non-defects (notation/duplication, never a wrong answer or unit). Applied one zero-risk consistency fix: CONE-SEC-01 answer-key slant symbol s→ℓ (answer field is metadata, not student-rendered, so page pixels and the visual baseline are unchanged and CI stays green). Three duplication observations (CONE-CLAIM-01≈CONE-WHO-01; CONE-APP-01 & CONE-BRIDGE-06-א reuse the locked CURR-CONE-06 r=6/h=8 numbers) were surfaced to Yaniv for his pedagogical decision rather than changed unilaterally, since they touch the locked official question and are defensible reinforcement. Percent unchanged: verification + metadata polish, not a scope change."
     }
   ]
 }
