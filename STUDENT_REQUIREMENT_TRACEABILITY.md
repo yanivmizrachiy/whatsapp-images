@@ -72,6 +72,9 @@
 | R62 | דיאגרמות שלב 3 בתוך הקופסה והתוויות בתוך ה־viewBox (§16.7/§15.3) | `browser-qa.mjs` (6 מחלקות SVG חדשות בבוררי containment + clip) | containment+clip gates ירוקים על כל 6 הדיאגרמות החדשות | ✅ בוצע | אין |
 | R63 | הרחבה שלב 4 — יחס השליש וניתוח שגיאות (§26.3.2/§26.7.4) | `content.js` (CONE-RATIO/ERR), `app.js` (6 עמודים + 2 דיאגרמות + ratioTable), `styles.css` (`.ratio-figure`/`.ratio-svg`/`.diameter-cone-svg`) | QA 66 IDs/34 דפים + math-QA (יחסים/שגיאות נכונים) + browser-QA (ללא overflow/spill/חיתוך, PDF 34 דפים) + ביקורת עמוד־עמוד (21–26) | ✅ בוצע | שלב 5 בהמשך |
 | R64 | ריענון baseline ויזואלי ל־28 דפים מ־CI (§26.7.3a) | `visual-baseline.json` מ־artifact ריצה 37919501489 (fb8e823) | visual-regression-qa עבר מקומית, 28 דפים; תחזוקת CI בלבד | ✅ בוצע | מתרענן שוב אחרי כל שלב הרחבה |
+| R65 | הרחבה שלב 5 — יישומים/חקר אדריכלי/גשר חזרה (§26.3.2/§26.7.5) | `content.js` (CONE-APP/ARCH/BRIDGE), `app.js` (12 עמודים + 7 דיאגרמות), `styles.css` (`.funnel-svg`/`.beam-svg`/`.arch-*`/`.circle-svg`/`.right-triangle-svg`/`.invert-pair`) | QA 82 IDs/46 דפים + math-QA + browser-QA (ללא overflow/spill/חיתוך, PDF 46 דפים) + ביקורת עמוד־עמוד (33–46); משלים את רשימת §26.4.2 | ✅ בוצע | סגירה: baseline+CI ירוק |
+| R66 | מניעת צפיפות A4 ובטיחות תוויות בשלב 5 (§16.6/§15.3) | `app.js`: פיצול 3 עמודים חורגים לשישה מרווחים; הסרת תווית הקו היוצר „15 ס״מ” מאיור הכובע (הערך בטקסט) | browser-QA: אפס גלישת A4 ואפס התנגשות label-safety על כל 46 הדפים; מדידת scrollHeight/clientHeight לכל עמוד = ללא חריגה | ✅ בוצע | אין |
+| R67 | איורי raster כבדים (§26.5.4) | — | נדחו במכוון ב־SSOT לשלב מאוחר עם אופטימיזציה; אינם דרישת הסבב הנוכחי | ➖ לא קנוני בסבב זה | אופציונלי בעתיד |
 
 ## כללי עדכון ראיות
 

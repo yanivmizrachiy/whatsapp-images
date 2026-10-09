@@ -75,6 +75,21 @@ const cylinderConeRatioSvg=()=>`<svg class="ratio-svg" viewBox="0 0 560 360" rol
 // Cone labelled by its full base DIAMETER (not radius) — the diameter-vs-radius error (CONE-ERR-05).
 const diameterConeSvg=()=>`<svg class="diameter-cone-svg" viewBox="0 0 520 440" role="img" aria-label="חרוט ישר שקוטר בסיסו 12 סנטימטר וגובהו 10 סנטימטר"><ellipse cx="260" cy="350" rx="178" ry="46" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M260 54 L82 350 M260 54 L438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 46 0 0 0 438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 46 0 0 1 438 350" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="54" x2="260" y2="350" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="82" y1="350" x2="438" y2="350" stroke="#111827" stroke-width="3.5"/><circle cx="260" cy="54" r="5" fill="#111827"/><text x="288" y="210" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">10 ס״מ</text><text x="260" y="424" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">קוטר 12 ס״מ</text></svg>`;
 const ratioTable=(id)=>`<table class="practice-table ratio-table"><thead><tr><th>${tex('r')}</th><th>${tex('h')}</th><th>נפח הגליל</th><th>נפח החרוט</th></tr></thead><tbody>${(q(id)?.ratioTableRows||[]).map(row=>`<tr><td>${row.r} ס״מ</td><td>${row.h} ס״מ</td><td></td><td></td></tr>`).join('')}</tbody></table>`;
+// ===== Phase 5 expansion diagrams (applications, architecture, grade-7 bridge) — inline-styled labels, gated by containment + clip =====
+// Funnel: a cone standing on its apex (CONE-APP-01).
+const funnelSvg=()=>`<svg class="funnel-svg" viewBox="0 0 520 430" role="img" aria-label="משפך בצורת חרוט ישר, הקודקוד למטה"><ellipse cx="260" cy="96" rx="172" ry="46" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><path d="M88 96 L260 372 L432 96" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M88 96 A172 46 0 0 0 432 96" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="96" x2="260" y2="372" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="96" x2="432" y2="96" stroke="#111827" stroke-width="3"/><circle cx="260" cy="372" r="4" fill="#111827"/><circle cx="260" cy="96" r="4" fill="#111827"/><text x="348" y="80" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">6 ס״מ</text><text x="294" y="246" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#475569">8 ס״מ</text></svg>`;
+// Light beam: a cone with its apex at the lamp (CONE-APP-03), base diameter labelled on the floor.
+const lightBeamSvg=()=>`<svg class="beam-svg" viewBox="0 0 520 440" role="img" aria-label="אלומת אור בצורת חרוט ישר מזרקור, קודקוד למעלה"><defs><linearGradient id="beamGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fef9c3"/><stop offset="1" stop-color="#fef3c7" stop-opacity="0.35"/></linearGradient></defs><rect x="238" y="30" width="44" height="18" rx="4" fill="#64748b" stroke="#334155" stroke-width="2"/><path d="M260 48 L92 356 L428 356 Z" fill="url(#beamGrad)" stroke="#f59e0b" stroke-width="3"/><ellipse cx="260" cy="356" rx="168" ry="44" fill="#fffbeb" stroke="#1d4ed8" stroke-width="4"/><path d="M92 356 A168 44 0 0 0 428 356" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="60" y1="400" x2="460" y2="400" stroke="#94a3b8" stroke-width="3"/><line x1="260" y1="48" x2="260" y2="356" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="92" y1="356" x2="428" y2="356" stroke="#111827" stroke-width="3"/><circle cx="260" cy="48" r="4" fill="#111827"/><text x="294" y="214" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#475569">12 מ׳</text><text x="260" y="424" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">קוטר 10 מ׳</text></svg>`;
+// Three roofs: א׳ and ג׳ conical, ב׳ a square pyramid — identify by properties (CONE-ARCH-01).
+const archRoofsSvg=()=>`<svg class="arch-roofs" viewBox="0 0 540 250" role="img" aria-label="שלושה מבנים עם גגות שונים לזיהוי חרוט: א׳ וג׳ חרוטיים, ב׳ פירמידה מרובעת"><line x1="24" y1="206" x2="516" y2="206" stroke="#94a3b8" stroke-width="3"/><g><rect x="58" y="118" width="64" height="88" fill="#e0f2fe" stroke="#1d4ed8" stroke-width="3"/><ellipse cx="90" cy="118" rx="42" ry="12" fill="#f8fafc" stroke="#1d4ed8" stroke-width="2.5"/><path d="M90 36 L48 118 A42 12 0 0 0 132 118 Z" fill="#bfdbfe" stroke="#1d4ed8" stroke-width="3"/><text x="90" y="238" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#1e3a8a">א׳</text></g><g><rect x="238" y="118" width="64" height="88" fill="#fef3c7" stroke="#b45309" stroke-width="3"/><path d="M270 40 L236 118 L304 118 Z" fill="#fde68a" stroke="#b45309" stroke-width="3"/><path d="M270 40 L304 118 L326 104 L292 30 Z" fill="#fcd34d" stroke="#b45309" stroke-width="2.5"/><path d="M236 118 L258 104 L326 104" fill="none" stroke="#b45309" stroke-width="2.5"/><text x="276" y="238" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#b45309">ב׳</text></g><g><rect x="418" y="118" width="64" height="88" fill="#dcfce7" stroke="#15803d" stroke-width="3"/><ellipse cx="450" cy="118" rx="42" ry="12" fill="#f0fdf4" stroke="#15803d" stroke-width="2.5"/><path d="M450 36 L408 118 A42 12 0 0 0 492 118 Z" fill="#bbf7d0" stroke="#15803d" stroke-width="3"/><text x="450" y="238" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#15803d">ג׳</text></g></svg>`;
+// Red cone inscribed in a blue bounding cylinder, same base & height (CONE-ARCH-02/03).
+const archCylinderInConeSvg=()=>`<svg class="arch-cyl-cone" viewBox="0 0 300 360" role="img" aria-label="חרוט חסום בתוך גליל באותו רדיוס בסיס ואותו גובה"><path d="M46 56 L46 300 M254 56 L254 300" stroke="#1d4ed8" stroke-width="3" fill="none"/><path d="M46 300 A104 28 0 0 0 254 300" fill="none" stroke="#1d4ed8" stroke-width="3"/><path d="M46 300 A104 28 0 0 1 254 300" fill="none" stroke="#93c5fd" stroke-width="2.5" stroke-dasharray="8 6"/><ellipse cx="150" cy="56" rx="104" ry="28" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><path d="M150 56 L46 300 M150 56 L254 300" stroke="#dc2626" stroke-width="3" fill="none"/><path d="M46 300 A104 28 0 0 0 254 300" fill="none" stroke="#dc2626" stroke-width="3"/><line x1="150" y1="56" x2="150" y2="300" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 6"/><circle cx="150" cy="56" r="4" fill="#111827"/><line x1="150" y1="300" x2="254" y2="300" stroke="#111827" stroke-width="2.5"/><text x="138" y="190" text-anchor="end" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">h</text><text x="205" y="292" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">r</text><text x="150" y="18" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="13" font-weight="700" fill="#1d4ed8">גליל חוסם</text><text x="104" y="250" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="13" font-weight="700" fill="#dc2626">חרוט</text></svg>`;
+// Cone with parallel cross-sections; the mid-height section highlighted (CONE-ARCH-04).
+const archSectionsSvg=()=>`<svg class="arch-sections" viewBox="0 0 300 340" role="img" aria-label="חרוט עם חתכים מקבילים לבסיס, החתך האמצעי מודגש"><ellipse cx="150" cy="290" rx="104" ry="26" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><path d="M150 44 L46 290 M150 44 L254 290" stroke="#1d4ed8" stroke-width="3" fill="none"/><path d="M46 290 A104 26 0 0 0 254 290" fill="none" stroke="#1d4ed8" stroke-width="3"/><ellipse cx="150" cy="105" rx="26" ry="7" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4"/><ellipse cx="150" cy="228" rx="78" ry="19" fill="none" stroke="#94a3b8" stroke-width="2" stroke-dasharray="5 4"/><ellipse cx="150" cy="167" rx="52" ry="13" fill="#fde68a" fill-opacity="0.5" stroke="#d97706" stroke-width="3"/><line x1="150" y1="44" x2="150" y2="290" stroke="#475569" stroke-width="2.5" stroke-dasharray="7 6"/><circle cx="150" cy="44" r="4" fill="#111827"/><line x1="150" y1="290" x2="254" y2="290" stroke="#111827" stroke-width="2.5"/><line x1="202" y1="167" x2="216" y2="167" stroke="#d97706" stroke-width="2"/><text x="74" y="112" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="16" font-weight="700" fill="#475569">12 ס״מ</text><text x="200" y="283" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="16" font-weight="700" fill="#111827">6 ס״מ</text><text x="224" y="172" text-anchor="start" font-family="'Rubik',sans-serif" font-size="13" font-weight="700" fill="#b45309">החתך</text></svg>`;
+// Circle with centre O for the grade-7 recap (CONE-BRIDGE-01).
+const circleSvg=()=>`<svg class="circle-svg" viewBox="0 0 240 240" role="img" aria-label="מעגל שמרכזו O"><circle cx="120" cy="120" r="96" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><circle cx="120" cy="120" r="4.5" fill="#111827"/><text x="108" y="114" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#1d4ed8">O</text></svg>`;
+// Right triangle with legs 6 and 8 for the Pythagoras recap (CONE-BRIDGE-05).
+const rightTriangleSvg=()=>`<svg class="right-triangle-svg" viewBox="0 0 300 250" role="img" aria-label="משולש ישר־זווית, ניצבים 6 ו־8 ס״מ"><path d="M80 210 L80 60 L240 210 Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><path d="M80 188 L102 188 L102 210" fill="none" stroke="#1d4ed8" stroke-width="2.5"/><text x="70" y="140" text-anchor="end" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">6 ס״מ</text><text x="160" y="236" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">8 ס״מ</text></svg>`;
 const claimCheckList=(id)=>{const full=prompt(id);const cut=full.indexOf('(1)');const intro=full.slice(0,cut).trim();const items=full.slice(cut).split(/\(\d+\)\s*/).map(s=>s.trim()).filter(Boolean);return `<div class="task first">${intro}</div><ul class="claim-list">${items.map(t=>`<li><span class="claim-box"></span><span class="claim-text">${t}</span></li>`).join('')}</ul>`;};
 const addPage=(html,foot=footer)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+foot();book.append(p);return p};
 let pageNumber=1;
@@ -284,6 +299,64 @@ addPage(`${nextHeader('זיהוי חרוטים במנחים שונים')}
 <div class="orientation-note">סמנו ישירות על כל שרטוט: בסיס, קודקוד, מעטפת וגובה.</div>
 <div class="task sketch-task">${prompt('CONE-ORIENT-DRAW-01')}</div><div class="sketch-box orientation-sketch"></div>`);
 
+// ===== Expansion phase 5 (SSOT §26): applications & architectural investigation, before the locked curriculum question =====
+// APP — real-world applications: funnel, party hat, light beam.
+const appHatParts=splitHebrewSubsections(prompt('CONE-APP-02'),['א','ב']);
+addPage(`${nextHeader('יישומים: משפך חרוטי')}
+<div class="two-column"><div class="diagram-box">${funnelSvg()}</div><div><div class="task first">${prompt('CONE-APP-01')}</div>${grid('medium')}${answerLine('סמ״ק')}</div></div>`);
+addPage(`${nextHeader('יישומים: כובע חרוטי')}
+<div class="two-column"><div class="diagram-box">${coneSvg({r:'9 ס״מ'})}</div><div class="question-intro">${appHatParts.intro}</div></div>
+${renderSubpart(findPart(appHatParts,'א'),{size:'pythagoras',unit:'ס״מ'})}
+${renderSubpart(findPart(appHatParts,'ב'),{size:'subpart-medium',unit:'סמ״ק'})}`);
+
+const appBeamParts=splitHebrewSubsections(prompt('CONE-APP-03'),['א','ב','ג']);
+addPage(`${nextHeader('יישומים: אלומת אור')}
+<div class="two-column"><div class="diagram-box">${lightBeamSvg()}</div><div class="question-intro">${appBeamParts.intro}</div></div>
+${renderSubpart(findPart(appBeamParts,'א'),{size:'subpart-medium',unit:'מ״ק'})}
+${renderSubpart(findPart(appBeamParts,'ב'),{size:'axial-work',unit:'מ״ר'})}
+${renderSubpart(findPart(appBeamParts,'ג'),{size:'subpart-medium',unit:'מ״ק'})}`);
+
+// ARCH — investigation arena: why the cone is exactly a third of the bounding cylinder.
+const arch1Parts=splitHebrewSubsections(prompt('CONE-ARCH-01'),['א','ב']);
+addPage(`${nextHeader('זירת החקר: הקשר בין חרוט לגליל החוסם')}
+<div class="question-intro">ארכימדס גילה קשר פשוט בין חרוט לגליל החוסם אותו. בעמודים הבאים תחקרו את הקשר הזה ותגלו מניין מגיע המקדם בנוסחת נפח החרוט.</div>
+<div class="arch-figure">${archRoofsSvg()}</div>
+${renderSubpart(findPart(arch1Parts,'א'),{size:'subpart-small'})}
+${renderSubpart(findPart(arch1Parts,'ב'),{size:'claim'})}`);
+
+const arch2Parts=splitHebrewSubsections(prompt('CONE-ARCH-02'),['א','ב']);
+addPage(`${nextHeader('מחרוט לגליל החוסם — מניין השליש')}
+<div class="two-column"><div class="arch-figure">${archCylinderInConeSvg()}</div><div class="question-intro">${arch2Parts.intro}</div></div>
+${renderSubpart(findPart(arch2Parts,'א'),{size:'subpart-small'})}
+${renderSubpart(findPart(arch2Parts,'ב'),{size:'subpart-small'})}`);
+
+const arch3Parts=splitHebrewSubsections(prompt('CONE-ARCH-03'),['א','ב','ג']);
+const arch5Parts=splitHebrewSubsections(prompt('CONE-ARCH-05'),['א','ב']);
+addPage(`${nextHeader('יחס השליש — חישוב ואישור')}
+<div class="question-intro">${arch3Parts.intro}</div>
+${renderSubpart(findPart(arch3Parts,'א'),{size:'subpart-small',unit:'סמ״ק'})}
+${renderSubpart(findPart(arch3Parts,'ב'),{size:'subpart-small',unit:'סמ״ק'})}
+${renderSubpart(findPart(arch3Parts,'ג'),{size:'subpart-small'})}
+<div class="question-intro">${arch5Parts.intro}</div>
+${renderSubpart(findPart(arch5Parts,'א'),{size:'subpart-small',unit:'סמ״ק'})}
+${renderSubpart(findPart(arch5Parts,'ב'),{size:'subpart-small',unit:'סמ״ק'})}`);
+
+const arch4Parts=splitHebrewSubsections(prompt('CONE-ARCH-04'),['א','ב']);
+addPage(`${nextHeader('הצטברות הנפח — חתכים בחרוט')}
+<div class="two-column"><div class="arch-figure">${archSectionsSvg()}</div><div class="question-intro">${arch4Parts.intro}</div></div>
+${renderSubpart(findPart(arch4Parts,'א'),{size:'subpart-small',unit:'ס״מ'})}
+${renderSubpart(findPart(arch4Parts,'ב'),{size:'subpart-medium'})}`);
+
+const arch7Parts=splitHebrewSubsections(prompt('CONE-ARCH-07'),['א','ב']);
+addPage(`${nextHeader('היפוך החרוט — שימור הנפח')}
+<div class="task first">${prompt('CONE-ARCH-06')}</div>
+<div class="invert-pair"><div class="view-figure">${coneAsset('cone-3d-upright','חרוט עומד — קודקוד למעלה')}</div><div class="invert-label">היפוך ←</div><div class="view-figure">${coneAsset('cone-3d-down','אותו חרוט הפוך — קודקוד למטה')}</div></div>
+${grid('claim')}${answerLine()}`);
+addPage(`${nextHeader('יישום אדריכלי — נפח גג חרוטי')}
+<div class="two-column"><div class="diagram-box">${coneSvg({r:'4 מ׳'})}</div><div class="question-intro">${arch7Parts.intro}</div></div>
+${renderSubpart(findPart(arch7Parts,'א'),{size:'subpart-medium',unit:'מ״ק'})}
+${renderSubpart(findPart(arch7Parts,'ב'),{size:'subpart-small'})}`);
+
 const official=prompt('CURR-CONE-06');
 const officialParts=splitHebrewSubsections(official,['א','ב','ג','ד']);
 const officialA=findPart(officialParts,'א');
@@ -300,6 +373,25 @@ const comparisonTable=`<table class="comparison-table"><thead><tr><th></th><th>�
 addPage(`${nextHeader('שאלות מתוך תוכנית הלימודים — המשך')}
 ${renderSubpart(officialC,{size:'official-part-c',extra:comparisonTable})}
 ${renderSubpart(officialD,{size:'official-part-d',unit:'סמ״ק'})}`);
+
+// ===== Expansion phase 5 (cont.): grade-7 bridge — circle, circumference & Pythagoras back to the cone (final ladder item) =====
+const b3Parts=splitHebrewSubsections(prompt('CONE-BRIDGE-03'),['א','ב','ג']);
+addPage(`${nextHeader('גשר חזרה: מהמעגל אל בסיס החרוט')}
+<div class="concept-note">בסיס החרוט הוא עיגול ושפת הבסיס היא מעגל. נרענן את מידות המעגל לפני שנחשב בחרוט.</div>
+<div class="two-column"><div class="diagram-box">${circleSvg()}</div><div><div class="task first">${inlineBlanks('CONE-BRIDGE-01')}</div>${answerLine()}</div></div>
+<div class="task">${inlineBlanks('CONE-BRIDGE-02')}</div>${answerLine()}
+${renderSubpart(findPart(b3Parts,'א'),{size:'subpart-small',unit:'ס״מ'})}
+${renderSubpart(findPart(b3Parts,'ב'),{size:'subpart-small',unit:'ס״מ'})}
+${renderSubpart(findPart(b3Parts,'ג'),{size:'subpart-medium',unit:'ס״מ'})}`);
+
+const b6Parts=splitHebrewSubsections(prompt('CONE-BRIDGE-06'),['א','ב']);
+addPage(`${nextHeader('גשר חזרה: שטח העיגול ופיתגורס')}
+<div class="task first">${prompt('CONE-BRIDGE-04')}</div>${grid('medium')}${answerLine('סמ״ר')}
+<div class="two-column"><div class="diagram-box">${rightTriangleSvg()}</div><div><div class="task first">${prompt('CONE-BRIDGE-05')}</div>${grid('pythagoras')}${answerLine('ס״מ')}</div></div>`);
+addPage(`${nextHeader('גשר חזרה: החתך הצירי אל נוסחת החרוט')}
+<div class="two-column"><div class="diagram-box">${axialSvg()}</div><div class="question-intro">${b6Parts.intro}</div></div>
+${renderSubpart(findPart(b6Parts,'א'),{size:'subpart-small',unit:'ס״מ'})}
+${renderSubpart(findPart(b6Parts,'ב'),{size:'subpart-small',unit:'ס״מ'})}`);
 
 let idx=0;
 const students=[...document.querySelectorAll('[data-kind="student"]')];

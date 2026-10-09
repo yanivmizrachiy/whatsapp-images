@@ -9,9 +9,9 @@
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
   "weightsSum": 100,
   "baselinePercent": 91.1,
-  "overallPercent": 98.8,
-  "updatedAt": "2026-10-09T16:10:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — expansion round: phase 4 (RATIO 1/3 cone/cylinder + ERR volume-mistake analysis)",
+  "overallPercent": 99.7,
+  "updatedAt": "2026-10-09T18:40:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — expansion round: phase 5 (APP applications + ARCH 1/3 investigation + BRIDGE grade-7 return); content complete, final CI baseline/green closure pending",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -351,7 +351,7 @@
       "id": "G15",
       "name": "Harut integration & graded expansion (SSOT §26)",
       "weight": 6,
-      "completionPercent": 80,
+      "completionPercent": 95,
       "status": "partial",
       "covers": [
         "P14",
@@ -370,7 +370,11 @@
         "Phase 3: 17 graded questions (CONE-NET-01..06, CONE-SEC-01..06, CONE-CUT-01..05) across 8 new A4 pages after the views — nets (which net closes, label parts, arc=base circumference), sector angle↔base radius, parallel & axial cross-sections",
         "Phase 3 diagrams: coneNetOptionsSvg, coneNetFigureSvg, coneSectorCompareSvg, coneSectorAngleSvg, sectorSvg, coneCutsSvg (deterministic, inside-viewBox labels, added to containment + clip selectors)",
         "Phase 4: 13 graded questions (CONE-RATIO-01..07, CONE-ERR-01..06) across 6 new A4 pages after the volume formula — cone = 1/3 of same-base-same-height cylinder (fill ratio, compute, table, generalize, Dani/Rotem claim) and common volume-mistake diagnosis (missing 1/3, un-squared r, ×3, diameter-vs-radius, wrong units)",
-        "Phase 4 diagrams: cylinderConeRatioSvg (same r & h cylinder vs cone), diameterConeSvg (base labelled by diameter) — deterministic, inside-viewBox labels, added to containment + clip selectors"
+        "Phase 4 diagrams: cylinderConeRatioSvg (same r & h cylinder vs cone), diameterConeSvg (base labelled by diameter) — deterministic, inside-viewBox labels, added to containment + clip selectors",
+        "Phase 5: 16 graded questions (CONE-APP-01..03, CONE-ARCH-01..07, CONE-BRIDGE-01..06) across 12 new A4 pages at the hard end of the ladder — APP (funnel/party-hat/light-beam applications), ARCH (cone↔bounding-cylinder investigation: roofs, cylinder-in-cone, 1/3 compute & confirm, accumulation via sections, inversion/volume-conservation, architectural roof volume), BRIDGE (grade-7 return: circle→cone base, circle area + Pythagoras, axial section → cone formula)",
+        "Phase 5 diagrams: funnelSvg, lightBeamSvg, archRoofsSvg, archCylinderInConeSvg, archSectionsSvg, circleSvg, rightTriangleSvg (deterministic, inside-viewBox labels, added to containment + clip selectors)",
+        "Phase 5 anti-crowding (SSOT §16.6): three A4-overflowing pages each split into two roomy pages (funnel|hat, inversion|architectural-roof, area+Pythagoras|axial-section); party-hat slant label '15 ס״מ' dropped from the diagram (value stays in the prompt) to satisfy label-safety §15.3",
+        "Phase 5 completes the §26.4.2 ladder (identify/sort, claim-checking, views, nets+sector angle, cross-sections, 1/3 ratio, volume-error analysis, applications, bridge-back); heavy raster scenes (§26.5.4) remain intentionally deferred and are not a gap"
       ],
       "testsPassed": [
         "phase-1 local QA (ssot/progress/contract/math/coverage)",
@@ -382,12 +386,13 @@
         "phase-3 preview desktop: pages 12-19 reviewed page-by-page (NET/SEC/CUT), colorful and uncrowded, figures inside boxes, content above footer",
         "phase-4 local QA: 66 unique IDs, 34 A4 pages, coverage + math green",
         "phase-4 browser QA: no internal overflow, no figure spill, no label clipping across all 34 pages; PDF 34 A4 pages",
-        "phase-4 preview desktop: pages 21-26 reviewed page-by-page (RATIO/ERR), colorful and uncrowded, cylinder/cone & diameter figures inside boxes, labels clean"
+        "phase-4 preview desktop: pages 21-26 reviewed page-by-page (RATIO/ERR), colorful and uncrowded, cylinder/cone & diameter figures inside boxes, labels clean",
+        "phase-5 local QA: 82 unique IDs, 46 A4 pages, coverage + math green",
+        "phase-5 browser QA: no internal overflow, no figure spill, no label clipping across all 46 pages; PDF 46 A4 pages; per-page scrollHeight/clientHeight probe shows no A4 overflow and no sub-45% sparse page",
+        "phase-5 preview desktop: split pages 33 (funnel), 34 (hat), 40 (inversion), 41 (architectural roof), 45 (area+Pythagoras), 46 (axial section) reviewed page-by-page — colorful, uncrowded, figures inside boxes, labels collision-free"
       ],
       "remaining": [
-        "Phase 5: applications (funnel/hat/cup/light beam); architectural exploration; grade-7 bridge (APP/ARCH/BRIDGE)",
-        "Visual-regression baseline regeneration from CI for the expanded page set",
-        "Heavy raster scene artwork (optimized) integration"
+        "Final closure only: regenerate the CI-environment-locked pixel baseline (visual-baseline.json) from phase-5 CI run and confirm fully green CI on PR #4; then G15→100 / overall→100 (SSOT §26.7.5 closure step, like §26.7.3a)"
       ]
     }
   ],
@@ -483,6 +488,12 @@
       "percent": 98.8,
       "commit": "pending-phase-4",
       "note": "Expansion phase 4 (SSOT §26): integrated 13 graded harut questions as 6 new A4 pages after the volume formula — RATIO (cone volume is a third of the same-base-same-height cylinder: fill ratio, two direct computations, three-part worked example, four-row volume table, student generalization, Dani/Rotem claim check) and ERR (diagnose & fix common volume mistakes: missing 1/3, un-squared radius, ×3 instead of ÷3, diameter instead of radius, area units for volume). Added deterministic colourful diagrams cylinderConeRatioSvg and diameterConeSvg and extended the containment + label-clipping selectors to cover them. Fixed two gate catches pre-commit (× glyph in a comment; a ratio answer tripping the π=3.14 regex). All 34 pages: no overflow, no figure spill, no label clipping; PDF 34 A4 pages; pages 21-26 reviewed in browser. G15 60%→80%."
+    },
+    {
+      "date": "2026-10-09",
+      "percent": 99.7,
+      "commit": "pending-phase-5",
+      "note": "Expansion phase 5 (SSOT §26.7.5) — final ladder stage: integrated 16 graded harut questions as 12 new A4 pages at the hard end — APP (funnel/party-hat/light-beam applications), ARCH (cone↔bounding-cylinder investigation deriving the 1/3 coefficient: roofs, cylinder-in-cone, compute & confirm, accumulation via sections, inversion/volume-conservation, architectural roof volume) and BRIDGE (grade-7 return: circle→cone base, circle area + Pythagoras, axial section → cone formula). Added deterministic colourful diagrams funnelSvg, lightBeamSvg, archRoofsSvg, archCylinderInConeSvg, archSectionsSvg, circleSvg, rightTriangleSvg and extended the containment + label-clipping selectors. Anti-crowding (§16.6): three A4-overflowing pages each split into two roomy pages; party-hat slant label '15 ס״מ' dropped from the diagram (value in prompt) to clear label-safety §15.3. This completes the §26.4.2 ladder; heavy raster scenes (§26.5.4) stay intentionally deferred. All 46 pages: no overflow, no figure spill, no label clipping; PDF 46 A4 pages; split pages 33/34/40/41/45/46 reviewed in browser. G15 80%→95% (content complete). overall→99.7; final 100% withheld until the CI-locked pixel baseline is regenerated and PR #4 CI is fully green."
     }
   ]
 }
