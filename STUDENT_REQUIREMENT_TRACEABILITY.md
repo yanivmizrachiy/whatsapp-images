@@ -66,6 +66,8 @@
 | R56 | איורי חרוט תלת־ממדי מיובאים (§26.5.2) | `assets/cone-3d-upright\|down\|side.svg` | preview עמוד 3; וקטורי בהדפסה | ✅ בוצע | אין |
 | R57 | סבב הרחבה מתועד ב־SSOT (§2.7/§26) | `SOURCE_OF_TRUTH.md`, `STUDENT_PROGRESS.json` G15 | progress coupling + ssot-qa | 🔄 בתהליך | שלבים 2–5 בהמשך |
 | R58 | שרטוט נשאר בקופסתו ואינו גולש/חופף תוכן (§16.7) | `styles.css` (`.intro-cone` חוסם SVG לגובה), `browser-qa.mjs` שער containment | containment gate: אפס גלישה של svg/img דיאגרמה מעבר לקופסת ההורה; תוקנה חפיפת חרוט עמוד 2 | ✅ בוצע | אין |
+| R59 | הרחבה שלב 2 — זיהוי/מושגים (§26.3.2/§26.7.2) | `content.js` (CONE-OBJ/WHO/VIEW), `app.js` (8 עמודים + 6 דיאגרמות) | QA 36 IDs/20 דפים + browser-QA (ללא overflow/spill/חיתוך) + ביקורת עמוד־עמוד | ✅ בוצע | שלבים 3–5 בהמשך |
+| R60 | תוויות דיאגרמות ההרחבה בתוך ה־viewBox (§15.3) | `browser-qa.mjs` שער label-clipping | clip gate: אפס `<text>` חתוך מחוץ ל־viewBox; תוקנו שתי תוויות VIEW | ✅ בוצע | אין |
 
 ## כללי עדכון ראיות
 

@@ -176,6 +176,33 @@ const containment=await page.evaluate(({sel,EPS})=>{
 },{sel:DIAGRAM_SELECTOR,EPS:SPILL_TOLERANCE});
 ok(containment.length===0,'SSOT 16.2 figure containment (diagram spills out of its box onto surrounding content): '+containment.join(' | '));
 
+// SSOT §15.3 for the expansion diagrams: a text label positioned near a viewBox edge
+// with the wrong text-anchor is silently clipped and loses characters. The measured
+// cone/axial/orientation diagrams are covered by the label-safety gate above; this
+// gate asserts that every <text> in the new instructional SVGs stays inside its own
+// viewBox, so clipped labels fail QA instead of shipping.
+const CLIP_SELECTOR='svg.object-strip-svg,svg.compare-svg,svg.net-svg,svg.top-view-svg,svg.side-view-svg';
+const labelClip=await page.evaluate((sel)=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const prevHidden=pages.map(p=>p.hidden);
+  pages.forEach(p=>{p.hidden=false;});
+  void document.body.offsetHeight;
+  const bad=[];
+  for(const svg of document.querySelectorAll(sel)){
+    const vb=svg.viewBox.baseVal;
+    for(const t of svg.querySelectorAll('text')){
+      const b=t.getBBox();
+      if(b.width===0&&b.height===0)continue;
+      if(b.x<vb.x-1||b.y<vb.y-1||b.x+b.width>vb.x+vb.width+1||b.y+b.height>vb.y+vb.height+1){
+        bad.push((svg.getAttribute('aria-label')||svg.getAttribute('class'))+':"'+t.textContent+'" clipped outside viewBox');
+      }
+    }
+  }
+  pages.forEach((p,i)=>{p.hidden=prevHidden[i];});
+  return bad;
+},CLIP_SELECTOR);
+ok(labelClip.length===0,'SSOT 15.3 expansion-diagram label clipping: '+labelClip.join(' | '));
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});
