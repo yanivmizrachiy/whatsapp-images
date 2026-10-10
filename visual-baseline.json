@@ -1,8 +1,8 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "5c93d7c76ad4be8aa98be1bdb6d544545abc31f2",
-  "sourceWorkflowRun": 37924233196,
+  "sourceCommit": "fee27ca6dbbe7a13df6853b3753c385a1355cdbe",
+  "sourceWorkflowRun": 38074376318,
   "artifact": "cone-visual-qa",
   "reviewedBy": "Claude Code (Opus 4.8) — regenerated from CI render for the harut expansion",
   "reviewedAt": "2026-10-09",
@@ -10,7 +10,7 @@
   "pages": {
     "page-01.png": {"sha256": "964f1587d68a12a3393c9e82c7617a1b94f3e28f05909229f643ad105bbcbca9", "bytes": 88659},
     "page-02.png": {"sha256": "9a5e9977f8ad10dc021428a3698bcb2d81243508c669814937f7fe60cf30d0d2", "bytes": 78464},
-    "page-03.png": {"sha256": "5440060856c2af5c9db6458374eff0b011ee5166a29cff7242fe89cce54aeccd", "bytes": 74733},
+    "page-03.png": {"sha256": "45070ae22b561b4519d5da031ecbe5eddfdd1fe5fca31ce362448fcce5f18e06", "bytes": 74070},
     "page-04.png": {"sha256": "3f7bec552d76e10027e216a7f5b9ec5961875a3966d2f2d598b24f08bf920ea1", "bytes": 57534},
     "page-05.png": {"sha256": "1861f3a2d03ab268dedfd24732ce7511969ac3d1b0ea83be3f497e19ec148214", "bytes": 55203},
     "page-06.png": {"sha256": "5807084d78e9f80d1d4973c13957ce5aca4955faf33668c95bc57a8f959f9f44", "bytes": 36684},
@@ -40,7 +40,7 @@
     "page-30.png": {"sha256": "f93602c20d356969843f5e00a7556593c41d8fbc7768e1147e8854f8b876294b", "bytes": 44418},
     "page-31.png": {"sha256": "c200701db0a9599775812283b0eb77d0ba91835fa68b7d621c6e86d282575972", "bytes": 35782},
     "page-32.png": {"sha256": "ec6bad3f49ea8d007a8f60464826adfe72cc1f8f92a87adeb941900a4e9bcb4c", "bytes": 50135},
-    "page-33.png": {"sha256": "7fda89ca5ee2febe05a3fad64535aa4f58e755dbe59c814e063f477c5a8af394", "bytes": 36259},
+    "page-33.png": {"sha256": "f10bd1a2f19382dd9bdc67c48b18813ae6c6d8341685612cd61f902e07e36954", "bytes": 36118},
     "page-34.png": {"sha256": "590aec9f2750ccb43bcbb8a84fc029a9ba7b7faeeee2a33f6afdd17364272629", "bytes": 49353},
     "page-35.png": {"sha256": "7631cb3adb169433d0924dcaa8a2691537e7efee4e2d3c408312078afaa62dd6", "bytes": 58090},
     "page-36.png": {"sha256": "ca8ef7dda5b7651dbe31dd30149c19acbfc1bd302588082570530c8c308feb1c", "bytes": 48198},
@@ -53,6 +53,6 @@
     "page-43.png": {"sha256": "c4a052c96767cf790c79686e18a0aaffbd29ae43d58bc69271ae9f020c55366b", "bytes": 48556},
     "page-44.png": {"sha256": "5e78e15cb5f795bc19626e094d1593dd67b39aafae2179d7d3b2656bbdfce820", "bytes": 68007},
     "page-45.png": {"sha256": "d293f2be52e37978bf2d70199da5f4d54eb37922b43d59c04814a15984bc3e1f", "bytes": 41796},
-    "page-46.png": {"sha256": "f8d9f70e153a839a66aabd1277bdb23ab97f117743a25cd3eee511f990f4014b", "bytes": 44126}
+    "page-46.png": {"sha256": "510b98e1432b6308971eeddf2a5f9606977f7cff39f19612d055dceb99e30af9", "bytes": 44173}
   }
 }
