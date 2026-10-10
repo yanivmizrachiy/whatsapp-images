@@ -1,11 +1,11 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "313ec112216bbb7f6695b17cad42732f01b1affb",
-  "sourceWorkflowRun": 38082798048,
+  "sourceCommit": "cf6df0114de2c6f3cb4ed2084e19aaac3872be0f",
+  "sourceWorkflowRun": 38090116829,
   "artifact": "cone-visual-qa",
-  "reviewedBy": "Claude Code (Opus 4.8) — regenerated from CI render after merging pages 30-31 into one A4 + adding the to-scale cone figure (SSOT §26.7.8)",
-  "reviewedAt": "2026-10-10",
+  "reviewedBy": "ChatGPT — regenerated from CI render after student-facing units/קוטר/topic-title policy; static + browser QA passed before baseline refresh",
+  "reviewedAt": "2026-10-11",
   "pageCount": 45,
   "pages": {
     "page-01.png": {
@@ -85,8 +85,8 @@
       "bytes": 66954
     },
     "page-20.png": {
-      "sha256": "76d3ab2da739761c7b4e08d45a55287f70cf6b176a23f9eca93bb0815f52e524",
-      "bytes": 42729
+      "sha256": "d0ac0e2f531ee8bdb8f3bc7073b35bc29f3464b2310e2fdb960c96e8f679122c",
+      "bytes": 47330
     },
     "page-21.png": {
       "sha256": "d922e9bc99cb67b29511ace7bd7169aead762a7ecca87124f5d60b01f0fd773c",
@@ -121,12 +121,12 @@
       "bytes": 51661
     },
     "page-29.png": {
-      "sha256": "86d8473a2783123fd2605774565eca2be329f74638492f1e4ae0c2b91abb18bd",
-      "bytes": 42539
+      "sha256": "e845b93fda8694aa2551f96925cd52067693951dc7ac6cc0b580d7d22a1d20b2",
+      "bytes": 43923
     },
     "page-30.png": {
-      "sha256": "7adfaa6f5d0255303198fde6fbfcd98f2138bca82ee60265b0245761c868f035",
-      "bytes": 62553
+      "sha256": "8f87a904c602078084c6e9601f63bb362986639f865587386d71bcbeac9457fd",
+      "bytes": 62979
     },
     "page-31.png": {
       "sha256": "0b9cdcdf46c5d64f07ccc02a36e927b7a6515615f71b7c80970184ba636b139b",
