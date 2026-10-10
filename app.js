@@ -90,6 +90,9 @@ const archSectionsSvg=()=>`<svg class="arch-sections" viewBox="0 0 300 340" role
 const circleSvg=()=>`<svg class="circle-svg" viewBox="0 0 240 240" role="img" aria-label="מעגל שמרכזו O"><circle cx="120" cy="120" r="96" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><circle cx="120" cy="120" r="4.5" fill="#111827"/><text x="108" y="114" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#1d4ed8">O</text></svg>`;
 // Right triangle with legs 6 and 8 for the Pythagoras recap (CONE-BRIDGE-05).
 const rightTriangleSvg=()=>`<svg class="right-triangle-svg" viewBox="0 0 300 250" role="img" aria-label="משולש ישר־זווית, ניצבים 6 ו־8 ס״מ"><path d="M80 210 L80 60 L240 210 Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><path d="M80 188 L102 188 L102 210" fill="none" stroke="#1d4ed8" stroke-width="2.5"/><text x="74" y="140" text-anchor="start" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">6 ס״מ</text><text x="160" y="236" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">8 ס״מ</text></svg>`;
+// Upright right cone drawn to a shared scale (8 px per cm) so volume differences are visible.
+// Shape only — no <text>; dimension captions live in the HTML figure beside it (SSOT §15.3-safe).
+const scaleCone=(rCm,hCm)=>{const U=8,rx=rCm*U,ry=Math.max(7,Math.round(rx*0.3)),h=hCm*U,W=rx*2+30,cx=W/2,by=148,ay=by-h;return `<svg class="scale-cone-svg" viewBox="0 0 ${W} 160" role="img" aria-label="חרוט ישר, רדיוס ${rCm} סנטימטר וגובה ${hCm} סנטימטר, בקנה מידה"><ellipse cx="${cx}" cy="${by}" rx="${rx}" ry="${ry}" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="${cx-rx}" y1="${by}" x2="${cx}" y2="${ay}" stroke="#1d4ed8" stroke-width="3"/><line x1="${cx+rx}" y1="${by}" x2="${cx}" y2="${ay}" stroke="#1d4ed8" stroke-width="3"/><line x1="${cx}" y1="${ay}" x2="${cx}" y2="${by}" stroke="#94a3b8" stroke-width="2" stroke-dasharray="6 5"/><circle cx="${cx}" cy="${ay}" r="3.5" fill="#111827"/></svg>`;};
 const claimCheckList=(id)=>{const full=prompt(id);const cut=full.indexOf('(1)');const intro=full.slice(0,cut).trim();const items=full.slice(cut).split(/\(\d+\)\s*/).map(s=>s.trim()).filter(Boolean);return `<div class="task first">${intro}</div><ul class="claim-list">${items.map(t=>`<li><span class="claim-box"></span><span class="claim-text">${t}</span></li>`).join('')}</ul>`;};
 const addPage=(html,foot=footer)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+foot();book.append(p);return p};
 let pageNumber=1;
@@ -284,14 +287,17 @@ ${renderSubpart(findPart(conversionParts,'ג'),{size:'subpart-medium',unit:'סמ
 
 const changeParts=splitHebrewSubsections(prompt('CONE-CHANGE-01'),['א','ב','ג','ד']);
 addPage(`${nextHeader('חישוב הפוך ושינוי ממדים')}
-<div class="task first">${prompt('CONE-REV-01')}</div>${grid('reverse')}${answerLine('ס״מ')}
+<div class="task first">${prompt('CONE-REV-01')}</div>${grid('reverse-compact')}${answerLine('ס״מ')}
 <div class="question-intro change-intro">${changeParts.intro}</div>
-${renderSubpart(findPart(changeParts,'א'),{size:'subpart-small',unit:'סמ״ק'})}
-${renderSubpart(findPart(changeParts,'ב'),{size:'subpart-medium',unit:'סמ״ק'})}`);
-
-addPage(`${nextHeader('שינוי ממדים — המשך')}
-${renderSubpart(findPart(changeParts,'ג'),{size:'subpart-medium',unit:'סמ״ק'})}
-${renderSubpart(findPart(changeParts,'ד'),{size:'subpart-explain'})}`);
+<figure class="dim-change-figure" aria-label="שלושה חרוטים באותו קנה מידה: החרוט המקורי, אותו חרוט כשהגובה כפול, ואותו חרוט כשהרדיוס כפול">
+<div class="dc-cell"><div class="dc-cone">${scaleCone(3,8)}</div><figcaption><b>מקור</b><span>r = 3, h = 8 ס״מ</span></figcaption></div>
+<div class="dc-cell"><div class="dc-cone">${scaleCone(3,16)}</div><figcaption><b>הגובה כפול</b><span>r = 3, h = 16 ס״מ</span></figcaption></div>
+<div class="dc-cell"><div class="dc-cone">${scaleCone(6,8)}</div><figcaption><b>הרדיוס כפול</b><span>r = 6, h = 8 ס״מ</span></figcaption></div>
+</figure>
+${renderSubpart(findPart(changeParts,'א'),{size:'subpart-mini',unit:'סמ״ק'})}
+${renderSubpart(findPart(changeParts,'ב'),{size:'subpart-mini',unit:'סמ״ק'})}
+${renderSubpart(findPart(changeParts,'ג'),{size:'subpart-mini',unit:'סמ״ק'})}
+${renderSubpart(findPart(changeParts,'ד'),{size:'subpart-mini'})}`);
 
 addPage(`${nextHeader('זיהוי חרוטים במנחים שונים')}
 <div class="task first">${prompt('CONE-ORIENT-01')}</div>
