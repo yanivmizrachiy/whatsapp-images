@@ -32,7 +32,7 @@
 | R22 | אוריינטציות חרוט מגוונות | עמוד 9; `orientedConeSvg` | coverage + reviewed screenshots | ✅ בוצע | אין |
 | R23 | שרטוט עצמאי של תלמיד | עמוד 9 | browser QA | ✅ בוצע | אין |
 | R24 | SVG/HTML וקטורי | diagram helpers | browser/PDF QA | ✅ בוצע | אין |
-| R25 | אזורי תווית בטוחים ללא חפיפות | `coneSvg`, `axialSvg`, `waffleConeSvg` | manual review של page-02/page-05/page-10 + full 11-page CI artifact; mobile/PDF QA | ✅ בוצע | אין חפיפת תוויות נראית בדיאגרמות הפעילות; אין צורך ב-refactor ללא ROI |
+| R25 | אזורי תווית בטוחים ללא חפיפות | `coneSvg`, `axialSvg`, `waffleConeSvg` | שער גאומטרי דטרמיניסטי ב־`browser-qa.mjs` — כל תווית שרטוט מרוחקת ≥2 יחידות מכל קו מבנה ואינה נחתכת מחוץ ל־viewBox; תוקנה חפיפת „10 ס״מ” בוופל ומרווח „ℓ” בחתך הצירי | ✅ בוצע | אין חפיפת תוויות |
 | R26 | A4 ‏210×297 ללא internal overflow | `styles.css` | 5 viewports + CI | ✅ בוצע | אין |
 | R27 | scale חיצוני במובייל | `fitPage`, CSS transform | browser QA | ✅ בוצע | אין |
 | R28 | RTL מלא | HTML/CSS | browser QA | ✅ בוצע | אין |
@@ -60,6 +60,21 @@
 | R50 | SOURCE_OF_TRUTH ללא מקור מתחרה/drift | `SOURCE_OF_TRUTH.md`, `ssot-qa.mjs` | SSOT QA | ✅ בוצע | אין |
 | R51 | Evidence before claim | GitHub commits + Actions | CI run 37856393919 + reviewed artifact | ✅ בוצע | אין |
 | R52 | 100% רק כשכל השערים סגורים | `STUDENT_PROGRESS.json` + CI | כל השערים הקנוניים סגורים; יניב הורה בשיחה לסיים את חרוט חדש למאה אחוז | ✅ בוצע | אין |
+| R53 | הגדרת חרוט כהשלמה פעילה (§10.4) | `app.js` עמוד היכרות, `qa.mjs`, `coverage-qa.mjs` | שער: ≥3 בלנקים, אין מסירה פסיבית של בסיס/קודקוד/מעטפת | ✅ בוצע | אין |
+| R54 | קומיקס צבעוני משולב (§26.5.1) | `content.js:comicStrip`, `app.js`, `styles.css` | שער comic + preview עמוד 2 | ✅ בוצע | אין |
+| R55 | עמוד „מסמנים את חלקי החרוט” (§26) | `CONE-PARTS-01/INVAR-01/CLAIM-01`, `app.js` | coverage QA + preview עמוד 3 (ללא overflow) | ✅ בוצע | אין |
+| R56 | איורי חרוט תלת־ממדי מיובאים (§26.5.2) | `assets/cone-3d-upright\|down\|side.svg` | preview עמוד 3; וקטורי בהדפסה | ✅ בוצע | אין |
+| R57 | סבב הרחבה מתועד ב־SSOT (§2.7/§26) | `SOURCE_OF_TRUTH.md`, `STUDENT_PROGRESS.json` G15 | progress coupling + ssot-qa | 🔄 בתהליך | שלבים 2–5 בהמשך |
+| R58 | שרטוט נשאר בקופסתו ואינו גולש/חופף תוכן (§16.7) | `styles.css` (`.intro-cone` חוסם SVG לגובה), `browser-qa.mjs` שער containment | containment gate: אפס גלישה של svg/img דיאגרמה מעבר לקופסת ההורה; תוקנה חפיפת חרוט עמוד 2 | ✅ בוצע | אין |
+| R59 | הרחבה שלב 2 — זיהוי/מושגים (§26.3.2/§26.7.2) | `content.js` (CONE-OBJ/WHO/VIEW), `app.js` (8 עמודים + 6 דיאגרמות) | QA 36 IDs/20 דפים + browser-QA (ללא overflow/spill/חיתוך) + ביקורת עמוד־עמוד | ✅ בוצע | שלבים 3–5 בהמשך |
+| R60 | תוויות דיאגרמות ההרחבה בתוך ה־viewBox (§15.3) | `browser-qa.mjs` שער label-clipping | clip gate: אפס `<text>` חתוך מחוץ ל־viewBox; תוקנו שתי תוויות VIEW | ✅ בוצע | אין |
+| R61 | הרחבה שלב 3 — פריסה/זווית הגזרה/חתכים (§26.3.2/§26.7.3) | `content.js` (CONE-NET/SEC/CUT), `app.js` (8 עמודים + 6 דיאגרמות), `styles.css` (`.diagram-box`, `.sec-table`) | QA 53 IDs/28 דפים + browser-QA (ללא overflow/spill/חיתוך, PDF 28 דפים) + ביקורת עמוד־עמוד (12–19) | ✅ בוצע | שלבים 4–5 בהמשך |
+| R62 | דיאגרמות שלב 3 בתוך הקופסה והתוויות בתוך ה־viewBox (§16.7/§15.3) | `browser-qa.mjs` (6 מחלקות SVG חדשות בבוררי containment + clip) | containment+clip gates ירוקים על כל 6 הדיאגרמות החדשות | ✅ בוצע | אין |
+| R63 | הרחבה שלב 4 — יחס השליש וניתוח שגיאות (§26.3.2/§26.7.4) | `content.js` (CONE-RATIO/ERR), `app.js` (6 עמודים + 2 דיאגרמות + ratioTable), `styles.css` (`.ratio-figure`/`.ratio-svg`/`.diameter-cone-svg`) | QA 66 IDs/34 דפים + math-QA (יחסים/שגיאות נכונים) + browser-QA (ללא overflow/spill/חיתוך, PDF 34 דפים) + ביקורת עמוד־עמוד (21–26) | ✅ בוצע | שלב 5 בהמשך |
+| R64 | ריענון baseline ויזואלי ל־28 דפים מ־CI (§26.7.3a) | `visual-baseline.json` מ־artifact ריצה 37919501489 (fb8e823) | visual-regression-qa עבר מקומית, 28 דפים; תחזוקת CI בלבד | ✅ בוצע | מתרענן שוב אחרי כל שלב הרחבה |
+| R65 | הרחבה שלב 5 — יישומים/חקר אדריכלי/גשר חזרה (§26.3.2/§26.7.5) | `content.js` (CONE-APP/ARCH/BRIDGE), `app.js` (12 עמודים + 7 דיאגרמות), `styles.css` (`.funnel-svg`/`.beam-svg`/`.arch-*`/`.circle-svg`/`.right-triangle-svg`/`.invert-pair`) | QA 82 IDs/46 דפים + math-QA + browser-QA (ללא overflow/spill/חיתוך, PDF 46 דפים) + ביקורת עמוד־עמוד (33–46); משלים את רשימת §26.4.2 | ✅ בוצע | סגירה: baseline+CI ירוק |
+| R66 | מניעת צפיפות A4 ובטיחות תוויות בשלב 5 (§16.6/§15.3) | `app.js`: פיצול 3 עמודים חורגים לשישה מרווחים; הסרת תווית הקו היוצר „15 ס״מ” מאיור הכובע (הערך בטקסט) | browser-QA: אפס גלישת A4 ואפס התנגשות label-safety על כל 46 הדפים; מדידת scrollHeight/clientHeight לכל עמוד = ללא חריגה | ✅ בוצע | אין |
+| R67 | איורי raster כבדים (§26.5.4) | — | נדחו במכוון ב־SSOT לשלב מאוחר עם אופטימיזציה; אינם דרישת הסבב הנוכחי | ➖ לא קנוני בסבב זה | אופציונלי בעתיד |
 
 ## כללי עדכון ראיות
 
