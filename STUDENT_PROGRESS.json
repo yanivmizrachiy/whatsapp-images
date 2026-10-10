@@ -10,8 +10,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-10T09:30:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — expansion round CLOSED: PR #4 merged to main (480b383), main CI + Vercel production green; canonical state holds the 46-page/82-question graded workbook at 100%",
+  "updatedAt": "2026-10-10T11:15:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — post-closure quality polish (Yaniv 2026-10-10: bring everything except teacher pages to 100%): de-duplicated CONE-CLAIM-01, diversified CONE-APP-01 & CONE-BRIDGE-06 numbers off the locked question, upgraded CI actions off deprecated Node 20",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -392,7 +392,8 @@
         "phase-5 browser QA: no internal overflow, no figure spill, no label clipping across all 46 pages; PDF 46 A4 pages; per-page scrollHeight/clientHeight probe shows no A4 overflow and no sub-45% sparse page",
         "phase-5 preview desktop: split pages 33 (funnel), 34 (hat), 40 (inversion), 41 (architectural roof), 45 (area+Pythagoras), 46 (axial section) reviewed page-by-page — colorful, uncrowded, figures inside boxes, labels collision-free",
         "phase-5 visual regression: baseline regenerated from CI run 37924233196 (46 pages); visual-regression-qa PASS against the CI PNGs",
-        "adversarial math/pedagogy review (background workflow, 11 agents / 6 strand buckets → independent high-effort skeptic re-derivation per finding): 0 confirmed mathematical errors across all 82 questions; every flagged item (5) verified as a non-defect (notation/duplication, no wrong answer/unit). CONE-SEC-01 answer-key slant symbol aligned to the canonical ℓ (metadata only; not student-rendered)"
+        "adversarial math/pedagogy review (background workflow, 11 agents / 6 strand buckets → independent high-effort skeptic re-derivation per finding): 0 confirmed mathematical errors across all 82 questions; every flagged item (5) verified as a non-defect (notation/duplication, no wrong answer/unit). CONE-SEC-01 answer-key slant symbol aligned to the canonical ℓ (metadata only; not student-rendered)",
+        "post-closure polish (2026-10-10): CONE-CLAIM-01 re-themed to a distinct misconception (2-D flat shape vs 3-D solid) to remove overlap with CONE-WHO-01; CONE-APP-01 funnel changed to r=7/h=9→147π and CONE-BRIDGE-06-א to r=5/h=12→ℓ=13 so no practice item reuses the locked CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π); funnelSvg labels updated to match. All three re-verified by math + adversarial check"
       ],
       "remaining": []
     }
@@ -526,6 +527,12 @@
       "percent": 100,
       "commit": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
       "note": "Expansion round CLOSED: Yaniv authorized autonomous completion to 100% per SOURCE_OF_TRUTH.md including merge. PR #4 (claude/harut-work → main) merged after fully green CI on head ef53d9e (qa 56s, Vercel deployment completed, preview comments). Main CI run 38072094853 on the merge commit: success; Vercel production deployment for 480b383: success (GitHub commit status Vercel=success). The push-to-main workflow persisted validated exports as [skip ci] commit 9ab0dff. main — the canonical implementation state — now holds the full 46-page / 82-question graded harut workbook at evidence-backed 100%. This history/closure reconciliation lands via a short follow-up PR (no direct commit to main)."
+    },
+    {
+      "date": "2026-10-10",
+      "percent": 100,
+      "commit": "pending-polish",
+      "note": "Post-closure quality polish (Yaniv 2026-10-10: 'don't touch teacher pages; bring everything else to 100%'). Acted on the three non-defect observations from the adversarial review plus CI hygiene: (1) CONE-CLAIM-01 re-themed from the 'two circular bases like a cylinder' claim (which duplicated CONE-WHO-01) to a distinct, fundamental misconception — a cone as a flat 2-D triangle vs a 3-D solid; (2) CONE-APP-01 funnel renumbered r=7/h=9→147π and (3) CONE-BRIDGE-06-א renumbered r=5/h=12→ℓ=13, so no practice question reuses the locked official CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π), with the funnel diagram labels updated to match; (4) CI workflow actions bumped checkout/setup-node/upload-artifact v4→v5 to leave the deprecated Node 20 runtime. Teacher pages untouched (remain locked). Percent unchanged: quality refinement, not scope. Visual baseline regenerated for the affected pages from this round's CI run."
     }
   ]
 }
