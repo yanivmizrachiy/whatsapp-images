@@ -4,8 +4,8 @@
   "scripts": {
     "start": "node server.mjs",
     "preview": "node server.mjs",
-    "qa": "node ssot-qa.mjs && node progress-qa.mjs && node qa.mjs && node math-qa.mjs && node coverage-qa.mjs",
-    "qa:browser": "node browser-qa.mjs && node visual-regression-qa.mjs"
+    "qa": "node ssot-qa.mjs && node progress-qa.mjs && node qa.mjs && node math-qa.mjs && node coverage-qa.mjs && node student-display-policy-qa.mjs",
+    "qa:browser": "node browser-qa.mjs && node student-display-policy-browser-qa.mjs && node visual-regression-qa.mjs"
   },
   "devDependencies": {
     "pdf-lib": "1.17.1",
