@@ -10,8 +10,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-10T11:15:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — post-closure quality polish (Yaniv 2026-10-10: bring everything except teacher pages to 100%): de-duplicated CONE-CLAIM-01, diversified CONE-APP-01 & CONE-BRIDGE-06 numbers off the locked question, upgraded CI actions off deprecated Node 20",
+  "updatedAt": "2026-10-10T13:30:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — SSOT canonical-state reconciliation (Yaniv 2026-10-10: perform all actions to finish 100% of the source of truth): recorded the expansion round's closure evidence in SOURCE_OF_TRUTH.md §2.3/§2.4/§25 (merges 480b383/b18f2f26/0a2d3c6, main CI runs 38072094853/38072540259/38074632409 success, Vercel production success, 15 groups done/46 pages) and refreshed the tracker closure-block latest-green pointers to the final polish merge",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -407,11 +407,11 @@
     "canonicalSourceSynchronized": true,
     "visualReviewCompleted": true,
     "visualRegressionEnabled": true,
-    "mainMergeSha": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
+    "mainMergeSha": "0a2d3c6bd00a072dccd0536ff838c50234e6fd37",
     "firstRoundMainMergeSha": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24",
-    "latestValidatedExportHead": "9ab0dff",
-    "latestGreenCiRun": 38072094853,
-    "latestGreenHead": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
+    "latestValidatedExportHead": "b336dec17ac9fb9b73e84d00e9023982abde7381",
+    "latestGreenCiRun": 38074632409,
+    "latestGreenHead": "0a2d3c6bd00a072dccd0536ff838c50234e6fd37",
     "userClosureInstruction": "Yaniv instructed to finish Harut to 100%, then explicitly requested one contradiction-free source of truth and full reconciliation.",
     "nonCanonicalItemsExcluded": [
       "A stable public URL appeared only in a derived execution document and is not a requirement in SOURCE_OF_TRUTH.md; derived documents cannot add requirements."
@@ -429,7 +429,14 @@
     "expansionMainCiRun": 38072094853,
     "expansionMainCiGreen": true,
     "expansionProductionDeploy": "Vercel production deployment for 480b383 succeeded (GitHub commit status Vercel=success)",
-    "expansionExportsPersistedHead": "9ab0dff"
+    "expansionExportsPersistedHead": "9ab0dff",
+    "reconcileMergeSha": "b18f2f26f4879218194fed3274923baaf6a6724e",
+    "reconcileMainCiRun": 38072540259,
+    "polishMergeSha": "0a2d3c6bd00a072dccd0536ff838c50234e6fd37",
+    "polishMainCiRun": 38074632409,
+    "polishMainCiGreen": true,
+    "polishProductionDeploy": "Vercel production deployment for 0a2d3c6 succeeded (GitHub commit status Vercel=success)",
+    "ssotCanonicalStateReconciled": "SOURCE_OF_TRUTH.md §2.3/§2.4/§25 now record the expansion round's closure evidence (46 pages, 82 questions, 15 groups done, merges 480b383/b18f2f26/0a2d3c6, main CI runs 38072094853/38072540259/38074632409 success, Vercel production success) — the SSOT self-certifies the expansion at 100%, consistent with its §26.7 log"
   },
   "history": [
     {
@@ -533,6 +540,12 @@
       "percent": 100,
       "commit": "fee27ca6dbbe7a13df6853b3753c385a1355cdbe",
       "note": "Post-closure quality polish (Yaniv 2026-10-10: 'don't touch teacher pages; bring everything else to 100%'). Content commit fee27ca; visual baseline regenerated from PR #6 CI run 38074376318 (only pages 3/33/46 drifted, as expected). Acted on the three non-defect observations from the adversarial review plus CI hygiene: (1) CONE-CLAIM-01 re-themed from the 'two circular bases like a cylinder' claim (which duplicated CONE-WHO-01) to a distinct, fundamental misconception — a cone as a flat 2-D triangle vs a 3-D solid; (2) CONE-APP-01 funnel renumbered r=7/h=9→147π and (3) CONE-BRIDGE-06-א renumbered r=5/h=12→ℓ=13, so no practice question reuses the locked official CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π), with the funnel diagram labels updated to match; (4) CI workflow actions bumped checkout/setup-node/upload-artifact v4→v5 to leave the deprecated Node 20 runtime. Teacher pages untouched (remain locked). Percent unchanged: quality refinement, not scope. Visual baseline regenerated for the affected pages from this round's CI run."
+    },
+    {
+      "date": "2026-10-10",
+      "percent": 100,
+      "commit": "pending-ssot-canonical-reconcile",
+      "note": "SSOT canonical-state reconciliation (Yaniv 2026-10-10: 'perform all actions to finish 100% of my requirements in the source of truth'). SOURCE_OF_TRUTH.md still recorded only the FIRST round's closure evidence in its canonical-state (§2.4) and completion-conditions (§25) sections (merge dd89381, run 37856829705, '14 groups') while the expansion was already merged and green on main — an internal inconsistency against its own §26.7 log. Fixed by recording the expansion round's closure evidence in §2.3/§2.4/§25.1/§25.2: 46 A4 pages / 82 questions, §26.4.2 ladder fully covered, 15 groups done; expansion content merge 480b383 (PR #4, main CI run 38072094853 success, Vercel production success), docs-reconcile merge b18f2f26 (PR #5, run 38072540259 success), post-closure polish merge 0a2d3c6 (PR #6, run 38074632409 success, Vercel production success), validated exports persisted at main HEAD b336dec. Tracker closure-block latest-green pointers refreshed from the stale 480b383/38072094853 to the final polish merge 0a2d3c6/38074632409, latestValidatedExportHead to b336dec, and reconcile/polish evidence fields added. Docs + tracker only — no page content, no styles, no QA scripts changed; visual baseline untouched, so CI re-render is byte-identical and stays green. Percent unchanged: the SSOT now self-certifies the expansion at evidence-backed 100%. Teacher pages untouched (remain locked per §2.5). Commit SHA recorded after push."
     }
   ]
 }
