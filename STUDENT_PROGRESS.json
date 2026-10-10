@@ -10,8 +10,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-09T19:05:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — expansion round closure: phase 5 complete + CI-locked visual baseline regenerated (46 pages, run 37924233196); all canonical gates green",
+  "updatedAt": "2026-10-10T09:30:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — expansion round CLOSED: PR #4 merged to main (480b383), main CI + Vercel production green; canonical state holds the 46-page/82-question graded workbook at 100%",
   "headCommit": "c38af8c4819d08d64df36d44d5d2280a043837db",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -406,22 +406,29 @@
     "canonicalSourceSynchronized": true,
     "visualReviewCompleted": true,
     "visualRegressionEnabled": true,
-    "mainMergeSha": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24",
-    "latestValidatedExportHead": "c38af8c4819d08d64df36d44d5d2280a043837db",
-    "latestGreenCiRun": 37856829705,
-    "latestGreenHead": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24",
+    "mainMergeSha": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
+    "firstRoundMainMergeSha": "dd89381bdbc40bdc83755fa0c6a4efe16cc1cf24",
+    "latestValidatedExportHead": "9ab0dff",
+    "latestGreenCiRun": 38072094853,
+    "latestGreenHead": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
     "userClosureInstruction": "Yaniv instructed to finish Harut to 100%, then explicitly requested one contradiction-free source of truth and full reconciliation.",
     "nonCanonicalItemsExcluded": [
       "A stable public URL appeared only in a derived execution document and is not a requirement in SOURCE_OF_TRUTH.md; derived documents cannot add requirements."
     ],
-    "expansionRoundOpen": true,
-    "expansionInstruction": "Yaniv (2026-10-09): significantly expand the student workbook by integrating the harut cone workbook (questions + colorful graphics), graded easy→hard, each question in its best slot, document in SSOT §26. Round reopened per SSOT §2.6/§2.7.",
+    "expansionRoundOpen": false,
+    "expansionRoundClosed": true,
+    "expansionInstruction": "Yaniv (2026-10-09): significantly expand the student workbook by integrating the harut cone workbook (questions + colorful graphics), graded easy→hard, each question in its best slot, document in SSOT §26. Round reopened per SSOT §2.6/§2.7. Yaniv (2026-10-10): finish to 100% per SOURCE_OF_TRUTH.md autonomously with full authorization — including merge to main.",
     "expansionContentCompletePercent": 100,
     "expansionPageCount": 46,
     "expansionLadderComplete": "SSOT §26.4.2 fully covered (OBJ/WHO/VIEW/NET/SEC/CUT/RATIO/ERR/APP/ARCH/BRIDGE across phases 1-5); heavy raster scenes (§26.5.4) intentionally deferred, not a requirement of this round",
     "expansionBaselineRun": 37924233196,
     "expansionBaselineHead": "5c93d7c76ad4be8aa98be1bdb6d544545abc31f2",
-    "expansionPendingToClose": "final green CI on the visual-baseline closure commit, then merge PR #4 to main (merge is Yaniv's decision; not auto-merged)"
+    "expansionMergeSha": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
+    "expansionMergedVia": "PR #4 merged to main (merge commit), authorized by Yaniv 2026-10-10",
+    "expansionMainCiRun": 38072094853,
+    "expansionMainCiGreen": true,
+    "expansionProductionDeploy": "Vercel production deployment for 480b383 succeeded (GitHub commit status Vercel=success)",
+    "expansionExportsPersistedHead": "9ab0dff"
   },
   "history": [
     {
@@ -511,8 +518,14 @@
     {
       "date": "2026-10-09",
       "percent": 100,
-      "commit": "pending-review-notation",
-      "note": "Adversarial math/pedagogy verification (background workflow, 11 agents across 6 strand buckets with independent high-effort skeptic re-derivation per finding) found 0 confirmed mathematical errors across all 82 questions; all 5 flagged items were verified as non-defects (notation/duplication, never a wrong answer or unit). Applied one zero-risk consistency fix: CONE-SEC-01 answer-key slant symbol s→ℓ (answer field is metadata, not student-rendered, so page pixels and the visual baseline are unchanged and CI stays green). Three duplication observations (CONE-CLAIM-01≈CONE-WHO-01; CONE-APP-01 & CONE-BRIDGE-06-א reuse the locked CURR-CONE-06 r=6/h=8 numbers) were surfaced to Yaniv for his pedagogical decision rather than changed unilaterally, since they touch the locked official question and are defensible reinforcement. Percent unchanged: verification + metadata polish, not a scope change."
+      "commit": "ef53d9e34ec667a6d172e721f2d159609701eebb",
+      "note": "Adversarial math/pedagogy verification (background workflow, 11 agents across 6 strand buckets with independent high-effort skeptic re-derivation per finding) found 0 confirmed mathematical errors across all 82 questions; all 5 flagged items were verified as non-defects (notation/duplication, never a wrong answer or unit). Applied one zero-risk consistency fix: CONE-SEC-01 answer-key slant symbol s→ℓ (answer field is metadata, not student-rendered, so page pixels and the visual baseline are unchanged and CI stays green). Three duplication observations (CONE-CLAIM-01≈CONE-WHO-01; CONE-APP-01 & CONE-BRIDGE-06-א reuse the locked CURR-CONE-06 r=6/h=8 numbers) were surfaced to Yaniv for his pedagogical decision rather than changed unilaterally, since they touch the locked official question and are defensible reinforcement. Percent unchanged: verification + metadata polish, not a scope change. CI on ef53d9e: fully green (qa + Vercel preview + preview comments)."
+    },
+    {
+      "date": "2026-10-10",
+      "percent": 100,
+      "commit": "480b3837a47a069ed64d6a16ec45f7df06c52d8f",
+      "note": "Expansion round CLOSED: Yaniv authorized autonomous completion to 100% per SOURCE_OF_TRUTH.md including merge. PR #4 (claude/harut-work → main) merged after fully green CI on head ef53d9e (qa 56s, Vercel deployment completed, preview comments). Main CI run 38072094853 on the merge commit: success; Vercel production deployment for 480b383: success (GitHub commit status Vercel=success). The push-to-main workflow persisted validated exports as [skip ci] commit 9ab0dff. main — the canonical implementation state — now holds the full 46-page / 82-question graded harut workbook at evidence-backed 100%. This history/closure reconciliation lands via a short follow-up PR (no direct commit to main)."
     }
   ]
 }
