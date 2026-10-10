@@ -266,6 +266,8 @@ async function inspectViewport(width,height,label){
       rawW,rawH,
       transformedW:box.width,
       transformedH:box.height,
+      transformedLeft:box.left,
+      transformedRight:box.right,
       bodyOverflow:document.documentElement.scrollWidth>innerWidth+1,
       pageOverflow:pages.some(p=>p.scrollWidth>p.clientWidth+1||p.scrollHeight>p.clientHeight+1),
       controls,
@@ -286,6 +288,9 @@ async function inspectViewport(width,height,label){
   ok(result.rubik&&result.heebo,`${label}: canonical Rubik/Heebo fonts did not load`);
   ok(result.imagesOk,`${label}: one or more required images failed to load`);
   if(width<=850)ok(result.transformedW<=width-8,`${label}: scaled A4 wider than viewport`);
+  // §20.1: on mobile the scaled A4 page must be fully visible (not pushed off-screen / clipped).
+  // #book{overflow:hidden} would otherwise mask a horizontal clip from the bodyOverflow check.
+  if(width<=850)ok(result.transformedLeft>=-1&&result.transformedRight<=width+1,`${label}: scaled A4 horizontally clipped (left=${Math.round(result.transformedLeft)}, right=${Math.round(result.transformedRight)}, viewport=${width})`);
 }
 
 await inspectViewport(1440,1200,'desktop');

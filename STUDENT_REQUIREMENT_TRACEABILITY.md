@@ -34,7 +34,7 @@
 | R24 | SVG/HTML וקטורי | diagram helpers | browser/PDF QA | ✅ בוצע | אין |
 | R25 | אזורי תווית בטוחים ללא חפיפות | `coneSvg`, `axialSvg`, `waffleConeSvg` | שער גאומטרי דטרמיניסטי ב־`browser-qa.mjs` — כל תווית שרטוט מרוחקת ≥2 יחידות מכל קו מבנה ואינה נחתכת מחוץ ל־viewBox; תוקנה חפיפת „10 ס״מ” בוופל ומרווח „ℓ” בחתך הצירי | ✅ בוצע | אין חפיפת תוויות |
 | R26 | A4 ‏210×297 ללא internal overflow | `styles.css` | 5 viewports + CI | ✅ בוצע | אין |
-| R27 | scale חיצוני במובייל | `fitPage`, CSS transform | browser QA | ✅ בוצע | אין |
+| R27 | scale חיצוני במובייל; גאומטריית A4 אינה משתנה (§20.1) | `fitPage`, CSS `transform` + `transform-origin:top right` | browser QA + horizontal-containment assertion (העמוד גלוי במלואו 360/390/412, left>=-1 && right<=viewport) | ✅ בוצע | אין (חיתוך הפורטרייט תוקן 2026-10-11) |
 | R28 | RTL מלא | HTML/CSS | browser QA | ✅ בוצע | אין |
 | R29 | MathJax/TeX עקבי | `index.html`, `app.js` | browser assets QA | ✅ בוצע | אין |
 | R30 | טקסט תלמיד 400–500, ללא bold כבד | `styles.css` | contract + visual review | ✅ בוצע | אין |
@@ -64,18 +64,20 @@
 | R54 | קומיקס צבעוני משולב (§26.5.1) | `content.js:comicStrip`, `app.js`, `styles.css` | שער comic + preview עמוד 2 | ✅ בוצע | אין |
 | R55 | עמוד „מסמנים את חלקי החרוט” (§26) | `CONE-PARTS-01/INVAR-01/CLAIM-01`, `app.js` | coverage QA + preview עמוד 3 (ללא overflow) | ✅ בוצע | אין |
 | R56 | איורי חרוט תלת־ממדי מיובאים (§26.5.2) | `assets/cone-3d-upright\|down\|side.svg` | preview עמוד 3; וקטורי בהדפסה | ✅ בוצע | אין |
-| R57 | סבב הרחבה מתועד ב־SSOT (§2.7/§26) | `SOURCE_OF_TRUTH.md`, `STUDENT_PROGRESS.json` G15 | progress coupling + ssot-qa | 🔄 בתהליך | שלבים 2–5 בהמשך |
+| R57 | סבב הרחבה מתועד ב־SSOT (§2.7/§26) | `SOURCE_OF_TRUTH.md`, `STUDENT_PROGRESS.json` G15 | progress coupling + ssot-qa | ✅ בוצע | שלבים 1–5 הושלמו ומוזגו (G15=100%) |
 | R58 | שרטוט נשאר בקופסתו ואינו גולש/חופף תוכן (§16.7) | `styles.css` (`.intro-cone` חוסם SVG לגובה), `browser-qa.mjs` שער containment | containment gate: אפס גלישה של svg/img דיאגרמה מעבר לקופסת ההורה; תוקנה חפיפת חרוט עמוד 2 | ✅ בוצע | אין |
-| R59 | הרחבה שלב 2 — זיהוי/מושגים (§26.3.2/§26.7.2) | `content.js` (CONE-OBJ/WHO/VIEW), `app.js` (8 עמודים + 6 דיאגרמות) | QA 36 IDs/20 דפים + browser-QA (ללא overflow/spill/חיתוך) + ביקורת עמוד־עמוד | ✅ בוצע | שלבים 3–5 בהמשך |
+| R59 | הרחבה שלב 2 — זיהוי/מושגים (§26.3.2/§26.7.2) | `content.js` (CONE-OBJ/WHO/VIEW), `app.js` (8 עמודים + 6 דיאגרמות) | QA 36 IDs/20 דפים + browser-QA (ללא overflow/spill/חיתוך) + ביקורת עמוד־עמוד | ✅ בוצע | אין (שלבים 3–5 הושלמו) |
 | R60 | תוויות דיאגרמות ההרחבה בתוך ה־viewBox (§15.3) | `browser-qa.mjs` שער label-clipping | clip gate: אפס `<text>` חתוך מחוץ ל־viewBox; תוקנו שתי תוויות VIEW | ✅ בוצע | אין |
-| R61 | הרחבה שלב 3 — פריסה/זווית הגזרה/חתכים (§26.3.2/§26.7.3) | `content.js` (CONE-NET/SEC/CUT), `app.js` (8 עמודים + 6 דיאגרמות), `styles.css` (`.diagram-box`, `.sec-table`) | QA 53 IDs/28 דפים + browser-QA (ללא overflow/spill/חיתוך, PDF 28 דפים) + ביקורת עמוד־עמוד (12–19) | ✅ בוצע | שלבים 4–5 בהמשך |
+| R61 | הרחבה שלב 3 — פריסה/זווית הגזרה/חתכים (§26.3.2/§26.7.3) | `content.js` (CONE-NET/SEC/CUT), `app.js` (8 עמודים + 6 דיאגרמות), `styles.css` (`.diagram-box`, `.sec-table`) | QA 53 IDs/28 דפים + browser-QA (ללא overflow/spill/חיתוך, PDF 28 דפים) + ביקורת עמוד־עמוד (12–19) | ✅ בוצע | אין (שלבים 4–5 הושלמו) |
 | R62 | דיאגרמות שלב 3 בתוך הקופסה והתוויות בתוך ה־viewBox (§16.7/§15.3) | `browser-qa.mjs` (6 מחלקות SVG חדשות בבוררי containment + clip) | containment+clip gates ירוקים על כל 6 הדיאגרמות החדשות | ✅ בוצע | אין |
-| R63 | הרחבה שלב 4 — יחס השליש וניתוח שגיאות (§26.3.2/§26.7.4) | `content.js` (CONE-RATIO/ERR), `app.js` (6 עמודים + 2 דיאגרמות + ratioTable), `styles.css` (`.ratio-figure`/`.ratio-svg`/`.diameter-cone-svg`) | QA 66 IDs/34 דפים + math-QA (יחסים/שגיאות נכונים) + browser-QA (ללא overflow/spill/חיתוך, PDF 34 דפים) + ביקורת עמוד־עמוד (21–26) | ✅ בוצע | שלב 5 בהמשך |
+| R63 | הרחבה שלב 4 — יחס השליש וניתוח שגיאות (§26.3.2/§26.7.4) | `content.js` (CONE-RATIO/ERR), `app.js` (6 עמודים + 2 דיאגרמות + ratioTable), `styles.css` (`.ratio-figure`/`.ratio-svg`/`.diameter-cone-svg`) | QA 66 IDs/34 דפים + math-QA (יחסים/שגיאות נכונים) + browser-QA (ללא overflow/spill/חיתוך, PDF 34 דפים) + ביקורת עמוד־עמוד (21–26) | ✅ בוצע | אין (שלב 5 הושלם) |
 | R64 | ריענון baseline ויזואלי ל־28 דפים מ־CI (§26.7.3a) | `visual-baseline.json` מ־artifact ריצה 37919501489 (fb8e823) | visual-regression-qa עבר מקומית, 28 דפים; תחזוקת CI בלבד | ✅ בוצע | מתרענן שוב אחרי כל שלב הרחבה |
 | R65 | הרחבה שלב 5 — יישומים/חקר אדריכלי/גשר חזרה (§26.3.2/§26.7.5) | `content.js` (CONE-APP/ARCH/BRIDGE), `app.js` (12 עמודים + 7 דיאגרמות), `styles.css` (`.funnel-svg`/`.beam-svg`/`.arch-*`/`.circle-svg`/`.right-triangle-svg`/`.invert-pair`) | QA 82 IDs/46 דפים + math-QA + browser-QA (ללא overflow/spill/חיתוך, PDF 46 דפים) + ביקורת עמוד־עמוד (33–46); משלים את רשימת §26.4.2 | ✅ בוצע | סגירה: baseline+CI ירוק |
 | R66 | מניעת צפיפות A4 ובטיחות תוויות בשלב 5 (§16.6/§15.3) | `app.js`: פיצול 3 עמודים חורגים לשישה מרווחים; הסרת תווית הקו היוצר „15 ס״מ” מאיור הכובע (הערך בטקסט) | browser-QA: אפס גלישת A4 ואפס התנגשות label-safety על כל 46 הדפים; מדידת scrollHeight/clientHeight לכל עמוד = ללא חריגה | ✅ בוצע | אין |
 | R67 | איורי raster כבדים (§26.5.4) | — | נדחו במכוון ב־SSOT לשלב מאוחר עם אופטימיזציה; אינם דרישת הסבב הנוכחי | ➖ לא קנוני בסבב זה | אופציונלי בעתיד |
 | R68 | ליטוש איכות לאחר סגירה — אי־כפילות ו־CI (§26.7.6) | `content.js` (CLAIM-01 מוקדה מחדש; APP-01→r7/h9/147π; BRIDGE-06-א→r5/h12/ℓ13), `app.js` (תוויות משפך), `.github/workflows/qa.yml` (actions v4→v5) | אין כפילות מול CURR-CONE-06 הנעולה ולא מול WHO-01; math-QA + ביקורת אדוורסרית חוזרת ירוקות; CI יוצא מ־Node 20 | ✅ בוצע | עמודי מורה נעולים |
+| R69 | כללי תצוגה מחייבים לתלמיד (§27): „קוטר” במילה במקום הסימן d, יחידה על כל מידה מוצגת, כותרת H1 נושא בלבד עם השלמת נוסחה כמשימה נפרדת, שימור רשת 5×5 מ״מ | `student-display-policy.js` (post-render), `index.html` | `student-display-policy-qa.mjs` (static) + `student-display-policy-browser-qa.mjs` (rendered DOM, qa:browser) | ✅ בוצע | נאכף בשכבת post-render + browser-gate; איחוד לתוך §9/§12 ואכיפת fast-suite — להחלטת Yaniv/GPT |
+| R70 | איחוד עמ' 30–31 לעמוד אחד (§26.7.8, 46→45) + תיקון חיתוך מובייל פורטרייט (§20.1) | `app.js` (addPage ממוזג + scaleCone), `styles.css` (`transform-origin:top right`), `browser-qa.mjs` (horizontal-containment), `qa.mjs` (ספירה מדויקת 45/82 + glyph על content.js) | אימות חי 360/390/412 (כל 45 העמודים גלויים, 0 חיתוך) + דסקטופ ללא שינוי (baseline שמור) + browser-QA containment + `npm run qa` | ✅ בוצע | אין |
 
 ## כללי עדכון ראיות
 
@@ -91,3 +93,14 @@
 - CI run `37856393919` עבר: contract QA, progress coupling, browser A4/mobile/print/PDF ו־visual regression.
 - R41 הוסר כחסם מפני שאינו מופיע ב־`SOURCE_OF_TRUTH.md`; הוא נולד במסמך ביצוע נגזר, שאינו רשאי להוסיף דרישות לפי §1.5.
 - אין עמודי מורה פעילים; סבב דפי התלמיד נסגר בהתאם להוראה המפורשת של יניב לסיים את חרוט חדש ל־100%.
+
+> הערה: סעיף הסגירה לעיל מתעד את סבב 11 העמודים המקורי. המצב הקנוני הנוכחי הוא 45 דפי A4 / 82 שאלות (ראו §26.7.8 ו־G15), ומתועד בסעיף הסגירה הבא.
+
+## ביקורת סגירה 2026-10-11 (ביקורת עצמאית מלאה)
+
+- ביקורת עצמאית סעיף-סעיף של SSOT §2–§27 (workflow אדוורסרי ב־6 scopes + אימות חי של פרודקשן/PDF/הדפסה/מובייל). מסקנה: אין פער תוכן/פלט — כל דרישה מחייבת מתקיימת בפלט המשומש ובאתר החי — למעט פגם אמיתי אחד: חיתוך מובייל פורטרייט (§20.1).
+- §20.1 תוקן: ב־360/390/412px העמוד היה חתוך כ־55–63% משמאל (`transform-origin:top center` על עמוד A4 מיושר־ימין ב־RTL; `#book{overflow:hidden}` הסתיר זאת מבדיקות הרוחב/scrollWidth). שונה ל־`top right` → כל 45 העמודים גלויים במלואם ([8, vw−8]); נוסף assertion מניעת־חיתוך ב־`browser-qa.mjs`. דסקטופ/A4/הדפסה ללא שינוי → baseline הפיקסלים לא נגע.
+- מצב קנוני נוכחי: 45 דפי A4 / 82 שאלות; מטריצת ה־traceability עודכנה עד R70 (כולל §27 ו־§20.1).
+- אכיפה חוזקה: `qa.mjs` מקבע 45/82 במדויק (היו floors ‎>=8/>=13); בדיקת glyph־הכפל הורחבה ל־`content.js`.
+- נוקה: `exports/student-pages/page-46.png` היתום (משארית 46→45) הוסר; שלב ה־persist ב־`qa.yml` מנקה עמודים שהוסרו כדי שלא יישארו יתומים.
+- אין עמודי מורה פעילים (נעולים §2.5). פריטי SSOT/ארכיטקטורה שנותרו ל־Yaniv+GPT (לא שונו כאן): איחוד כללי §27 לתוך §9/§12, חוזק §27 source־vs־policy, ניסוח §25.1 מול הסבב שנפתח מחדש, חלופת PR #3 (reflow — דורשת תיקון §20.1 „scale בלבד”), כותרות r/h בעמ' 23/27, גרשיים מול מרכאות ASCII ב־footer.
