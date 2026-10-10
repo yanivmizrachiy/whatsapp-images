@@ -4,6 +4,7 @@
   "scope": "student-pages-only",
   "teacherPagesAllowed": false,
   "authority": "SOURCE_OF_TRUTH.md",
+  "handoff20261011": "PR #10 completes the interrupted student-display cleanup: student-facing קוטר, explicit units, topic-only H1 titles with separate active completion, preserved 5x5mm calculation grids; SSOT §27 records the Claude/ChatGPT handoff; prior full QA run #161 passed before this docs/tracker-only handoff.",
   "executionPlan": "AI_STUDIO_STUDENT_EXECUTION.md",
   "traceability": "STUDENT_REQUIREMENT_TRACEABILITY.md",
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
