@@ -531,8 +531,8 @@
     {
       "date": "2026-10-10",
       "percent": 100,
-      "commit": "pending-polish",
-      "note": "Post-closure quality polish (Yaniv 2026-10-10: 'don't touch teacher pages; bring everything else to 100%'). Acted on the three non-defect observations from the adversarial review plus CI hygiene: (1) CONE-CLAIM-01 re-themed from the 'two circular bases like a cylinder' claim (which duplicated CONE-WHO-01) to a distinct, fundamental misconception — a cone as a flat 2-D triangle vs a 3-D solid; (2) CONE-APP-01 funnel renumbered r=7/h=9→147π and (3) CONE-BRIDGE-06-א renumbered r=5/h=12→ℓ=13, so no practice question reuses the locked official CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π), with the funnel diagram labels updated to match; (4) CI workflow actions bumped checkout/setup-node/upload-artifact v4→v5 to leave the deprecated Node 20 runtime. Teacher pages untouched (remain locked). Percent unchanged: quality refinement, not scope. Visual baseline regenerated for the affected pages from this round's CI run."
+      "commit": "fee27ca6dbbe7a13df6853b3753c385a1355cdbe",
+      "note": "Post-closure quality polish (Yaniv 2026-10-10: 'don't touch teacher pages; bring everything else to 100%'). Content commit fee27ca; visual baseline regenerated from PR #6 CI run 38074376318 (only pages 3/33/46 drifted, as expected). Acted on the three non-defect observations from the adversarial review plus CI hygiene: (1) CONE-CLAIM-01 re-themed from the 'two circular bases like a cylinder' claim (which duplicated CONE-WHO-01) to a distinct, fundamental misconception — a cone as a flat 2-D triangle vs a 3-D solid; (2) CONE-APP-01 funnel renumbered r=7/h=9→147π and (3) CONE-BRIDGE-06-א renumbered r=5/h=12→ℓ=13, so no practice question reuses the locked official CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π), with the funnel diagram labels updated to match; (4) CI workflow actions bumped checkout/setup-node/upload-artifact v4→v5 to leave the deprecated Node 20 runtime. Teacher pages untouched (remain locked). Percent unchanged: quality refinement, not scope. Visual baseline regenerated for the affected pages from this round's CI run."
     }
   ]
 }
