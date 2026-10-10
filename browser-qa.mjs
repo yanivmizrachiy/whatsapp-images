@@ -203,6 +203,51 @@ const labelClip=await page.evaluate((sel)=>{
 },CLIP_SELECTOR);
 ok(labelClip.length===0,'SSOT 15.3 expansion-diagram label clipping: '+labelClip.join(' | '));
 
+// SSOT §15.3 (labels/numbers/units must not overlap the lines): the original
+// labelSafety gate above only measured text.label inside cone/axial/orientation
+// SVGs, so every expansion-diagram label (plain <text>, no .label class) shipped
+// unchecked for stroke overlap. This gate covers EVERY measurable student diagram
+// and EVERY <text> in it: a drawing stroke whose centreline passes through a
+// label's glyph area (bbox inset toward the ink) is a §15.3 overlap and fails QA.
+// Comic illustrations (svg.comic-scene) and raster art (img.cone-3d) are stylised
+// scenes, not measurable diagrams, and are intentionally out of this gate's scope.
+const OVERLAP_SELECTOR='svg.cone-svg,svg.axial-svg,svg.orientation-cone,'+CLIP_SELECTOR;
+const TEXT_INSET=0.15; // shrink the text bbox toward the glyph ink before testing
+const labelOverlap=await page.evaluate(({sel,INSET})=>{
+  const pages=[...document.querySelectorAll('.page')];
+  const prevHidden=pages.map(p=>p.hidden);
+  pages.forEach(p=>{p.hidden=false;});
+  void document.body.offsetHeight;
+  const num=(el,a)=>+el.getAttribute(a);
+  const sample=(el)=>{
+    const tag=el.tagName.toLowerCase();const pts=[];
+    if(tag==='line'){const x1=num(el,'x1'),y1=num(el,'y1'),x2=num(el,'x2'),y2=num(el,'y2');for(let i=0;i<=60;i++){const t=i/60;pts.push([x1+(x2-x1)*t,y1+(y2-y1)*t]);}}
+    else if(tag==='ellipse'){const cx=num(el,'cx'),cy=num(el,'cy'),rx=num(el,'rx'),ry=num(el,'ry');for(let i=0;i<=120;i++){const a=2*Math.PI*i/120;pts.push([cx+rx*Math.cos(a),cy+ry*Math.sin(a)]);}}
+    else if(tag==='circle'){const cx=num(el,'cx'),cy=num(el,'cy'),r=num(el,'r');for(let i=0;i<=120;i++){const a=2*Math.PI*i/120;pts.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}}
+    else if(tag==='rect'){const x=num(el,'x'),y=num(el,'y'),w=num(el,'width'),h=num(el,'height');const per=[[x,y],[x+w,y],[x+w,y+h],[x,y+h],[x,y]];for(let s=0;s<4;s++)for(let i=0;i<=25;i++){const t=i/25;pts.push([per[s][0]+(per[s+1][0]-per[s][0])*t,per[s][1]+(per[s+1][1]-per[s][1])*t]);}}
+    else if(tag==='polygon'||tag==='polyline'){const raw=(el.getAttribute('points')||'').trim().split(/[\s,]+/).map(Number);const vs=[];for(let i=0;i+1<raw.length;i+=2)vs.push([raw[i],raw[i+1]]);if(tag==='polygon'&&vs.length)vs.push(vs[0]);for(let s=0;s+1<vs.length;s++)for(let i=0;i<=25;i++){const t=i/25;pts.push([vs[s][0]+(vs[s+1][0]-vs[s][0])*t,vs[s][1]+(vs[s+1][1]-vs[s][1])*t]);}}
+    else{try{const len=el.getTotalLength?el.getTotalLength():0;if(len>0){const n=Math.max(60,Math.round(len/3));for(let i=0;i<=n;i++){const q=el.getPointAtLength(len*i/n);pts.push([q.x,q.y]);}}}catch(e){}}
+    return pts;
+  };
+  const bad=[];
+  for(const svg of document.querySelectorAll(sel)){
+    const id=svg.getAttribute('aria-label')||svg.getAttribute('class');
+    const strokes=[...svg.querySelectorAll('line,path,ellipse,circle,rect,polygon,polyline')]
+      .filter(el=>{const cs=getComputedStyle(el);return cs.stroke&&cs.stroke!=='none'&&cs.strokeWidth!=='0px';})
+      .map(sample);
+    for(const t of svg.querySelectorAll('text')){
+      const b=t.getBBox();if(b.width===0&&b.height===0)continue;
+      const ix=b.x+b.width*INSET,iy=b.y+b.height*INSET,iw=b.width*(1-2*INSET),ih=b.height*(1-2*INSET);
+      let hit=false;
+      for(const pts of strokes){for(const [px,py] of pts){if(px>=ix&&px<=ix+iw&&py>=iy&&py<=iy+ih){hit=true;break;}}if(hit)break;}
+      if(hit)bad.push(id+':"'+t.textContent+'" overlaps a drawing stroke');
+    }
+  }
+  pages.forEach((p,i)=>{p.hidden=prevHidden[i];});
+  return bad;
+},{sel:OVERLAP_SELECTOR,INSET:TEXT_INSET});
+ok(labelOverlap.length===0,'SSOT 15.3 diagram label overlaps a line: '+labelOverlap.join(' | '));
+
 async function inspectViewport(width,height,label){
   await page.setViewportSize({width,height});
   await page.reload({waitUntil:'load'});
