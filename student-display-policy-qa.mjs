@@ -15,6 +15,8 @@ ok(policy.includes('נפח מדויק (סמ״ק)'),'volume table must expose the
 ok(policy.includes("heading.textContent='נפח חרוט'"),'formula prompt must not remain embedded in the volume-page title');
 ok(policy.includes("heading.textContent='נפח חרוט — קירוב מספרי'"),'approximation page must use a topic title rather than a demo/prompt title');
 ok(policy.includes('formula-completion'),'active formula completion must be preserved outside the title');
+ok(policy.includes('השלימו את נוסחת הנפח')&&policy.includes('V=\\\\underline'),'volume formula completion must remain an active student task');
+ok(policy.includes('השלימו את ערך הקירוב')&&policy.includes('\\\\pi\\\\approx'),'π approximation completion must remain an active student task');
 ok(policy.includes('רדיוס = 3 ס״מ, גובה = 8 ס״מ'),'each numeric dimension in the comparison caption must carry its own unit');
 ok(policy.includes("tableQuestion.answer='שורה א: קוטר=6 ס״מ"),'canonical table answer metadata must use student-facing diameter terminology and units');
 ok(policy.includes("book.dataset.studentDisplayPolicy='applied'"),'policy must expose a deterministic applied marker for browser QA');
@@ -30,4 +32,4 @@ if(failures.length){
   failures.forEach((failure,index)=>console.error(`${index+1}. ${failure}`));
   process.exit(1);
 }
-console.log('STUDENT DISPLAY POLICY QA PASS: Hebrew diameter, explicit units, topic-only titles and canonical 5x5 mm work grids are protected.');
+console.log('STUDENT DISPLAY POLICY QA PASS: Hebrew diameter, explicit units, topic-only titles, active completions and canonical 5x5 mm work grids are protected.');
