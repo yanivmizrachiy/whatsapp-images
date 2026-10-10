@@ -148,7 +148,7 @@ ok(labelSafety.length===0,'SSOT 15.3 diagram label-safety: '+labelSafety.join(' 
 // text. Scope is the curated student-diagram classes only: MathJax glyph <svg>s
 // (wrapped in mjx-container) and the locked page-1 source reproduction are guarded
 // by their own gates and are deliberately excluded to avoid false positives.
-const DIAGRAM_SELECTOR='svg.cone-svg,svg.axial-svg,svg.orientation-cone,svg.comic-scene,svg.object-strip-svg,svg.compare-svg,svg.net-svg,svg.top-view-svg,svg.side-view-svg,svg.bare-triangle-svg,svg.net-options-svg,svg.net-label-svg,svg.sector-compare-svg,svg.sector-angle-svg,svg.sector-svg,svg.cone-cuts-svg,svg.ratio-svg,svg.diameter-cone-svg,svg.funnel-svg,svg.beam-svg,svg.arch-roofs,svg.arch-cyl-cone,svg.arch-sections,svg.circle-svg,svg.right-triangle-svg,img.cone-3d';
+const DIAGRAM_SELECTOR='svg.cone-svg,svg.axial-svg,svg.orientation-cone,svg.comic-scene,svg.object-strip-svg,svg.compare-svg,svg.net-svg,svg.top-view-svg,svg.side-view-svg,svg.bare-triangle-svg,svg.net-options-svg,svg.net-label-svg,svg.sector-compare-svg,svg.sector-angle-svg,svg.sector-svg,svg.cone-cuts-svg,svg.ratio-svg,svg.diameter-cone-svg,svg.funnel-svg,svg.beam-svg,svg.arch-roofs,svg.arch-cyl-cone,svg.arch-sections,svg.circle-svg,svg.right-triangle-svg,svg.scale-cone-svg,img.cone-3d';
 const SPILL_TOLERANCE=2; // px (~0.5mm) for sub-pixel rounding
 const containment=await page.evaluate(({sel,EPS})=>{
   const pages=[...document.querySelectorAll('.page')];
@@ -181,7 +181,7 @@ ok(containment.length===0,'SSOT 16.2 figure containment (diagram spills out of i
 // cone/axial/orientation diagrams are covered by the label-safety gate above; this
 // gate asserts that every <text> in the new instructional SVGs stays inside its own
 // viewBox, so clipped labels fail QA instead of shipping.
-const CLIP_SELECTOR='svg.object-strip-svg,svg.compare-svg,svg.net-svg,svg.top-view-svg,svg.side-view-svg,svg.net-options-svg,svg.net-label-svg,svg.sector-compare-svg,svg.sector-angle-svg,svg.sector-svg,svg.cone-cuts-svg,svg.ratio-svg,svg.diameter-cone-svg,svg.funnel-svg,svg.beam-svg,svg.arch-roofs,svg.arch-cyl-cone,svg.arch-sections,svg.circle-svg,svg.right-triangle-svg';
+const CLIP_SELECTOR='svg.object-strip-svg,svg.compare-svg,svg.net-svg,svg.top-view-svg,svg.side-view-svg,svg.net-options-svg,svg.net-label-svg,svg.sector-compare-svg,svg.sector-angle-svg,svg.sector-svg,svg.cone-cuts-svg,svg.ratio-svg,svg.diameter-cone-svg,svg.funnel-svg,svg.beam-svg,svg.arch-roofs,svg.arch-cyl-cone,svg.arch-sections,svg.circle-svg,svg.right-triangle-svg,svg.scale-cone-svg';
 const labelClip=await page.evaluate((sel)=>{
   const pages=[...document.querySelectorAll('.page')];
   const prevHidden=pages.map(p=>p.hidden);
