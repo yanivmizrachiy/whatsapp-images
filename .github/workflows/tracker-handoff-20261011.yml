@@ -1,0 +1,44 @@
+name: One-shot Harut tracker handoff 2026-10-11
+
+on:
+  push:
+    branches:
+      - chatgpt/harut-student-display-policy
+    paths:
+      - .github/workflows/tracker-handoff-20261011.yml
+
+permissions:
+  contents: write
+
+jobs:
+  update-tracker:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: chatgpt/harut-student-display-policy
+          fetch-depth: 0
+      - name: Record handoff in tracker and remove one-shot workflow
+        shell: bash
+        run: |
+          set -euo pipefail
+          python - <<'PY'
+          from pathlib import Path
+          p=Path('STUDENT_PROGRESS.json')
+          s=p.read_text(encoding='utf-8')
+          if '"handoff20261011"' not in s:
+              marker='  "authority": "SOURCE_OF_TRUTH.md",\n'
+              insert=marker+'  "handoff20261011": "PR #10 completes the interrupted student-display cleanup: student-facing קוטר, explicit units, topic-only H1 titles with separate active completion, preserved 5x5mm calculation grids; SSOT §27 records the Claude/ChatGPT handoff; prior full QA run #161 passed before this docs/tracker-only handoff.",\n'
+              if marker not in s:
+                  raise SystemExit('authority marker not found')
+              s=s.replace(marker,insert,1)
+              p.write_text(s,encoding='utf-8')
+          PY
+          rm -f .github/workflows/tracker-handoff-20261011.yml
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add STUDENT_PROGRESS.json .github/workflows/tracker-handoff-20261011.yml
+          if ! git diff --cached --quiet; then
+            git commit -m 'docs(progress): record Claude-ChatGPT handoff'
+            git push origin HEAD:chatgpt/harut-student-display-policy
+          fi
