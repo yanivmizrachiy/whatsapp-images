@@ -39,11 +39,23 @@
     return best + 1;
   };
 
+  // SSOT §28: the cover sheet sits before page 1 and is not a page. While it is the sheet
+  // nearest the bar line the selector keeps "עמוד 1" and the URL carries no #page hash.
+  const onCover = () => {
+    const cover = book.querySelector('.cover-sheet');
+    if (!cover || cover.hidden || !pages.length) return false;
+    const header = document.querySelector('.reader');
+    const top = (header?.getBoundingClientRect().bottom || 0) + 12;
+    return Math.abs(cover.getBoundingClientRect().top - top) < Math.abs(pages[0].getBoundingClientRect().top - top);
+  };
+
   const syncFromScroll = () => {
     if (jumping || raf) return;
     raf = requestAnimationFrame(() => {
       raf = 0;
-      setSelected(pageNearestHeader(), true);
+      const cover = onCover();
+      setSelected(pageNearestHeader(), !cover);
+      if (cover && location.hash) history.replaceState(null, '', `${location.pathname}${location.search}`);
     });
   };
 
@@ -96,7 +108,7 @@
 
     const match = location.hash.match(/page=(\d+)/);
     const initial = match ? clamp(match[1]) : 1;
-    setSelected(initial, !match);
+    setSelected(initial, !match && !book.querySelector('.cover-sheet'));
     if (match) {
       // Deep links open directly at the requested page without entering a transient faded state.
       // The fade is reserved for an explicit selector change by the user.

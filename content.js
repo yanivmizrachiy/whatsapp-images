@@ -4,6 +4,16 @@ window.CONE_DATA = {
     'הדרכה במחוז ירושלים והעיר ירושלים - מנח"י, בהובלת איילת קריספין'
   ],
   page1Credit: 'איילת קריספין - מתכללת את תחום המתמטיקה במחוז ירושלים והעיר ירושלים - מנח"י',
+  // SSOT §28: the approved cover (version 4). Texts are kept 1:1 with the approved design.
+  cover: {
+    kicker: ['מנח״י', 'מחוז ירושלים והעיר ירושלים'],
+    title: 'חרוט',
+    tagline: 'מתמטיקה פוגשת את רחובות ירושלים',
+    subtitle: 'דפי עבודה בגיאומטריה · כיתה ח׳',
+    formula: ['V = ⅓·π·r²·h', 'S = π·r·ℓ', 'ℓ² = r² + h²'],
+    credit: ['יניב רז — מדריך מחוזי חט״ב בעיר ירושלים', 'הדרכה במחוז ירושלים והעיר ירושלים - מנח״י'],
+    artAlt: 'נוף ירושלים בשקיעה זהובה — בני נוער על טרסת אבן חוקרים גופים הולוגרפיים: גליל שקוף ושני חרוטי זהב זוהרים, מול העיר העתיקה וכיפת הסלע'
+  },
   // Colorful teaching comic (integrated from the harut companion workbook, byte-faithful
   // to razpages). Anis the proud cone learns base → height/radius/slant. SSOT §26.
   comicStrip: `<div class="comic-strip" role="group" aria-label="קומיקס: אניס החרוט לומד על חלקי החרוט">

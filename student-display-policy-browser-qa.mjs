@@ -6,7 +6,7 @@ import path from 'node:path';
 const root=process.cwd();
 const failures=[];
 const ok=(condition,message)=>{if(!condition)failures.push(message)};
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.svg':'image/svg+xml','.png':'image/png','.jpg':'image/jpeg'};
 const server=http.createServer((req,res)=>{
   const pathname=new URL(req.url,'http://127.0.0.1').pathname;
   const rel=pathname==='/'?'index.html':pathname.replace(/^\//,'');

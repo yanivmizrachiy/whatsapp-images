@@ -7,7 +7,7 @@ import path from 'node:path';
 const failures=[];
 const ok=(cond,msg)=>{if(!cond)failures.push(msg)};
 const root=process.cwd();
-const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.svg':'image/svg+xml'};
+const mime={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml'};
 const server=http.createServer((req,res)=>{
   const pathname=new URL(req.url,'http://127.0.0.1').pathname;
   const rel=pathname==='/'?'index.html':pathname.replace(/^\//,'');
@@ -41,6 +41,7 @@ async function waitForAssets(){
     if(document.fonts){
       await Promise.all([
         document.fonts.load('16px "Rubik"','אבג'),
+        document.fonts.load('900 16px "Rubik"','חרוט'),
         document.fonts.load('16px "Heebo"','אבג')
       ]);
       await document.fonts.ready;
@@ -54,6 +55,24 @@ async function waitForAssets(){
 
 await waitForAssets();
 const canonicalPageCount=await page.locator('.page').count();
+// SSOT §28: exactly one unnumbered cover sheet, first in #book, outside the .page set.
+const coverAudit=await page.evaluate(()=>{
+  const covers=[...document.querySelectorAll('.cover-sheet')];const c=covers[0];
+  if(!c)return {count:0};
+  const r=c.getBoundingClientRect();const art=c.querySelector('.cover-art');const logo=c.querySelector('.cover-logo');
+  const out=[...c.querySelectorAll('*')].filter(el=>{const e=el.getBoundingClientRect();return e.width&&(e.left<r.left-1||e.right>r.right+1||e.top<r.top-1||e.bottom>r.bottom+1)}).map(el=>el.className);
+  return {count:covers.length,first:document.querySelector('#book').firstElementChild===c,isPage:c.classList.contains('page')||!!c.dataset.kind,
+    w:c.offsetWidth,h:c.offsetHeight,overflow:c.scrollHeight>c.clientHeight+1||c.scrollWidth>c.clientWidth+1,
+    art:!!art&&art.complete&&art.naturalWidth>0,logo:!!logo&&logo.complete&&logo.naturalWidth>0,
+    title:c.querySelector('.cover-title')?.textContent,expected:window.CONE_DATA?.cover?.title,out};
+});
+ok(coverAudit.count===1,`cover: expected exactly 1 .cover-sheet, got ${coverAudit.count}`);
+ok(coverAudit.first&&!coverAudit.isPage,'cover: must be the first child of #book and not a .page');
+ok(Math.abs(coverAudit.w-expectedW)<=2&&Math.abs(coverAudit.h-expectedH)<=2,`cover: not A4 (${coverAudit.w}x${coverAudit.h})`);
+ok(!coverAudit.overflow,'cover: internal overflow');
+ok(coverAudit.art&&coverAudit.logo,'cover: background image or district logo did not load');
+ok(coverAudit.title===coverAudit.expected&&coverAudit.title==='חרוט',`cover: title mismatch (${coverAudit.title})`);
+ok(!coverAudit.out?.length,`cover: elements outside the sheet: ${(coverAudit.out||[]).join(', ')}`);
 ok(canonicalPageCount>=8,`canonical workbook must have at least 8 student pages, got ${canonicalPageCount}`);
 const subsectionAudit=await page.evaluate(()=>{
   const parts=[...document.querySelectorAll('.subpart')];
@@ -395,10 +414,13 @@ await page.reload({waitUntil:'load'});
 await waitForAssets();
 fs.mkdirSync('qa-artifacts',{recursive:true});
 await page.evaluate(()=>{document.querySelector('.reader').style.visibility='hidden'});
+await page.locator('.cover-sheet').screenshot({path:'qa-artifacts/cover.png'});
+// Page screenshots are taken without the cover so the locked page baseline stays byte-stable.
+await page.evaluate(()=>{document.querySelector('.cover-sheet').style.display='none'});
 for(let i=1;i<=canonicalPageCount;i++){
   await page.locator('.page').nth(i-1).screenshot({path:`qa-artifacts/page-${String(i).padStart(2,'0')}.png`});
 }
-await page.evaluate(()=>{document.querySelector('.reader').style.visibility=''});
+await page.evaluate(()=>{document.querySelector('.reader').style.visibility='';document.querySelector('.cover-sheet').style.display=''});
 // Sticky counter follows the scroll position (no prev/next clicks — §20.7).
 await scrollReaderTo(canonicalPageCount-1);
 ok((await page.textContent('#counter'))?.trim()===`${canonicalPageCount} / ${canonicalPageCount}`,'counter did not reach final page on scroll');
@@ -408,8 +430,10 @@ ok((await page.textContent('#counter'))?.trim()===`1 / ${canonicalPageCount}`,'c
 await page.emulateMedia({media:'print'});
 const printResult=await page.evaluate(()=>({
   visible:[...document.querySelectorAll('.page')].filter(p=>getComputedStyle(p).display!=='none').length,
-  transforms:[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).transform)
+  transforms:[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).transform),
+  cover:(c=>c&&{display:getComputedStyle(c).display,transform:getComputedStyle(c).transform})(document.querySelector('.cover-sheet'))
 }));
+ok(printResult.cover?.display==='block'&&printResult.cover?.transform==='none','print: cover sheet must print unscaled before page 1');
 ok(printResult.visible===canonicalPageCount,`print: expected ${canonicalPageCount} printable pages, got ${printResult.visible}`);
 ok(printResult.transforms.every(t=>t==='none'),`print: transformed/scaled A4 page detected`);
 
@@ -417,7 +441,7 @@ const pdfPath='qa-artifacts/cone-student.pdf';
 await page.pdf({path:pdfPath,format:'A4',printBackground:true,preferCSSPageSize:true,margin:{top:'0',right:'0',bottom:'0',left:'0'}});
 const pdfBytes=fs.readFileSync(pdfPath);
 const pdf=await PDFDocument.load(pdfBytes);
-ok(pdf.getPageCount()===canonicalPageCount,`PDF: expected ${canonicalPageCount} pages, got ${pdf.getPageCount()}`);
+ok(pdf.getPageCount()===canonicalPageCount+1,`PDF: expected cover + ${canonicalPageCount} pages, got ${pdf.getPageCount()}`);
 const a4Pt={w:595.28,h:841.89};
 pdf.getPages().forEach((p,i)=>{
   const {width,height}=p.getSize();
@@ -434,4 +458,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; continuous-scroll reader with page selector fade-jump; mobile vertical-only (overflow-x clipped, pan-y + pinch-zoom); print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);
+console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; continuous-scroll reader with page selector fade-jump; mobile vertical-only (overflow-x clipped, pan-y + pinch-zoom); print; screenshots; cover sheet (§28); PDF ${pdfBytes.length} bytes / cover + ${canonicalPageCount} A4 pages; no internal overflow.`);
