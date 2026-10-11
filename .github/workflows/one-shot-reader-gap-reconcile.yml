@@ -1,0 +1,77 @@
+name: One-shot reader gap reconcile
+on:
+  push:
+    branches: [gpt/reader-gap-reconcile-20261011]
+permissions:
+  contents: write
+jobs:
+  reconcile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+      - name: Apply precise post-PR20 reconciliation
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+          from datetime import datetime, timezone, timedelta
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text(encoding='utf-8')
+              count = text.count(old)
+              if count != 1:
+                  raise SystemExit(f'{path}: expected exactly one match, found {count}: {old[:100]}')
+              p.write_text(text.replace(old, new, 1), encoding='utf-8')
+
+          replace_once(
+              'styles.css',
+              '.scroll-view .page{margin-bottom:18px}',
+              '.scroll-view .page{margin-bottom:3px}'
+          )
+          replace_once(
+              'styles.css',
+              'margin-bottom:calc((297mm * var(--page-scale,.45)) - 297mm + 12px)',
+              'margin-bottom:calc((297mm * var(--page-scale,.45)) - 297mm + 3px)'
+          )
+          replace_once(
+              'qa.mjs',
+              "ok(css.includes('.scroll-view .page{margin-bottom:18px}'),'scroll-view page separation style missing');",
+              "ok(css.includes('.scroll-view .page{margin-bottom:3px}'),'scroll-view pages must be adjacent (separated only by the 3px blue line, no white gap; §20.3)');"
+          )
+
+          old_ssot = '- קישור־עומק `#page=N` נשמר (פתיחה ישירה בדף המבוקש). מותר `scroll-snap` עדין (`proximity`). **בין דף לדף אין שום כותרת/תווית כגון „עמוד X מתוך N”; ההפרדה היחידה בתצוגה היא קו כחול מלא לכל רוחב הדף.** הטקסט „עמוד X מתוך N” מופיע רק בתוך בורר העמוד ה־sticky. גאומטריית ה־A4 (סעיף 16), התוכן, 43 הדפים ו־82 השאלות אינם משתנים כחלק משינויי הקורא.'
+          new_ssot = '- קישור־עומק `#page=N` נשמר (פתיחה ישירה בדף המבוקש). מותר `scroll-snap` עדין (`proximity`). **בין דף לדף אין שום כותרת/תווית כגון „עמוד X מתוך N”; הדפים צמודים זה לזה בלי רווח לבן ביניהם (דרישת יניב, 2026-10-11); ההפרדה היחידה בתצוגה היא קו כחול כהה מלא לכל רוחב הדף, בעובי 3px, בתפר בין כל שני דפים עוקבים.** הטקסט „עמוד X מתוך N” מופיע רק בתוך בורר העמוד ה־sticky. גאומטריית ה־A4 (סעיף 16), התוכן, 43 הדפים ו־82 השאלות אינם משתנים כחלק משינויי הקורא.'
+          replace_once('SOURCE_OF_TRUTH.md', old_ssot, new_ssot)
+
+          tracker_path = Path('STUDENT_PROGRESS.json')
+          tracker = json.loads(tracker_path.read_text(encoding='utf-8'))
+          now = datetime.now(timezone(timedelta(hours=3))).isoformat(timespec='seconds')
+          tracker['updatedAt'] = now
+          tracker['updatedBy'] = 'ChatGPT — clean reconciliation of PR #16 onto post-PR #20 main: public continuous-scroll pages are adjacent with no white gap; the existing full-width 3px dark-blue separator is the only seam. Applied only the intended reader-gap CSS/QA/SSOT changes; preserved all PR #20 redesign work and teacher-page lock.'
+          tracker['headCommit'] = 'pending-reader-gap-reconcile'
+          note = 'Post-PR #20 reconciliation of reader page adjacency (Yaniv 2026-10-11). Preserved all merged redesign work. Public continuous-scroll pages now use 3px inter-page spacing on desktop and mobile, exactly filled by the existing full-width dark-blue separator; no white gap remains. SSOT §20.3 and qa.mjs were aligned to the same rule. This is a repair of the existing reader contract, not new scope; overall remains 100%; teacher pages untouched.'
+          history = tracker.setdefault('history', [])
+          if not any('Post-PR #20 reconciliation of reader page adjacency' in str(item.get('note','')) for item in history if isinstance(item, dict)):
+              history.append({'date':'2026-10-11','percent':100,'commit':'pending-reader-gap-reconcile','note':note})
+          tracker['readerUx20261011'] = 'Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; pages adjacent with no white gap, separated only by the full-width 3px dark-blue line; full-width blue rule above footer text.'
+          tracker_path.write_text(json.dumps(tracker, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
+
+          Path('.github/workflows/one-shot-reader-gap-reconcile.yml').unlink()
+          PY
+      - name: Static QA before commit
+        run: npm run qa
+      - name: Commit reconciled files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add SOURCE_OF_TRUTH.md STUDENT_PROGRESS.json qa.mjs styles.css .github/workflows/one-shot-reader-gap-reconcile.yml
+          git commit -m "fix(reader): reconcile no-white-gap rule after PR #20"
+          git push origin HEAD:gpt/reader-gap-reconcile-20261011
