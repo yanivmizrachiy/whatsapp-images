@@ -46,6 +46,7 @@ jobs:
           rm -f exports/student-pages/page-*.png
           cp qa-artifacts/cone-student.pdf exports/student-pages/cone-student.pdf
           cp qa-artifacts/page-*.png exports/student-pages/
+          cp qa-artifacts/cover.png exports/student-pages/cover.png
           printf 'Generated from commit: %s\nWorkflow run: %s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > exports/student-pages/GENERATED_FROM.txt
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"

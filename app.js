@@ -151,6 +151,13 @@ const addPage=(html,foot=footer)=>{const p=document.createElement('section');p.c
 let pageNumber=1;
 const nextHeader=title=>header(title,++pageNumber);
 
+// SSOT §28: the approved cover (v4) is one unnumbered full-bleed sheet before page 1.
+// It is not a .page, so the 43 student pages, their numbers and #page=N links stay as they are.
+const addCover=()=>{const c=D.cover;const s=document.createElement('section');s.className='cover-sheet';s.setAttribute('aria-label','שער החוברת');
+s.innerHTML=`<img class="cover-art" src="assets/cover-bg.jpg" alt="${c.artAlt}"><div class="cover-band cover-top"><div class="cover-kicker">${c.kicker.join('<span class="cover-dot">◆</span>')}</div><h1 class="cover-title">${c.title}</h1><div class="cover-rule"></div><div class="cover-tagline">${c.tagline}</div><div class="cover-subtitle">${c.subtitle}</div></div><div class="cover-band cover-bottom"><div class="cover-formula">${c.formula.join('<span class="cover-sep">·</span>')}</div><div class="cover-foot"><img class="cover-logo" src="${DISTRICT_LOGO}" alt="סמל מחוז ירושלים — מנהל חינוך ירושלים (מנח״י)"><div class="cover-credit"><div class="f1">${c.credit[0]}</div><div class="f2">${c.credit[1]}</div></div></div></div>`;
+book.append(s);return s};
+const coverSheet=addCover();
+
 const page1Html=D.page1.replace(PAGE1_ASSET_MAIN,PAGE1_ASSET_PINNED);
 addPage(`<div class="source-sheet">${page1Html}</div>`,page1Footer);
 
@@ -381,6 +388,7 @@ ${renderSubpart(findPart(appBeamParts,'ג'),{size:'subpart-medium',unit:'מ״ק'
 const arch1Parts=splitHebrewSubsections(prompt('CONE-ARCH-01'),['א','ב']);
 addPage(`${nextHeader('זירת החקר: הקשר בין חרוט לגליל החוסם')}
 <div class="question-intro">ארכימדס גילה קשר פשוט בין חרוט לגליל החוסם אותו. בעמודים הבאים תחקרו את הקשר הזה ותגלו מניין מגיע המקדם בנוסחת נפח החרוט.</div>
+<div class="task">${arch1Parts.intro}</div>
 <div class="arch-figure">${archRoofsSvg()}</div>
 ${renderSubpart(findPart(arch1Parts,'א'),{size:'subpart-small'})}
 ${renderSubpart(findPart(arch1Parts,'ב'),{size:'claim'})}`);
@@ -477,6 +485,7 @@ function show(){
   toggleBtn.setAttribute('aria-pressed',String(scrollView));
   toggleBtn.textContent=scrollView?'דף אחד':'כל הדפים';
   students.forEach((p,i)=>p.hidden=scrollView?false:i!==idx);
+  coverSheet.hidden=!scrollView;
   updateCounter();fitPage();
 }
 function fitPage(){if(innerWidth>850){book.style.removeProperty('--page-scale');return}book.style.setProperty('--page-scale',Math.min(1,(innerWidth-16)/794))}

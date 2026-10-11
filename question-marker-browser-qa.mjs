@@ -6,6 +6,7 @@ const server=spawn(process.execPath,['server.mjs'],{env:{...process.env,PORT:Str
 const wait=ms=>new Promise(r=>setTimeout(r,ms));
 const failures=[];
 const ok=(c,m)=>{if(!c)failures.push(m)};
+let stemlessNote='not measured';
 try{
   for(let i=0;i<50;i++){
     try{const r=await fetch(`http://127.0.0.1:${PORT}/`);if(r.ok)break}catch{}
@@ -53,9 +54,35 @@ try{
   ok(Boolean(page1PartA),'page 1 source question 2א not found');
   if(page1PartA){ok(page1PartA.marker,'page 1 question 2א must carry a blue question marker');ok(/^א\./.test(page1PartA.prefix),'page 1 question 2א must visibly start with א. after hiding source question number');}
   for(const [i,o] of audit.official.entries()){ok(o.marker,`official question ${i+1} lacks marker`);ok(!/^\d+\s*\.\s+/.test(o.prefix),`official question ${i+1} exposes numeric prefix: ${o.prefix}`);}
+  // SSOT §2.4 + §17.7: all 82 canonical questions are actually rendered (stem and every subpart),
+  // and every main question opens with a blue marker. A question whose canonical text starts
+  // directly with subpart א (no stem) carries the marker on that first subpart.
+  await page.evaluate(async()=>{if(window.MathJax?.startup?.promise)await window.MathJax.startup.promise});
+  const coverage=await page.evaluate(()=>{
+    const norm=s=>String(s).replace(/<[^>]+>/g,' ').replace(/_{3,}/g,' ').replace(/[\s ]+/g,' ').trim();
+    const isTex=w=>/[\\{}^]/.test(w);
+    const probe=text=>{const words=text.replace(/^\(?\d+\)?[.)]?\s*/,'').split(' ');const lead=[];for(const w of words){if(isTex(w))break;lead.push(w);if(lead.length===5)break}return (lead.length>=2?lead:words.filter(w=>!isTex(w)).slice(0,5)).join(' ')};
+    const bookText=norm([...document.querySelectorAll('#book .page')].map(p=>p.textContent).join(' '));
+    const marked=[...document.querySelectorAll('#book .page .question-with-marker')].map(el=>norm(el.textContent));
+    const out={count:0,unrendered:[],unmarked:[],stemless:[]};
+    for(const q of window.CONE_DATA.questions){
+      out.count++;
+      const text=norm(q.prompt);
+      const pieces=text.split(/(?=\s[אבגדה]\.\s)/).map(x=>x.trim()).filter(Boolean);
+      for(const piece of pieces){const w=probe(piece);if(w.split(' ').length>=2&&!bookText.includes(w))out.unrendered.push(`${q.id}: "${w}"`)}
+      if(/^[אבגדה]\.\s/.test(text))out.stemless.push(q.id);
+      const stem=probe(pieces[0]);
+      if(!marked.some(t=>t.includes(stem)))out.unmarked.push(`${q.id}: "${stem}"`);
+    }
+    return out;
+  });
+  ok(coverage.count===82,`expected 82 canonical questions, got ${coverage.count}`);
+  ok(coverage.unrendered.length===0,`canonical question text missing from the rendered pages: ${coverage.unrendered.join(' | ')}`);
+  ok(coverage.unmarked.length===0,`main question without a blue marker (§17.7): ${coverage.unmarked.join(' | ')}`);
+  stemlessNote=coverage.stemless.join(', ')||'none';
   await browser.close();
 } finally {
   server.kill('SIGTERM');
 }
 if(failures.length){console.error('QUESTION MARKER BROWSER QA FAIL');failures.forEach((x,i)=>console.error(`${i+1}. ${x}`));process.exit(1)}
-console.log('QUESTION MARKER BROWSER QA PASS: blue circles rendered; numeric question prefixes hidden; locked source preserved.');
+console.log(`QUESTION MARKER BROWSER QA PASS: blue circles rendered; numeric question prefixes hidden; locked source preserved; all 82 canonical questions rendered; every main question opens with a marker (stemless, marked on subpart א: ${stemlessNote}).`);

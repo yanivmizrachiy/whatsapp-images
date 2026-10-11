@@ -30,6 +30,10 @@ for (const file of walk(root).filter((p) => /\.md$/i.test(p))) {
   if (/^#\s+מקור האמת היחיד\b/m.test(text)) fail(`${rel} declares a competing source of truth`);
   if (/זהו קובץ ההוראות והדרישות המחייב היחיד/.test(text)) fail(`${rel} declares competing requirements authority`);
   if (/\bSSOT:ONLY-AUTHORITY\b/.test(text)) fail(`${rel} contains the authority marker reserved for ${SSOT}`);
+  // Every other document must say up front that it defers to the SSOT (§1.5).
+  if (!text.split(/\r?\n/).slice(0, 12).join('\n').includes(SSOT)) fail(`${rel} must point to ${SSOT} as the only requirements source in its opening lines`);
+  // A derived document must not carry its own definition of done or requirements list (§1.5, §25).
+  if (/^#{1,6}\s*(מה נחשב 100%|תנאי סיום|דרישות מחייבות)/m.test(text)) fail(`${rel} defines its own completion criteria/requirements; only ${SSOT} may`);
 }
 
 console.log('SSOT QA: PASS — SOURCE_OF_TRUTH.md is the single requirements authority for חרוט חדש');

@@ -1,49 +1,29 @@
 {
   "project": "חרוט חדש",
+  "authority": "SOURCE_OF_TRUTH.md",
+  "note": "Derived index only. Requirements live only in SOURCE_OF_TRUTH.md; progress in STUDENT_PROGRESS.json; evidence in STUDENT_REQUIREMENT_TRACEABILITY.md. qa.mjs fails if the counts here drift from the canonical scope.",
   "phase": "student-pages-only",
   "teacherPagesAllowed": false,
   "entrypoint": "index.html",
   "startCommand": "npm start",
-  "pageCount": 8,
-  "progressTracking": {
-    "executionPlan": "AI_STUDIO_STUDENT_EXECUTION.md",
-    "progressFile": "STUDENT_PROGRESS.json",
-    "traceabilityFile": "STUDENT_REQUIREMENT_TRACEABILITY.md",
-    "baselinePercent": 91.1,
-    "rule": "Do not claim 100% unless every weighted progress group is 100 and all required QA/evidence gates pass."
+  "pageCount": 43,
+  "questionCount": 82,
+  "coverSheet": {
+    "ssot": "§28",
+    "beforePage": 1,
+    "numbered": false,
+    "countedInPageCount": false
   },
-  "pages": [
-    {"page": 1, "title": "דף מלווה המחשה", "status": "active", "lockedSource": true},
-    {"page": 2, "title": "היכרות עם החרוט", "status": "active"},
-    {"page": 3, "title": "נפח חרוט — נוסחה וטבלת r/d/h/V", "status": "active"},
-    {"page": 4, "title": "חתך צירי ומשפט פיתגורס", "status": "active"},
-    {"page": 5, "title": "נפח — המרות, אומדן, חישוב הפוך ושינוי ממדים", "status": "active"},
-    {"page": 6, "title": "זיהוי חרוטים במנחים שונים", "status": "active"},
-    {"page": 7, "title": "שאלות מתוך תוכנית הלימודים — שאלה 6 א–ב", "status": "active", "lockedSource": true},
-    {"page": 8, "title": "שאלות מתוך תוכנית הלימודים — שאלה 6 ג–ד", "status": "active", "lockedSource": true}
-  ],
-  "canonicalFiles": [
-    "SOURCE_OF_TRUTH.md",
-    "AI_STUDIO_STUDENT_EXECUTION.md",
-    "STUDENT_PROGRESS.json",
-    "STUDENT_REQUIREMENT_TRACEABILITY.md",
-    "content.js",
-    "app.js",
-    "styles.css",
-    "index.html",
-    "server.mjs"
-  ],
+  "pdf": {
+    "path": "exports/student-pages/cone-student.pdf",
+    "sheets": 44,
+    "layout": "cover + 43 A4 student pages",
+    "generatedBy": ".github/workflows/qa.yml on main after QA"
+  },
   "qa": {
-    "commands": ["npm run qa", "npm run qa:browser"],
-    "lastFullyValidatedStudentRenderCommit": "f9859224e65fdbe09e90124534b57f9592ffff71",
-    "lastFullyValidatedWorkflowRun": 75,
-    "result": "success"
-  },
-  "notes": [
-    "Do not create teacher pages before explicit owner approval after student pages are finished.",
-    "Render from canonical source; do not rebuild content from screenshots or PDF exports.",
-    "AI Studio must read SOURCE_OF_TRUTH.md, AI_STUDIO_STUDENT_EXECUTION.md, STUDENT_PROGRESS.json and STUDENT_REQUIREMENT_TRACEABILITY.md before changing the project.",
-    "AI Studio must update STUDENT_PROGRESS.json after every material change with evidence and commit references.",
-    "AI Studio should run npm start and open the generated static preview."
-  ]
+    "commands": [
+      "npm run qa",
+      "npm run qa:browser"
+    ]
+  }
 }

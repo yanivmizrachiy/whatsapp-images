@@ -8,7 +8,8 @@
     const raw=String(item&&item.prompt||'').trim();
     if(!raw)continue;
     const split=raw.search(/\s[אבגדהוזחטיכלמנסעפצקרשת][.)]\s/);
-    canonicalTexts.add(normalize(split>0?raw.slice(0,split):raw));
+    // Blanks (____) render as empty answer lines, so they are not part of the comparable text.
+    canonicalTexts.add(normalize((split>0?raw.slice(0,split):raw).replace(/_{3,}/g,' ')));
   }
   const addMarker=el=>{
     if(!el||el.classList.contains('question-with-marker'))return;
@@ -46,7 +47,10 @@
     return true;
   };
   document.querySelectorAll('.task:not(.subpart-task)').forEach(addMarker);
-  document.querySelectorAll('.question-intro,.official-question').forEach(el=>{
+  // Main questions also render as completion boxes (.obj-summary, .definition), side-by-side
+  // columns (.obj-col) and, when the canonical text has no stem and starts at subpart א, as that
+  // first subpart; they get a marker only when their text is a canonical question stem.
+  document.querySelectorAll('.question-intro,.official-question,.obj-summary,.definition,.obj-col>.task,.subpart>.subpart-task').forEach(el=>{
     const text=normalize(el.textContent);
     const canonical=[...canonicalTexts].some(x=>x&&(text===x||text.startsWith(x)||x.startsWith(text)));
     if(canonical||el.classList.contains('official-question'))addMarker(el);
