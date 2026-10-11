@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "db7b312f6dd01707057b64af51c1f9d4fc98ea06",
-  "sourceWorkflowRun": 38141647169,
+  "sourceCommit": "5394d4d87bff154fa9823432f83dc9a587c4ba74",
+  "sourceWorkflowRun": 38142095405,
   "artifact": "cone-visual-qa",
-  "reviewedBy": "Yaniv explicit no-question-numbering requirement; presentation-only blue-circle repair; source wording preserved",
+  "reviewedBy": "Yaniv explicit no-question-numbering requirement; page-1 2א hardening + semantic browser marker audit",
   "reviewedAt": "2026-10-11",
   "pageCount": 43,
   "pages": {
     "page-01.png": {
-      "sha256": "86a126f92d29bed77f66f2141e9712f471931b2a18586936fcf1d1a6d076faae",
-      "bytes": 89448
+      "sha256": "c8c7a1c4bf563980d4eb67257547a3e636b875aee6476003710ffee73a3d1a34",
+      "bytes": 89895
     },
     "page-02.png": {
       "sha256": "51eb87b894787d0160d9c8150f3fe05d010bf36758b1c932a8b5c4ca21a2fb7a",

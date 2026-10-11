@@ -1,21 +1,4 @@
-from pathlib import Path
-import json
-
-js_path=Path('question-markers.js')
-js=js_path.read_text(encoding='utf-8')
-old="const match=node.nodeValue.match(/^(\\s*\\d+\\s*\\.\\s*)/);"
-new="const match=node.nodeValue.match(/^(\\s*\\d+\\s*(?:\\.\\s*|\\s+(?=[אבגדהוזחטיכלמנסעפצקרשת][.)]\\s*)))/);"
-if old not in js and new not in js:
-    raise SystemExit('expected number-prefix parser not found')
-js=js.replace(old,new,1)
-old2="if(/^\\d+\\.\\s*\\S/.test(text)){"
-new2="if(/^\\d+(?:\\.\\s*\\S|\\s+[אבגדהוזחטיכלמנסעפצקרשת][.)]\\s*\\S)/.test(text)){"
-if old2 not in js and new2 not in js:
-    raise SystemExit('expected page-1 numbered-question detector not found')
-js=js.replace(old2,new2,1)
-js_path.write_text(js,encoding='utf-8')
-
-Path('question-marker-browser-qa.mjs').write_text(r'''import { chromium } from 'playwright';
+import { chromium } from 'playwright';
 import { spawn } from 'node:child_process';
 
 const PORT=8093;
@@ -76,21 +59,3 @@ try{
 }
 if(failures.length){console.error('QUESTION MARKER BROWSER QA FAIL');failures.forEach((x,i)=>console.error(`${i+1}. ${x}`));process.exit(1)}
 console.log('QUESTION MARKER BROWSER QA PASS: blue circles rendered; numeric question prefixes hidden; locked source preserved.');
-''',encoding='utf-8')
-
-pkg_path=Path('package.json')
-pkg=json.loads(pkg_path.read_text(encoding='utf-8'))
-qb=pkg['scripts']['qa:browser']
-if 'question-marker-browser-qa.mjs' not in qb:
-    pkg['scripts']['qa:browser']=qb.replace('node visual-regression-qa.mjs','node question-marker-browser-qa.mjs && node visual-regression-qa.mjs')
-pkg_path.write_text(json.dumps(pkg,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
-
-tracker_path=Path('STUDENT_PROGRESS.json')
-tracker=json.loads(tracker_path.read_text(encoding='utf-8'))
-tracker['updatedAt']='2026-10-11T15:35:00+03:00'
-for g in tracker.get('groups',[]):
-    if g.get('id')=='G08':
-        note='2026-10-11 hardening: visual evidence audit caught one source-locked page-1 pattern (`2 א.`) whose question number was not covered by the first repair parser. Extended the presentation-only prefix parser to hide a numeric question number followed by a Hebrew subpart while keeping `א.` visible; added Playwright question-marker-browser-qa across all 43 pages to prove blue markers render and visible numeric question prefixes cannot return. Source text/data remain unchanged.'
-        if note not in g.setdefault('evidence',[]): g['evidence'].append(note)
-        if 'question-marker-browser-qa.mjs' not in g.setdefault('testsPassed',[]): g['testsPassed'].append('question-marker-browser-qa.mjs')
-tracker_path.write_text(json.dumps(tracker,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
