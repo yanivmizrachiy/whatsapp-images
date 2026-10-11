@@ -1,0 +1,77 @@
+name: One-shot refine question dots
+on:
+  push:
+    branches: [chatgpt/refine-question-dots]
+permissions:
+  contents: write
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          ref: chatgpt/refine-question-dots
+          fetch-depth: 0
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npx playwright install --with-deps chromium
+      - name: Apply precise single-dot refinement
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import json
+
+          cssp=Path('question-markers.css')
+          css=cssp.read_text(encoding='utf-8')
+          old='''.question-with-marker{position:relative;padding-inline-start:8.5mm}\n.question-marker{position:absolute;inset-inline-start:0;top:.15em;width:6.6mm;height:6.6mm;border-radius:50%;background:#1d4ed8;display:grid;place-items:center;box-sizing:border-box}\n.question-marker::after{content:"";width:2.1mm;height:2.1mm;border-radius:50%;background:#fff}\n'''
+          new='''.question-with-marker{position:relative;padding-inline-start:6.2mm}\n.question-marker{position:absolute;inset-inline-start:0;top:.28em;width:4.2mm;height:4.2mm;border-radius:50%;background:#1d4ed8;display:block;box-sizing:border-box}\n'''
+          if old not in css:
+              raise SystemExit('cone marker CSS shape changed unexpectedly; refusing broad rewrite')
+          css=css.replace(old,new,1)
+          cssp.write_text(css,encoding='utf-8')
+
+          ssotp=Path('SOURCE_OF_TRUTH.md')
+          ssot=ssotp.read_text(encoding='utf-8')
+          oldphrase='כל שאלה ראשית נפתחת **בסמן עגול כחול ברור** במקום מספר.'
+          newphrase='כל שאלה ראשית נפתחת **בסמן עגול כחול יחיד, מלא וקטן** במקום מספר — עיגול אחד בלבד, ללא עיגול פנימי/חור לבן וללא טבעת כפולה.'
+          if oldphrase not in ssot:
+              raise SystemExit('cone SSOT marker sentence missing')
+          ssot=ssot.replace(oldphrase,newphrase,1)
+          ssotp.write_text(ssot,encoding='utf-8')
+
+          qap=Path('question-marker-qa.mjs')
+          qa=qap.read_text(encoding='utf-8')
+          qa=qa.replace("ok(ssot.includes('סימון שאלות ללא מספור גלוי')&&ssot.includes('סמן עגול כחול'),'SSOT §17.7 question-marker contract missing');",
+                        "ok(ssot.includes('סימון שאלות ללא מספור גלוי')&&ssot.includes('סמן עגול כחול יחיד, מלא וקטן')&&ssot.includes('ללא עיגול פנימי/חור לבן'),'SSOT §17.7 single-dot marker contract missing');")
+          needle="ok(css.includes('.question-marker')&&css.includes('border-radius:50%')&&css.includes('#1d4ed8'),'blue circular marker CSS missing');"
+          replacement=needle+"\nok(/\\.question-marker\\{[^}]*width:4\\.2mm;height:4\\.2mm[^}]*background:#1d4ed8/.test(css),'question marker must be a compact 4.2mm blue dot');\nok(!css.includes('.question-marker::after'),'nested/inner question-marker circle is forbidden');"
+          if needle not in qa:
+              raise SystemExit('cone marker QA anchor missing')
+          qa=qa.replace(needle,replacement,1)
+          qap.write_text(qa,encoding='utf-8')
+
+          tracker=Path('STUDENT_PROGRESS.json')
+          data=json.loads(tracker.read_text(encoding='utf-8'))
+          data['updatedAt']='2026-10-11T16:35:00+03:00'
+          for g in data.get('groups',[]):
+              if g.get('id')=='G08':
+                  note='2026-10-11: Yaniv corrected marker styling: one compact solid blue dot only, no inner white dot/ring. Reduced main question marker from 6.6mm to 4.2mm and spacing accordingly; no wording/math/source IDs changed. QA now forbids nested marker circles.'
+                  if note not in g.setdefault('evidence',[]): g['evidence'].append(note)
+          tracker.write_text(json.dumps(data,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          PY
+      - name: Static QA
+        run: npm run qa
+      - name: Browser QA
+        run: npm run qa:browser
+      - name: Commit verified refinement
+        shell: bash
+        run: |
+          rm -f .github/workflows/one-shot-refine-question-dots.yml
+          git config user.name "chatgpt-repo-agent"
+          git config user.email "noreply@openai.com"
+          git add -A
+          git commit -m "fix(student): use smaller single solid question dots"
+          git push origin HEAD:chatgpt/refine-question-dots
