@@ -11,8 +11,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T12:55:00+03:00",
-  "updatedBy": "ChatGPT direct repo agent — Yaniv 2026-10-11 reader/footer requirement: SSOT §18.2 full-width blue footer rule; SSOT §20.3 immediate vertical scroll, no per-page labels between pages, blue-only full-width separator, sticky page selector remains the sole page-number display; canonical + browser + visual evidence are generated in the same hotfix workflow.",
+  "updatedAt": "2026-10-11T14:20:00+03:00",
+  "updatedBy": "Claude Code — PR #15 pages 19–20 (SSOT „תיקונים נקודתיים בדפי תלמיד” 2026-10-11): page 19 pedagogical heading + cylinder-volume formula as active completion; page 20 student-chosen radius/height fields, stepwise cylinder/cone/comparison with 28mm work grids; page 32 untouched; visual baseline refresh pending CI render",
   "headCommit": "f997970d7d4f5f884a1776d7f3a2aab01a29fe09",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -80,7 +80,8 @@
         "coverage-qa.mjs",
         "definition-to-application sequence",
         "43-page final pedagogical/visual review",
-        "CONE-CHANGE-01 guided investigation"
+        "CONE-CHANGE-01 guided investigation",
+        "PR #15 (gpt/cone-pages-19-20-20261011): page 19 heading „גליל וחרוט — נפחים” and the cylinder-volume reminder turned into an active completion (V = π · ___ · ___); page 20 heading „גליל וחרוט — מחשבים ומשווים נפחים”, fields „הרדיוס שבחרתי / הגובה שבחרתי”, CONE-RATIO-04 prompt+answer aligned to student-chosen dimensions (6c863b8), steps א/ב/ג with 28mm work grids; page 32 unchanged. 43 pages / 82 questions unchanged; A4 fit verified for pages 19/20/32 (no overflow). Visual baseline for pages 19–20 must be refreshed from the CI render before merge."
       ],
       "testsPassed": [
         "mandatory coverage QA",
