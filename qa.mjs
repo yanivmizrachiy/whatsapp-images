@@ -138,6 +138,9 @@ ok(/<button[^>]*id="next"[^>]*class="reader-internal"|<button[^>]*class="reader-
 ok(/<button[^>]*id="view-toggle"[^>]*class="reader-internal"|<button[^>]*class="reader-internal"[^>]*id="view-toggle"/.test(index),'view toggle must be internal/hidden');
 ok(!/<button(?![^>]*reader-internal)[^>]*onclick="print\(\)"/.test(index),'print control must not be visible to the user');
 ok((index.match(/class="reader-action[^"]*"/g)||[]).length===1&&index.includes('class="reader-action download-pdf"'),'exactly one visible reader action is allowed: הורדת PDF');
+ok(index.includes('.scroll-view .page:not(:last-child){box-shadow:0 3px 0 #1d4ed8}'),'continuous reader must separate pages only with a full-width blue line');
+ok(!index.includes('sheet-label'),'continuous reader must not render per-page labels such as עמוד X מתוך N outside the selector');
+ok(/\.gz-footer\{[^}]*right:0;left:0;[^}]*border-top:1.5px solid var\(--deep\)/.test(css),'footer blue rule must span the full A4 width');
 ok(/<span id="counter"/.test(index),'page counter must be a non-button text read-out');
 ok(app.includes("classList.toggle('scroll-view',scrollView)"),'reader must expose the scroll-view body class');
 ok(app.includes("addEventListener('scroll',syncCounterToScroll"),'sticky counter must follow the page in view while scrolling');

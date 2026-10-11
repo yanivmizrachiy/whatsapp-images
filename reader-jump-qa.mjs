@@ -11,6 +11,8 @@ ok(index.includes('class="reader-action download-pdf"'),'public reader must expo
 ok(index.includes('.reader .reader-internal{display:none!important}'),'legacy navigation controls must remain hidden');
 ok((index.match(/class="reader-action[^"]*"/g)||[]).length===1,'PDF download must be the only visible action button/link');
 ok(index.includes('reader-jump.js'),'direct page-jump controller must be loaded');
+ok(index.includes('.scroll-view .page:not(:last-child){box-shadow:0 3px 0 #1d4ed8}'),'reader must use a full-width blue line as the only between-page separator');
+ok(!index.includes('sheet-label'),'reader must not show page-count labels between pages');
 ok(index.includes('#book{transition:opacity 180ms ease}')&&index.includes('#book.reader-fading{opacity:0}'),'reader must use a short fade transition for direct jumps');
 ok(jump.includes("scrollIntoView({ block: 'start', behavior: 'auto' })"),'page selection must jump directly, not smooth-scroll through intervening pages');
 ok(jump.includes("root.style.scrollBehavior = 'auto'")&&jump.includes("body.style.scrollBehavior = 'auto'"),'direct jump must temporarily disable smooth scrolling');
