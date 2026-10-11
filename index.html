@@ -8,10 +8,21 @@
   <style>
     html{scroll-behavior:smooth;scroll-snap-type:y proximity}
     .reader .reader-internal{display:none!important}
-    .reader>div{margin-inline-start:auto}
+    .reader>div{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .reader .download-pdf{font-weight:700}
+    .page-jump{display:inline-flex;align-items:center;gap:7px;font-weight:700;white-space:nowrap}
+    .page-jump select{min-height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#172033;font:inherit;font-weight:700;padding:7px 11px;cursor:pointer}
     .scroll-view .page{scroll-snap-align:start;scroll-margin-top:68px}
-    @media(max-width:850px){.reader{padding:8px 10px}.reader>div{width:auto}.reader .download-pdf{min-height:44px;padding-inline:12px}.scroll-view .page{scroll-margin-top:92px}}
+    #book{transition:opacity 180ms ease}
+    #book.reader-fading{opacity:0}
+    @media(max-width:850px){
+      .reader{padding:8px 10px}
+      .reader>div{width:auto;gap:7px}
+      .reader .download-pdf{min-height:44px;padding-inline:12px}
+      .page-jump select{min-height:44px;max-width:46vw}
+      .scroll-view .page{scroll-margin-top:92px}
+    }
+    @media(prefers-reduced-motion:reduce){#book{transition:none}}
   </style>
   <script>
     // Yaniv 2026-10-11: public workbook opens directly in continuous-scroll mode.
@@ -26,9 +37,13 @@
     <strong>חרוט</strong>
     <div>
       <button class="reader-internal" id="prev" tabindex="-1" aria-hidden="true">הקודם</button>
-      <span id="counter" aria-live="polite"></span>
+      <span class="reader-internal" id="counter" aria-live="polite"></span>
       <button class="reader-internal" id="next" tabindex="-1" aria-hidden="true">הבא</button>
       <button class="reader-internal" id="view-toggle" tabindex="-1" aria-hidden="true" aria-pressed="true" title="הצגת כל הדפים ברצף לגלילה">כל הדפים</button>
+      <label class="page-jump" for="page-selector">
+        <span>מעבר לעמוד</span>
+        <select id="page-selector" aria-label="בחירת עמוד"></select>
+      </label>
       <a class="reader-action download-pdf" href="exports/student-pages/cone-student.pdf" download>הורדת PDF</a>
       <button class="reader-internal" tabindex="-1" aria-hidden="true" onclick="print()">הדפסה / PDF</button>
     </div>
@@ -37,5 +52,6 @@
   <script src="content.js"></script>
   <script src="app.js"></script>
   <script src="student-display-policy.js"></script>
+  <script src="reader-jump.js"></script>
 </body>
 </html>
