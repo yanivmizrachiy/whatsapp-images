@@ -41,7 +41,7 @@ try{
   });
   ok(audit.markers.length>0,'no rendered question markers found');
   for(const [i,m] of audit.markers.entries()){
-    ok(m.has&&m.display!=='none'&&m.w>=20&&m.h>=20,`marker ${i+1} is missing or too small`);
+    ok(m.has&&m.display!=='none'&&m.w>=14&&m.h>=14&&m.w<=18&&m.h<=18,`marker ${i+1} must be a compact 4.2mm dot`);
     ok(m.bg==='rgb(29, 78, 216)',`marker ${i+1} is not canonical blue: ${m.bg}`);
     ok(!/^\d+\s*\.\s+/.test(m.prefix)&&!/^\d+\s+[אבגדהוזחטיכלמנסעפצקרשת][.)]\s*/.test(m.prefix),`marker ${i+1} still exposes a numeric question prefix: ${m.prefix}`);
   }
