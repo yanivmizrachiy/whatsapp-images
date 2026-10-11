@@ -40,12 +40,23 @@
   };
 
   const syncFromScroll = () => {
-    if (jumping) return;
-    if (raf) return;
+    if (jumping || raf) return;
     raf = requestAnimationFrame(() => {
       raf = 0;
       setSelected(pageNearestHeader(), true);
     });
+  };
+
+  const scrollInstant = (target) => {
+    const root = document.documentElement;
+    const body = document.body;
+    const prevRootBehavior = root.style.scrollBehavior;
+    const prevBodyBehavior = body.style.scrollBehavior;
+    root.style.scrollBehavior = 'auto';
+    body.style.scrollBehavior = 'auto';
+    target.scrollIntoView({ block: 'start', behavior: 'auto' });
+    root.style.scrollBehavior = prevRootBehavior;
+    body.style.scrollBehavior = prevBodyBehavior;
   };
 
   const jumpTo = (n, { syncHash = true } = {}) => {
@@ -59,17 +70,8 @@
     book.classList.add('reader-fading');
 
     window.setTimeout(() => {
-      const root = document.documentElement;
-      const body = document.body;
-      const prevRootBehavior = root.style.scrollBehavior;
-      const prevBodyBehavior = body.style.scrollBehavior;
-      root.style.scrollBehavior = 'auto';
-      body.style.scrollBehavior = 'auto';
-      target.scrollIntoView({ block: 'start', behavior: 'auto' });
-
+      scrollInstant(target);
       requestAnimationFrame(() => requestAnimationFrame(() => {
-        root.style.scrollBehavior = prevRootBehavior;
-        body.style.scrollBehavior = prevBodyBehavior;
         book.classList.remove('reader-fading');
         window.setTimeout(() => { jumping = false; syncFromScroll(); }, FADE_MS);
       }));
@@ -95,8 +97,17 @@
     const match = location.hash.match(/page=(\d+)/);
     const initial = match ? clamp(match[1]) : 1;
     setSelected(initial, !match);
-    if (match) requestAnimationFrame(() => jumpTo(initial, { syncHash: false }));
-    else syncFromScroll();
+    if (match) {
+      // Deep links open directly at the requested page without entering a transient faded state.
+      // The fade is reserved for an explicit selector change by the user.
+      requestAnimationFrame(() => {
+        const target = pages[initial - 1];
+        if (target) scrollInstant(target);
+        syncFromScroll();
+      });
+    } else {
+      syncFromScroll();
+    }
   };
 
   init();
