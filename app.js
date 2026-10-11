@@ -256,7 +256,7 @@ ${secTable('CONE-SEC-04')}
 <div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
 
 addPage(`${nextHeader('מהגזרה אל רדיוס הבסיס')}
-<div class="concept-note">זכרו: הקו היוצר תמיד ארוך מרדיוס הבסיס, כי ${tex('s=\\sqrt{r^2+h^2}>r')}. לכן רדיוס הגזרה ${tex('s')} גדול תמיד מרדיוס בסיס החרוט ${tex('r')}.</div>
+<div class="concept-note">זכרו: הקו היוצר ארוך מרדיוס הבסיס, כי ${tex('s=\\sqrt{r^2+h^2}>r')}. לכן רדיוס הגזרה ${tex('s')} גדול תמיד מרדיוס הבסיס ${tex('r')}.</div>
 <figure class="sector-fold-figure">${sectorFoldSvg()}${dimKey('<span class="k-s">s = קו יוצר = רדיוס הגזרה</span> · <span class="k-r">r = רדיוס הבסיס</span> · <span class="k-h">h = גובה החרוט</span> · <span class="k-arc">קשת הגזרה = היקף הבסיס</span>')}</figure>
 <div class="task first">${prompt('CONE-SEC-05')}</div>${grid('reverse')}${answerLine()}
 <div class="task">${prompt('CONE-SEC-06')}</div>${grid('claim')}${answerLine()}`);
