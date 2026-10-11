@@ -11,7 +11,7 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T14:20:00+03:00",
+  "updatedAt": "2026-10-11T15:20:00+03:00",
   "updatedBy": "Claude Code — PR #15 pages 19–20 (SSOT „תיקונים נקודתיים בדפי תלמיד” 2026-10-11): page 19 pedagogical heading + cylinder-volume formula as active completion; page 20 student-chosen radius/height fields, stepwise cylinder/cone/comparison with 28mm work grids; page 32 untouched; visual baseline refresh pending CI render",
   "headCommit": "f997970d7d4f5f884a1776d7f3a2aab01a29fe09",
   "statusRules": {
@@ -200,12 +200,14 @@
         "approved heading weights",
         "district footer",
         "shared visual language",
-        "43-page consistency review"
+        "43-page consistency review",
+        "2026-10-11: restored and canonicalized Yaniv question-display rule: no visible numeric question numbering; every main question starts with a blue circle. Locked source numbers remain in source/DOM only. Added data-driven question-markers layer and dedicated regression QA."
       ],
       "testsPassed": [
         "font load QA",
         "heading-weight QA",
-        "visual consistency audit"
+        "visual consistency audit",
+        "question-marker-qa.mjs"
       ],
       "remaining": []
     },
