@@ -1,55 +1,184 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "1e39b76d90a5759de09e5b9539d19bf5265f802e",
-  "sourceWorkflowRun": 38134270479,
+  "sourceCommit": "db7b312f6dd01707057b64af51c1f9d4fc98ea06",
+  "sourceWorkflowRun": 38141647169,
   "artifact": "cone-visual-qa",
-  "reviewedBy": "Yaniv requirement + ChatGPT direct repo agent — reviewed intended page 19–20 pedagogical changes and refreshed only their visual baseline entries; all other pages unchanged",
+  "reviewedBy": "Yaniv explicit no-question-numbering requirement; presentation-only blue-circle repair; source wording preserved",
   "reviewedAt": "2026-10-11",
   "pageCount": 43,
   "pages": {
-    "page-01.png": {"sha256":"de18a0664def895ae271d49d375abe00609402741b9e8d72c5283e6fe67b421f","bytes":88650},
-    "page-02.png": {"sha256":"45a33a1aed57f622497f9b8eab14bb659dc2247445416805fa5bf952c0e664c3","bytes":79794},
-    "page-03.png": {"sha256":"9a070bc016fafaddb333d016aefd6fa33dba123086dbf42c826e788fbfa68c53","bytes":73716},
-    "page-04.png": {"sha256":"9974970f2a3c642ab8fad769128c7f7a11c0cf605d128d3098c1f7df77f52868","bytes":76793},
-    "page-05.png": {"sha256":"255ddf25b36251d4b6fce334bf69d11deae249455362df3a2173adabcc94628d","bytes":36771},
-    "page-06.png": {"sha256":"9ca472de7fb2870378f0425dea26f831437c08a9e6fb86e15473a172d4bd81c5","bytes":54933},
-    "page-07.png": {"sha256":"aed7a466439ae05eabe865b251faa2d0e88dbee5ff2ef158fe00fa456a8c6252","bytes":85276},
-    "page-08.png": {"sha256":"13e0f09419cd8f28d8a874eb5a6b3b42064ccdf48fbaba68c36f91a14b5369dc","bytes":58039},
-    "page-09.png": {"sha256":"1b4800c411f28a6aaf4d8ba1526a9c57527e2493dbc22e08f11732d73160adf9","bytes":64319},
-    "page-10.png": {"sha256":"d93d17f68a14997c3b02c98db8bc93aa3a8953f909a306766f00ae88830947fe","bytes":48999},
-    "page-11.png": {"sha256":"37a8beacfd847b27888535290982e7f2312a6ac24a1107f972006ee6d2f4a9b4","bytes":39156},
-    "page-12.png": {"sha256":"0fec89e4e95096446eac2ef9684203a0417556cceb8b0379f7d336dd14e73f09","bytes":62820},
-    "page-13.png": {"sha256":"1da9c1c4c69a3bfbfdbd5ffeb31d608c6887871ce5fa510e90cf1a96beefa5a0","bytes":66998},
-    "page-14.png": {"sha256":"2c572255cabba27fca78197a57cc5450e3ad52eed6996f978772dddddaac54d4","bytes":42455},
-    "page-15.png": {"sha256":"a029e0e19beba579e08863eecdc9d760c4d4d65aec3670650162624c6497e41b","bytes":43986},
-    "page-16.png": {"sha256":"af780a5ffa9853a0ac7be65e040cc8e1f8d8dda91c6b461f7cb3b4042d54307a","bytes":57839},
-    "page-17.png": {"sha256":"2d58ad403f483a17079a187a2189cb4376fd0dcc203fc3aea48cbb0a09c2523a","bytes":66885},
-    "page-18.png": {"sha256":"919a00529aeea5a7f3adffc207fd8d87f762947d7b5139ec93b53326027c0c8d","bytes":47350},
-    "page-19.png": {"sha256":"7d2add5e6b3303bdee9538d3c470462ebfc11a66db34741407d23fe6b9544865","bytes":64056},
-    "page-20.png": {"sha256":"46c21d70dbce86301abc2f5c548c7314759530df93188bf5dfd28380b347e3d1","bytes":48533},
-    "page-21.png": {"sha256":"f8c6d442ad493eca97fec81b1bd46d4feaff7f5d7aa678ac91a32f4285788b16","bytes":36663},
-    "page-22.png": {"sha256":"42585625fc47c83c2a30abf0109759c30d98c030e85568699157d053cc70280c","bytes":38729},
-    "page-23.png": {"sha256":"2f51a42daa2e510b799928b494dc55b6e941235a1182dcb29080504eefb9c94c","bytes":65748},
-    "page-24.png": {"sha256":"8d48187df51573226035795cc1cbffcb9d0862c1e727a2445a97006ea62ce6a6","bytes":66114},
-    "page-25.png": {"sha256":"5db4d83d9205094051623c3663c2cd0bbb58a0bc239b89d618d9f2d486d51a01","bytes":50601},
-    "page-26.png": {"sha256":"446889461b61de884f965c24e69fa9b2cfccfac42f7b3ba6cc8cb949741341eb","bytes":53256},
-    "page-27.png": {"sha256":"22f1ddb4ca228b5b2c4c40d46df4d75d69b837d01352b9eb3ed8e0eeb0895ce2","bytes":43869},
-    "page-28.png": {"sha256":"bf99f7474d2a290d2aa24b63d68bd30b94e0b4ac36ca8c1aaa8fe902c3d5ab46","bytes":62982},
-    "page-29.png": {"sha256":"e1434493baa8e33ba6e2533659789dcb42f1d73e0b76a8adbbe841da5236c01b","bytes":50140},
-    "page-30.png": {"sha256":"e8eb4d281d7da8a2aaafc35ab70da237fddb958b425c2a2dc0bef7cbac7408b5","bytes":36345},
-    "page-31.png": {"sha256":"993522b07eeabd50fb7a832cec0ea87f60b4b447884dde70a4f401018fdd69b8","bytes":46649},
-    "page-32.png": {"sha256":"a478740d8d12f2fa1e2b35740d9837973378327f37d35090dc770ab139f9ed34","bytes":58345},
-    "page-33.png": {"sha256":"a8e6b175aaa0a9df072b82d878dc67d028595951a6299ef69a595b9ffa8c43c4","bytes":47991},
-    "page-34.png": {"sha256":"7e76b2bb129be313bbdee5083f04a496fb89c7b54b8c4791b091981f7bd73098","bytes":51872},
-    "page-35.png": {"sha256":"c9604a09d732382761bad99900b92e0d50eec07ee3e5ceb953fcb9c471ff2af4","bytes":65589},
-    "page-36.png": {"sha256":"ed871088989c1eb178832d7a2c045d7eddbb3c8b366e212f87f01867d0d00f53","bytes":50854},
-    "page-37.png": {"sha256":"e91c697dbd6dfa626dc81c129d8e23a1c6ed7474caa1a9f510d0d50c57ef7933","bytes":57036},
-    "page-38.png": {"sha256":"1a6698562f1f5c5376ec828c447696c863de84b6b4ef4bc07686e39e789ea42d","bytes":46444},
-    "page-39.png": {"sha256":"d97dff0d3eaeceabc0cd4961ac94354d39df5b4787bfd4b946756e2f51421113","bytes":80610},
-    "page-40.png": {"sha256":"dd4aa53d7d1b0b7faa26135da2c4bdf0abc795c49b1c0527462537e62e5a15f3","bytes":48596},
-    "page-41.png": {"sha256":"2f931c1f4be64cfe3e54f68749c49cf0e58aa87e5b4704f5bc2ac0109d466ac5","bytes":68164},
-    "page-42.png": {"sha256":"7ab4f861b5ef17728af91b81920618ee16fcbdc7da60bb5561262f56b4439b87","bytes":41804},
-    "page-43.png": {"sha256":"a7c8b30a31a60069e6036e14c65dff7d56290a7d435e873bf64d020449d7ab69","bytes":44067}
+    "page-01.png": {
+      "sha256": "86a126f92d29bed77f66f2141e9712f471931b2a18586936fcf1d1a6d076faae",
+      "bytes": 89448
+    },
+    "page-02.png": {
+      "sha256": "51eb87b894787d0160d9c8150f3fe05d010bf36758b1c932a8b5c4ca21a2fb7a",
+      "bytes": 80993
+    },
+    "page-03.png": {
+      "sha256": "f9dcbd6e23b3fdb1a3753e0c0bbcff987c01e41291d90e13b6f4b1c74c47bae5",
+      "bytes": 75468
+    },
+    "page-04.png": {
+      "sha256": "9a4e99bc503f1e8d7c576c1e34f0c072aaec96dac764c2dc56a594e5113c9d0f",
+      "bytes": 78019
+    },
+    "page-05.png": {
+      "sha256": "9e9f446b50614b02beffbb0d1c8ad73060a5eacfc3e86fff2872b6ee938d2582",
+      "bytes": 37394
+    },
+    "page-06.png": {
+      "sha256": "0280e420339397f6484596541d25eb5a66c415d7f6b2caa801e2a31466ecdecb",
+      "bytes": 56899
+    },
+    "page-07.png": {
+      "sha256": "5739616fea91cf003de76bd0e0f1239fc7ce01f984a00b21e69f3da11c92d620",
+      "bytes": 89415
+    },
+    "page-08.png": {
+      "sha256": "42c068894886b252e05e796ff5abd0cfa26ba201bc518ad3e3d3f3c358b9c0ae",
+      "bytes": 59378
+    },
+    "page-09.png": {
+      "sha256": "81b536f9f97406910606bb47a5f177336f646f080d065c71ca49d6ba7885c45e",
+      "bytes": 67795
+    },
+    "page-10.png": {
+      "sha256": "76fc498fa4bbaa52be30ee8f5b655b445379a8175316b43dfe6a9a8ef7303b09",
+      "bytes": 49602
+    },
+    "page-11.png": {
+      "sha256": "0bde432b9cea922dbebd0272e29ced3cf3fb040ed685922eb172b7b4535c650c",
+      "bytes": 40316
+    },
+    "page-12.png": {
+      "sha256": "475ec8af0c230f3272be08fd7f626400aa33d4ee581cb5ec11fc4b2a8b6759bc",
+      "bytes": 65968
+    },
+    "page-13.png": {
+      "sha256": "9b029a9fdad8f1f6cb1b2eebdb5b6cb69d26d9dec32f6744dc7c8ce83b61297d",
+      "bytes": 67625
+    },
+    "page-14.png": {
+      "sha256": "f9ac56b55e0e9445b3f97516b38108dadc8b1a169f049ff3530132b43b3eae17",
+      "bytes": 44062
+    },
+    "page-15.png": {
+      "sha256": "674a8c73d16ca49cdccc809c48bd2db7510b63519791ae13137f220876e77d72",
+      "bytes": 46076
+    },
+    "page-16.png": {
+      "sha256": "0f9524532edaf2182e7855f889aa360137df5b54975e42cb6cf20a3799dd985b",
+      "bytes": 59078
+    },
+    "page-17.png": {
+      "sha256": "788831eafe7177dc9c454ea54bc03057d1140e882454c349bc1ff630c8bf0a63",
+      "bytes": 69574
+    },
+    "page-18.png": {
+      "sha256": "64e46737e153a58419ab2373220de4aa32a175282c6035c64482bea157d5b416",
+      "bytes": 48629
+    },
+    "page-19.png": {
+      "sha256": "07e5becca6d0e9a8565611ce8cd2b581391a00bb7c89d05271c8b9a96842328e",
+      "bytes": 65735
+    },
+    "page-20.png": {
+      "sha256": "73447a9e5e7a580605b631cfffa84946f470f800a063a2cb6986011eb630d83c",
+      "bytes": 49127
+    },
+    "page-21.png": {
+      "sha256": "5442568874880100d7408df06b58a4d033cb0f3d157eb5ca972f4fce837591f1",
+      "bytes": 37619
+    },
+    "page-22.png": {
+      "sha256": "92be96e36505fa9c20ab8d4b7696c3529e2754004248c15f548a0307a8a4d59c",
+      "bytes": 39891
+    },
+    "page-23.png": {
+      "sha256": "7cc56fdf0657a87377e1e8c9f6bf64b75e8634a430f858819040262fbde5f770",
+      "bytes": 68211
+    },
+    "page-24.png": {
+      "sha256": "c936be03e9cdb2002fda2f0465860181f1ac3ce34c8e7761899b45d3f7c55389",
+      "bytes": 68646
+    },
+    "page-25.png": {
+      "sha256": "e6c91e477f531e6f73a26136351ec43534ba5d31076e3096fbd6b6da3b9c9c1b",
+      "bytes": 51850
+    },
+    "page-26.png": {
+      "sha256": "68b0f238798506443d960e0740325820733bc168aa3cf7af05ff917be27e5523",
+      "bytes": 56058
+    },
+    "page-27.png": {
+      "sha256": "c1534e71678ac73e6fa91732e76502eebeabb60e848cb1d8a96880f56a36344a",
+      "bytes": 44511
+    },
+    "page-28.png": {
+      "sha256": "047f6b0d4c7f2e7ea8c0d8e3c8d7852885baa1d207001c55ce386b62792cf6dc",
+      "bytes": 64214
+    },
+    "page-29.png": {
+      "sha256": "fa6f61298f4c2f3b9f25cbf77e6390c13ddde5601fe8c0b30d2a6a333e5cc8de",
+      "bytes": 51324
+    },
+    "page-30.png": {
+      "sha256": "447538876b362ce3c3edda1e67a7cca5286db3d8ae301e26ba4cde9549b40656",
+      "bytes": 37236
+    },
+    "page-31.png": {
+      "sha256": "462981308d721650eab075e1e11a4d3ae46165ef712e291b63c485921f89c6d5",
+      "bytes": 47241
+    },
+    "page-32.png": {
+      "sha256": "3c575e0ed7283d886289c99c8010fe83c3064b6cd0b1e6c770650419b1400897",
+      "bytes": 58858
+    },
+    "page-33.png": {
+      "sha256": "a8e6b175aaa0a9df072b82d878dc67d028595951a6299ef69a595b9ffa8c43c4",
+      "bytes": 47991
+    },
+    "page-34.png": {
+      "sha256": "f02d705faf2ab76b65d6d68b1feb09faecdaac52b310147c2fd757cb07e490f8",
+      "bytes": 52948
+    },
+    "page-35.png": {
+      "sha256": "d5eb200e47d5853d9c97ed0126ae0cb66305ce4b46bb504cf62a29f2b6eff11e",
+      "bytes": 66791
+    },
+    "page-36.png": {
+      "sha256": "de90f2f3ff01e2b23f8a4a2de8e65cd2f7988b6af3e7d04e6a715d1489ec1df6",
+      "bytes": 51399
+    },
+    "page-37.png": {
+      "sha256": "77a2cca5c5482ddbcf35d1f1d2bf0677a182c1c311ad147ff6f9d03e00c4e5e4",
+      "bytes": 57519
+    },
+    "page-38.png": {
+      "sha256": "62ea30029d4dc495d8630109f191526417e62caeabfc68bca78d192f73c50b71",
+      "bytes": 47253
+    },
+    "page-39.png": {
+      "sha256": "9d79afbfa59af95f3f43b693d3107d69a83243b44d31fb49b1638b7b1d3e9e72",
+      "bytes": 80914
+    },
+    "page-40.png": {
+      "sha256": "dd4aa53d7d1b0b7faa26135da2c4bdf0abc795c49b1c0527462537e62e5a15f3",
+      "bytes": 48596
+    },
+    "page-41.png": {
+      "sha256": "2807a02c66eb532ac8cebd45df554f9386ef8c39a134770a1bf7a45b46905935",
+      "bytes": 69994
+    },
+    "page-42.png": {
+      "sha256": "2c7c36b28dd411b9a6d5be270185e3c371a4ebdf072650e7bbf7880d4f906769",
+      "bytes": 43257
+    },
+    "page-43.png": {
+      "sha256": "922c35896ec05eb55b973693b0b815524dae64c28949c7396c7dcc788c8ff2b0",
+      "bytes": 44667
+    }
   }
 }
