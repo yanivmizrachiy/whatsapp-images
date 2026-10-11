@@ -13,7 +13,7 @@
   "overallPercent": 100,
   "updatedAt": "2026-10-11T11:09:00+03:00",
   "updatedBy": "ChatGPT direct repo agent — Yaniv 2026-10-11 reader/footer requirement: SSOT §18.2 full-width blue footer rule; SSOT §20.3 immediate vertical scroll, no per-page labels between pages, blue-only full-width separator, sticky page selector remains the sole page-number display; canonical + browser + visual evidence are generated in the same hotfix workflow.",
-  "headCommit": "pending-reader-separator-hotfix",
+  "headCommit": "f997970d7d4f5f884a1776d7f3a2aab01a29fe09",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
     "partial": "work exists but at least one acceptance criterion is still open",

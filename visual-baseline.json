@@ -1,7 +1,7 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "PENDING_CONTENT_COMMIT",
+  "sourceCommit": "f997970d7d4f5f884a1776d7f3a2aab01a29fe09",
   "sourceWorkflowRun": 38123894595,
   "artifact": "cone-visual-qa",
   "reviewedBy": "Yaniv requirement + ChatGPT direct repo agent — approved full-width footer rule and blue-only page separators; canonical/browser QA passed in this run",
