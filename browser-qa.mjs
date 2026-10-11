@@ -269,6 +269,9 @@ async function inspectViewport(width,height,label){
       transformedLeft:box.left,
       transformedRight:box.right,
       bodyOverflow:document.documentElement.scrollWidth>innerWidth+1,
+      vertical:(()=>{const vw=document.documentElement.clientWidth;const wide=[...document.querySelectorAll('.reader,#book,.page')].filter(el=>{const r=el.getBoundingClientRect();return r.left<-1||r.right>vw+1}).length;
+        const cs=getComputedStyle(document.documentElement),bs=getComputedStyle(document.body);
+        return {vw,scrollW:document.documentElement.scrollWidth,bodyScrollW:document.body.scrollWidth,wide,ox:cs.overflowX,bodyOx:bs.overflowX,bookOx:getComputedStyle(document.getElementById('book')).overflowX,touch:cs.touchAction,bodyTouch:bs.touchAction,osx:cs.overscrollBehaviorX}})(),
       pageOverflow:pages.some(p=>p.scrollWidth>p.clientWidth+1||p.scrollHeight>p.clientHeight+1),
       controls,
       counter:document.querySelector('#counter')?.textContent||'',
@@ -284,6 +287,12 @@ async function inspectViewport(width,height,label){
   ok(Math.abs(result.rawH-expectedH)<2,`${label}: A4 height drift ${result.rawH}`);
   ok(!result.pageOverflow,`${label}: internal A4 overflow detected`);
   ok(!result.bodyOverflow,`${label}: shell horizontal overflow detected`);
+  // §20.1.1 mobile vertical-only: no horizontal layout width anywhere; gestures pan-y + pinch-zoom.
+  ok(result.vertical.scrollW<=result.vertical.vw+1&&result.vertical.bodyScrollW<=result.vertical.vw+1,`${label}: horizontal layout width detected (scrollWidth ${result.vertical.scrollW}/${result.vertical.bodyScrollW} > viewport ${result.vertical.vw})`);
+  ok(result.vertical.wide===0,`${label}: ${result.vertical.wide} reader/book/page element(s) exceed the viewport width`);
+  ok(result.vertical.ox==='clip'&&result.vertical.bodyOx==='clip'&&['clip','hidden'].includes(result.vertical.bookOx),`${label}: overflow-x must be clip on html/body and clip/hidden on #book (mobile styles.css uses overflow:hidden) (got ${result.vertical.ox}/${result.vertical.bodyOx}/${result.vertical.bookOx})`);
+  ok(/pan-y/.test(result.vertical.touch)&&/pinch-zoom/.test(result.vertical.touch)&&/pan-y/.test(result.vertical.bodyTouch),`${label}: touch-action must be pan-y pinch-zoom (got ${result.vertical.touch} / ${result.vertical.bodyTouch})`);
+  ok(result.vertical.osx==='none',`${label}: overscroll-behavior-x must be none (got ${result.vertical.osx})`);
   ok(result.controls.every(c=>c.w>=44&&c.h>=44),`${label}: touch target below 44px`);
   ok(result.counter===`1 / ${canonicalPageCount}`,`${label}: initial counter mismatch: ${result.counter}`);
   ok(result.rubik&&result.heebo,`${label}: canonical Rubik/Heebo fonts did not load`);
@@ -425,4 +434,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; continuous-scroll reader with page selector fade-jump; print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);
+console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; continuous-scroll reader with page selector fade-jump; mobile vertical-only (overflow-x clipped, pan-y + pinch-zoom); print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);

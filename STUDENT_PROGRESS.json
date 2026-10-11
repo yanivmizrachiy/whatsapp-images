@@ -11,7 +11,7 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T11:09:00+03:00",
+  "updatedAt": "2026-10-11T12:55:00+03:00",
   "updatedBy": "ChatGPT direct repo agent — Yaniv 2026-10-11 reader/footer requirement: SSOT §18.2 full-width blue footer rule; SSOT §20.3 immediate vertical scroll, no per-page labels between pages, blue-only full-width separator, sticky page selector remains the sole page-number display; canonical + browser + visual evidence are generated in the same hotfix workflow.",
   "headCommit": "f997970d7d4f5f884a1776d7f3a2aab01a29fe09",
   "statusRules": {
@@ -225,7 +225,8 @@
         "§20.1 full A4 page visible on portrait phones 360/390/412 (transform-origin top right; external scale only, A4 geometry unchanged)",
         "§20.3 public reader (Yaniv 2026-10-11): continuous scroll by default; exactly two visible controls — the „הורדת PDF” button (static same-origin PDF, download attr) and one compact page <select> „עמוד X מתוך 43” (reader-jump.js / #page-selector); prev/next/single/continuous/print controls hidden (QA-internal only)",
         "page selection = short fade (#book.reader-fading, 180ms) → instant jump (scroll-behavior:auto) → fade-in; selector follows manual scrolling; #page=N deep-link kept",
-        "dynamic page count"
+        "dynamic page count",
+        "§20.1.1 mobile vertical-only (Yaniv 2026-10-11): index.html (6db6861) clips overflow-x on html/body/.reader/#book, touch-action pan-y pinch-zoom, overscroll-behavior-x none; qa.mjs locks the CSS contract and browser-qa.mjs asserts per viewport (desktop + Android/iPhone portrait/landscape) scrollWidth ≤ viewport, no reader/book/page wider than the viewport, computed overflow-x/touch-action"
       ],
       "testsPassed": [
         "desktop",
@@ -235,7 +236,8 @@
         "print",
         "PDF",
         "reader-jump-qa.mjs (static contract: selector + download-only + fade + direct jump + scroll sync + deep-link)",
-        "browser-qa.mjs §20.3: continuous default, one visible action, visible <select>, instant fade-jump lands under the sticky bar, selector follows scroll"
+        "browser-qa.mjs §20.3: continuous default, one visible action, visible <select>, instant fade-jump lands under the sticky bar, selector follows scroll",
+        "browser-qa.mjs §20.1.1: mobile vertical-only — no horizontal layout width, overflow-x clipped, pan-y + pinch-zoom"
       ],
       "remaining": []
     },
