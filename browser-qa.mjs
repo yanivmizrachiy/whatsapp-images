@@ -303,6 +303,19 @@ await inspectViewport(844,390,'iphone-landscape');
 // SSOT §20.3 public reader: continuous scroll by default (no ?view needed),
 // sticky non-button counter follows the scroll, A4 geometry/overflow rules
 // hold, print pagination unchanged. No hidden-control clicks (§20.7).
+// Reader shell uses scroll-behavior:smooth + scroll-snap; QA scrolls instantly
+// and waits for the position to settle before reading the sticky counter.
+async function scrollReaderTo(pageIndex){
+  await page.evaluate((i)=>{
+    const pages=[...document.querySelectorAll('.page')];
+    const top=i<0?0:pages[i].getBoundingClientRect().top+scrollY-document.querySelector('.reader').offsetHeight-8;
+    document.documentElement.style.scrollBehavior='auto';
+    scrollTo({top:Math.max(0,top),behavior:'instant'});
+  },pageIndex);
+  await page.waitForFunction(()=>new Promise(r=>{let last=scrollY;setTimeout(()=>r(last===scrollY),120)}));
+  await page.evaluate(()=>{document.documentElement.style.scrollBehavior='';dispatchEvent(new Event('scroll'))});
+  await page.waitForTimeout(100);
+}
 async function inspectScrollView(width,height,label){
   await page.setViewportSize({width,height});
   await page.goto(url,{waitUntil:'load'});
@@ -332,14 +345,13 @@ async function inspectScrollView(width,height,label){
   ok(!result.pageOverflow,`${label}: scroll view internal A4 overflow detected`);
   ok(!result.bodyOverflow,`${label}: scroll view horizontal overflow detected`);
   ok(result.scrollable,`${label}: scroll view must be vertically scrollable`);
-  await page.evaluate(()=>{const p=document.querySelectorAll('.page')[4];scrollTo({top:p.getBoundingClientRect().top+scrollY-document.querySelector('.reader').offsetHeight-8})});
-  await page.waitForTimeout(300);
+  await scrollReaderTo(4);
   ok((await page.textContent('#counter'))?.trim()===`5 / ${canonicalPageCount}`,`${label}: counter did not follow a manual scroll to page 5`);
   await page.emulateMedia({media:'print'});
   const printMargins=await page.evaluate(()=>[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).marginBottom));
   ok(printMargins.every(m=>m==='0px'),`${label}: scroll view must print without inter-page margins (${[...new Set(printMargins)].join(',')})`);
   await page.emulateMedia({media:null});
-  await page.evaluate(()=>scrollTo({top:0}));
+  await scrollReaderTo(-1);
 }
 await inspectScrollView(1440,1200,'desktop-scroll');
 await page.goto(url,{waitUntil:'load'});
@@ -354,11 +366,9 @@ for(let i=1;i<=canonicalPageCount;i++){
 }
 await page.evaluate(()=>{document.querySelector('.reader').style.visibility=''});
 // Sticky counter follows the scroll position (no prev/next clicks — §20.7).
-await page.evaluate(()=>{const p=[...document.querySelectorAll('.page')].at(-1);scrollTo({top:p.getBoundingClientRect().top+scrollY-document.querySelector('.reader').offsetHeight-8})});
-await page.waitForTimeout(300);
+await scrollReaderTo(canonicalPageCount-1);
 ok((await page.textContent('#counter'))?.trim()===`${canonicalPageCount} / ${canonicalPageCount}`,'counter did not reach final page on scroll');
-await page.evaluate(()=>scrollTo({top:0}));
-await page.waitForTimeout(300);
+await scrollReaderTo(-1);
 ok((await page.textContent('#counter'))?.trim()===`1 / ${canonicalPageCount}`,'counter did not return to page 1 on scroll');
 
 await page.emulateMedia({media:'print'});

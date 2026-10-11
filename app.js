@@ -434,13 +434,14 @@ function fitPage(){if(innerWidth>850){book.style.removeProperty('--page-scale');
 function scrollToPage(i){const top=students[i].getBoundingClientRect().top+scrollY-reader.offsetHeight-8;scrollTo({top:Math.max(0,top)})}
 function goTo(i){idx=Math.max(0,Math.min(students.length-1,i));show();if(scrollView)scrollToPage(idx)}
 
-// In scroll view the counter follows the page that occupies most of the viewport
-// below the sticky reader bar (11 rect reads per scroll event: negligible).
-const visibleHeight=p=>{const r=p.getBoundingClientRect();return Math.max(0,Math.min(r.bottom,innerHeight)-Math.max(r.top,reader.offsetHeight))};
+// In scroll view the sticky counter follows the page nearest the top of the
+// content area (just below the sticky reader bar): deterministic for manual
+// scrolling forward and back to the top (SSOT §20.3). Page 1 at scrollY=0.
 function syncCounterToScroll(){
   if(!scrollView)return;
-  let best=idx,bestH=-1;
-  students.forEach((p,i)=>{const h=visibleHeight(p);if(h>bestH){bestH=h;best=i}});
+  const line=reader.offsetHeight+Math.min(24,innerHeight*0.02);
+  let best=0;
+  students.forEach((p,i)=>{if(p.getBoundingClientRect().top-line<=1)best=i});
   if(best!==idx){idx=best;updateCounter()}
 }
 addEventListener('scroll',syncCounterToScroll,{passive:true});
