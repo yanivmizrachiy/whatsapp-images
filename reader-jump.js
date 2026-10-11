@@ -5,57 +5,67 @@
   if (!book || !selector) return;
 
   const FADE_MS = 180;
+  // SSOT §28.2: the reader shows either the unnumbered cover or a numbered page. COVER is that
+  // explicit state; it is never a page number, so choosing any page (page 1 too) from the cover
+  // is a real selector change and always navigates.
+  const COVER = 'cover';
+  const COVER_LABEL = 'שער החוברת';
   let pages = [];
   let raf = 0;
   let jumping = false;
 
   const getPages = () => [...book.querySelectorAll('.page')];
+  // The cover is part of the reader only while it is shown (internal paged QA mode hides it).
+  const getCover = () => {
+    const cover = book.querySelector('.cover-sheet');
+    return cover && !cover.hidden ? cover : null;
+  };
   const clamp = (n) => Math.max(1, Math.min(pages.length || 1, Number(n) || 1));
+  const pageHash = (n) => `${location.pathname}${location.search}#page=${n}`;
 
-  const setSelected = (n, syncHash = false) => {
+  // The selector always shows the current state: COVER or page n.
+  const setState = (state, syncHash = false) => {
     if (!pages.length) return;
-    n = clamp(n);
+    if (state === COVER && selector.querySelector(`option[value="${COVER}"]`)) {
+      if (selector.value !== COVER) selector.value = COVER;
+      selector.setAttribute('aria-label', `בחירת עמוד — ${COVER_LABEL}`);
+      if (syncHash && /page=/.test(location.hash)) history.replaceState(null, '', `${location.pathname}${location.search}`);
+      return;
+    }
+    const n = clamp(state);
     const value = String(n);
     if (selector.value !== value) selector.value = value;
     selector.setAttribute('aria-label', `בחירת עמוד — עמוד ${n} מתוך ${pages.length}`);
     if (legacyCounter) legacyCounter.textContent = `${n} / ${pages.length}`;
-    if (syncHash) history.replaceState(null, '', `${location.pathname}${location.search}#page=${n}`);
+    if (syncHash) history.replaceState(null, '', pageHash(n));
   };
 
-  const pageNearestHeader = () => {
+  // Current state from the scroll position: the sheet (cover or page) whose top is nearest
+  // the line just below the sticky bar.
+  const stateFromScroll = () => {
     if (!pages.length) return 1;
+    const cover = getCover();
+    const sheets = cover ? [cover, ...pages] : pages;
     const header = document.querySelector('.reader');
     const top = (header?.getBoundingClientRect().bottom || 0) + 12;
     let best = 0;
     let bestDistance = Infinity;
-    pages.forEach((page, i) => {
-      const rect = page.getBoundingClientRect();
-      const distance = Math.abs(rect.top - top);
+    sheets.forEach((sheet, i) => {
+      const distance = Math.abs(sheet.getBoundingClientRect().top - top);
       if (distance < bestDistance) {
         bestDistance = distance;
         best = i;
       }
     });
+    if (cover) return best === 0 ? COVER : best;
     return best + 1;
-  };
-
-  // SSOT §28: the cover sheet sits before page 1 and is not a page. While it is the sheet
-  // nearest the bar line the selector keeps "עמוד 1" and the URL carries no #page hash.
-  const onCover = () => {
-    const cover = book.querySelector('.cover-sheet');
-    if (!cover || cover.hidden || !pages.length) return false;
-    const header = document.querySelector('.reader');
-    const top = (header?.getBoundingClientRect().bottom || 0) + 12;
-    return Math.abs(cover.getBoundingClientRect().top - top) < Math.abs(pages[0].getBoundingClientRect().top - top);
   };
 
   const syncFromScroll = () => {
     if (jumping || raf) return;
     raf = requestAnimationFrame(() => {
       raf = 0;
-      const cover = onCover();
-      setSelected(pageNearestHeader(), !cover);
-      if (cover && location.hash) history.replaceState(null, '', `${location.pathname}${location.search}`);
+      setState(stateFromScroll(), true);
     });
   };
 
@@ -71,14 +81,16 @@
     body.style.scrollBehavior = prevBodyBehavior;
   };
 
-  const jumpTo = (n, { syncHash = true } = {}) => {
+  const targetOf = (state) => (state === COVER ? getCover() : pages[clamp(state) - 1]);
+
+  const jumpTo = (state, { syncHash = true } = {}) => {
     if (!pages.length) return;
-    n = clamp(n);
-    const target = pages[n - 1];
+    if (state !== COVER) state = clamp(state);
+    const target = targetOf(state);
     if (!target) return;
 
     jumping = true;
-    setSelected(n, syncHash);
+    setState(state, syncHash);
     book.classList.add('reader-fading');
 
     window.setTimeout(() => {
@@ -90,6 +102,21 @@
     }, Math.round(FADE_MS / 2));
   };
 
+  // Deep links open directly at the requested page without entering a transient faded state.
+  // The fade is reserved for an explicit selector change by the user.
+  const openDeepLink = () => {
+    const match = location.hash.match(/page=(\d+)/);
+    if (!match) return false;
+    const n = clamp(match[1]);
+    setState(n);
+    requestAnimationFrame(() => {
+      const target = pages[n - 1];
+      if (target) scrollInstant(target);
+      syncFromScroll();
+    });
+    return true;
+  };
+
   const init = (attempt = 0) => {
     pages = getPages();
     if (!pages.length) {
@@ -97,29 +124,20 @@
       return;
     }
 
-    selector.innerHTML = pages.map((_, i) => {
+    const coverOption = book.querySelector('.cover-sheet')
+      ? `<option value="${COVER}" disabled>${COVER_LABEL}</option>`
+      : '';
+    selector.innerHTML = coverOption + pages.map((_, i) => {
       const n = i + 1;
       return `<option value="${n}">עמוד ${n} מתוך ${pages.length}</option>`;
     }).join('');
 
-    selector.addEventListener('change', () => jumpTo(selector.value));
+    selector.addEventListener('change', () => jumpTo(selector.value === COVER ? COVER : selector.value));
     window.addEventListener('scroll', syncFromScroll, { passive: true });
     window.addEventListener('resize', syncFromScroll, { passive: true });
+    window.addEventListener('hashchange', openDeepLink);
 
-    const match = location.hash.match(/page=(\d+)/);
-    const initial = match ? clamp(match[1]) : 1;
-    setSelected(initial, !match && !book.querySelector('.cover-sheet'));
-    if (match) {
-      // Deep links open directly at the requested page without entering a transient faded state.
-      // The fade is reserved for an explicit selector change by the user.
-      requestAnimationFrame(() => {
-        const target = pages[initial - 1];
-        if (target) scrollInstant(target);
-        syncFromScroll();
-      });
-    } else {
-      syncFromScroll();
-    }
+    if (!openDeepLink()) syncFromScroll();
   };
 
   init();

@@ -11,9 +11,9 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T19:30:00+03:00",
-  "updatedBy": "Claude Code — SSOT §28: the approved cover (v4) integrated 1:1 as one unnumbered A4 sheet before page 1; PDF = cover + 43.",
-  "headCommit": "pending-cover-sheet",
+  "updatedAt": "2026-10-11T20:30:00+03:00",
+  "updatedBy": "Claude Code (HARUT_AGENT) — SSOT §28.2 reader cover state before merging PR #22: the selector shows a disabled \"שער החוברת\" state while the cover is displayed, so choosing page 1 from the cover navigates; protected by reader-cover-regression-qa.mjs (Chromium desktop + 390x844) in npm run qa:browser.",
+  "headCommit": "pending-harut-closure",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
     "partial": "work exists but at least one acceptance criterion is still open",
@@ -238,7 +238,8 @@
         "§20.3 public reader (Yaniv 2026-10-11): continuous scroll by default; exactly two visible controls — the „הורדת PDF” button (static same-origin PDF, download attr) and one compact page <select> „עמוד X מתוך 43” (reader-jump.js / #page-selector); prev/next/single/continuous/print controls hidden (QA-internal only)",
         "page selection = short fade (#book.reader-fading, 180ms) → instant jump (scroll-behavior:auto) → fade-in; selector follows manual scrolling; #page=N deep-link kept",
         "dynamic page count",
-        "§20.1.1 mobile vertical-only (Yaniv 2026-10-11): index.html (6db6861) clips overflow-x on html/body/.reader/#book, touch-action pan-y pinch-zoom, overscroll-behavior-x none; qa.mjs locks the CSS contract and browser-qa.mjs asserts per viewport (desktop + Android/iPhone portrait/landscape) scrollWidth ≤ viewport, no reader/book/page wider than the viewport, computed overflow-x/touch-action"
+        "§20.1.1 mobile vertical-only (Yaniv 2026-10-11): index.html (6db6861) clips overflow-x on html/body/.reader/#book, touch-action pan-y pinch-zoom, overscroll-behavior-x none; qa.mjs locks the CSS contract and browser-qa.mjs asserts per viewport (desktop + Android/iPhone portrait/landscape) scrollWidth ≤ viewport, no reader/book/page wider than the viewport, computed overflow-x/touch-action",
+        "§28.2 reader cover state (2026-10-11, before merging PR #22): reader-jump.js models the reader as cover | page N. While the cover is displayed the selector shows one disabled \"שער החוברת\" entry (never \"עמוד 1\") and the URL has no #page=, so choosing page 1 from the cover is a real <select> change and navigates. Manual scroll, reload and #page=N deep links (also in-page hashchange) keep the selector on the displayed sheet; #page=1 opens page 1, not the cover."
       ],
       "testsPassed": [
         "desktop",
@@ -249,7 +250,8 @@
         "PDF",
         "reader-jump-qa.mjs (static contract: selector + download-only + fade + direct jump + scroll sync + deep-link)",
         "browser-qa.mjs §20.3: continuous default, one visible action, visible <select>, instant fade-jump lands under the sticky bar, selector follows scroll",
-        "browser-qa.mjs §20.1.1: mobile vertical-only — no horizontal layout width, overflow-x clipped, pan-y + pinch-zoom"
+        "browser-qa.mjs §20.1.1: mobile vertical-only — no horizontal layout width, overflow-x clipped, pan-y + pinch-zoom",
+        "reader-cover-regression-qa.mjs (Chromium, desktop 1440x1200 + mobile 390x844; native <select> change semantics, because Playwright selectOption() always dispatches change and hid the bug): FAILS on PR #22 head e08865a (28 failures: selector reads \"עמוד 1 מתוך 43\" on the cover, choosing page 1 fires no change, keyboard ArrowDown skips to page 2, in-page #page=8 ignored) and PASSES after the fix; wired into npm run qa:browser (CI) and pinned by reader-jump-qa.mjs"
       ],
       "remaining": []
     },
@@ -612,7 +614,13 @@
       "percent": 100,
       "commit": "pending-cover-sheet",
       "note": "Yaniv asked where the cover is and said not to create a new one. The approved cover v4 (his background image, title חרוט, tagline, כיתה ח׳ subtitle, formulas, district logo, credits) was integrated 1:1 as SSOT §28: section.cover-sheet before page 1, not a .page, so 43 pages / 82 questions, page numbers and #page=N links are unchanged. Print/PDF = cover + 43. browser-qa gained a cover audit, a cover.png screenshot (page screenshots exclude the cover so the locked page baseline is unchanged) and a cover + 43 PDF check. The heavy Rubik weights for the cover title/kicker load under a cover-only font family, so page text rendering is unchanged (local A/B on this PC: 43/43 page screenshots byte-identical to main). Percent stays 100% pending CI confirmation; teacher pages untouched."
+    },
+    {
+      "date": "2026-10-11",
+      "percent": 100,
+      "commit": "pending-harut-closure",
+      "note": "Pre-merge fix for PR #22 (cover sheet). Confirmed bug: with the cover displayed the page selector already read \"עמוד 1 מתוך 43\", so choosing page 1 fired no change event on a native <select> and nothing happened; keyboard ArrowDown from the cover jumped to page 2. Fixed as a state model in reader-jump.js (cover | page N; disabled \"שער החוברת\" selector state; one scroll-derived state function over [cover, ...pages]; in-page hashchange deep links). SSOT §28.2/§28.6/§20.3 updated in the same change. New Chromium regression gate reader-cover-regression-qa.mjs (fails before, passes after) runs in npm run qa:browser/CI; browser-qa.mjs now expects the cover state on open and returns to page 1 by scrolling to page 1. Page rendering, 43 pages / 82 questions and the page baseline are unchanged. Percent stays 100% pending CI on the integration PR; production verification follows the merge. Teacher pages untouched."
     }
   ],
-  "readerUx20261011": "Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; pages adjacent with no white gap, separated only by the full-width 3px dark-blue line; full-width blue rule above footer text. Cover (SSOT §28): one unnumbered full-bleed cover sheet (approved v4, unchanged) sits before page 1 in the scroll view, print and PDF (cover + 43); it is not a page and not a selector option."
+  "readerUx20261011": "Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; pages adjacent with no white gap, separated only by the full-width 3px dark-blue line; full-width blue rule above footer text. Cover (SSOT §28): one unnumbered full-bleed cover sheet (approved v4, unchanged) sits before page 1 in the scroll view, print and PDF (cover + 43); it is not a page and not a selectable page option; while it is displayed the selector shows the disabled cover state \"שער החוברת\" (§28.2), so choosing page 1 from the cover always navigates."
 }

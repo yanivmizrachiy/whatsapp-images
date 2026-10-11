@@ -364,7 +364,8 @@ async function inspectScrollView(width,height,label){
       counterIsButton:!!counterEl?.closest('button,a'),
       sticky:getComputedStyle(document.querySelector('.reader')).position==='sticky',
       download:(()=>{const a=document.querySelector('a.download-pdf');return a&&a.hasAttribute('download')&&new URL(a.href).origin===location.origin&&getComputedStyle(a).display!=='none'})(),
-      selector:(()=>{const sel=document.querySelector('#page-selector');if(!sel)return null;const r=sel.getBoundingClientRect();return {visible:getComputedStyle(sel).display!=='none'&&r.height>0,h:r.height,options:sel.options.length,text:sel.options[sel.selectedIndex]?.textContent.trim(),isButton:sel.tagName!=='SELECT'}})(),
+      selector:(()=>{const sel=document.querySelector('#page-selector');if(!sel)return null;const r=sel.getBoundingClientRect();return {visible:getComputedStyle(sel).display!=='none'&&r.height>0,h:r.height,options:[...sel.options].filter(o=>!o.disabled).length,pageOptions:[...sel.options].filter(o=>!o.disabled).every((o,i)=>o.value===String(i+1)),text:sel.options[sel.selectedIndex]?.textContent.trim(),isButton:sel.tagName!=='SELECT'}})(),
+      cover:!!document.querySelector('#book .cover-sheet'),
       forbiddenVisible:[...document.querySelectorAll('#prev,#next,#view-toggle,.reader button')].filter(el=>getComputedStyle(el).display!=='none').length
     };
   });
@@ -373,7 +374,9 @@ async function inspectScrollView(width,height,label){
   ok(result.counter===`1 / ${canonicalPageCount}`,`${label}: initial counter mismatch: ${result.counter}`);
   ok(!result.counterIsButton&&result.sticky,`${label}: counter must be a sticky non-button read-out`);
   ok(result.download,`${label}: הורדת PDF must be a visible same-origin download link`);
-  ok(result.selector&&result.selector.visible&&!result.selector.isButton&&result.selector.options===canonicalPageCount&&result.selector.text===`עמוד 1 מתוך ${canonicalPageCount}`,`${label}: compact page <select> must be visible with ${canonicalPageCount} options reading "עמוד X מתוך N" (got ${JSON.stringify(result.selector)})`);
+  // §28.2: the cover is not a page option; while it is displayed (on open) the selector shows the cover state.
+  const openText=result.cover?'שער החוברת':`עמוד 1 מתוך ${canonicalPageCount}`;
+  ok(result.selector&&result.selector.visible&&!result.selector.isButton&&result.selector.options===canonicalPageCount&&result.selector.pageOptions&&result.selector.text===openText,`${label}: compact page <select> must be visible with ${canonicalPageCount} selectable page options ("עמוד X מתוך N") and open on "${openText}" (got ${JSON.stringify(result.selector)})`);
   ok(result.selector&&result.selector.h>=40,`${label}: page selector touch target too small (${result.selector?.h}px)`);
   ok(result.forbiddenVisible===0,`${label}: prev/next/view-toggle/print controls must not be visible (${result.forbiddenVisible})`);
   ok(!result.pageOverflow,`${label}: scroll view internal A4 overflow detected`);
@@ -400,6 +403,8 @@ async function inspectScrollView(width,height,label){
   const tr=parseFloat(landed.transition)*(/ms$/.test(landed.transition)?1:1000);
   ok(tr>=150&&tr<=220,`${label}: #book fade transition must be 150–220ms (got ${landed.transition})`);
   await scrollReaderTo(-1);
+  if(result.cover)ok(await page.$eval('#page-selector',el=>el.value)==='cover',`${label}: selector did not return to the cover state on scroll to the top (§28.2)`);
+  await scrollReaderTo(0);
   ok(await page.$eval('#page-selector',el=>Number(el.value))===1,`${label}: selector did not return to page 1 on scroll`);
   await page.emulateMedia({media:'print'});
   const printMargins=await page.evaluate(()=>[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).marginBottom));
