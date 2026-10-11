@@ -24,7 +24,13 @@ const axialSketchQuestion=data.questions.find(q=>q.id==='CONE-AX-SKETCH-01');
 const conversionQuestion=data.questions.find(q=>q.id==='CONE-CONV-01');
 const ids=data.questions.map(q=>q.id);
 
-ok(ids.length>=13,'expected at least 13 canonical question IDs');
+// SSOT §2.4 canonical scope: exactly 82 questions across 45 A4 pages.
+// Pinned exactly (not a floor) so any page/question add or drop fails the portable fast suite
+// immediately, instead of being caught only by the CI-locked pixel baseline.
+const CANONICAL_QUESTION_COUNT=82;
+const CANONICAL_PAGE_COUNT=45;
+
+ok(ids.length===CANONICAL_QUESTION_COUNT,`canonical question-count drift; expected ${CANONICAL_QUESTION_COUNT}, got ${ids.length}`);
 ok(new Set(ids).size===ids.length,'duplicate question IDs found');
 ok(officialQuestion?.locked===true,'official curriculum question is not locked');
 ok(Boolean(orientationQuestion),'varied-orientation identification task missing');
@@ -75,7 +81,7 @@ const teacherIronRule=
 ok(teacherIronRule,'teacher-page iron rule missing from SSOT');
 
 const studentPageBuilders=(app.match(/addPage\(/g)||[]).length;
-ok(studentPageBuilders>=8,'expected at least 8 student A4 pages');
+ok(studentPageBuilders===CANONICAL_PAGE_COUNT,`canonical page-count drift; expected ${CANONICAL_PAGE_COUNT}, got ${studentPageBuilders}`);
 ok(app.includes('volumeTableRows()'),'student volume table is not rendered from canonical data');
 ok(app.includes('orientedConeSvg(90)')&&app.includes('orientedConeSvg(180)'),'varied cone orientations are not rendered');
 ok(app.includes('בסיס, קודקוד, מעטפת וגובה'),'orientation page must visibly ask for base, vertex, mantle and height');
@@ -145,6 +151,9 @@ ok(app.includes("tex('r')")&&app.includes("tex('d')")&&app.includes("tex('h')")&
 const forbiddenMath=/[×✕✖]/;
 ok(!forbiddenMath.test(app),'forbidden multiplication glyph found in app.js');
 ok(!app.includes('\\\\times'),'forbidden \\times found in app.js; use \\cdot');
+// §12.2 binds all student-facing math; the 82 prompts/tables live in content.js, so scan it too.
+ok(!forbiddenMath.test(content),'forbidden multiplication glyph found in content.js');
+ok(!content.includes('\\\\times'),'forbidden \\times found in content.js; use \\cdot');
 
 if(failures.length){
   console.error('QA FAIL');
