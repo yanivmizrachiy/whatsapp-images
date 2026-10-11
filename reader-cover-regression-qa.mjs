@@ -128,6 +128,17 @@ async function scenario(browser, { label, width, height, mobile }) {
     ok(s.coverOptions.length === 1 && s.coverOptions[0].disabled, `${label}: the selector needs exactly one cover-state entry, and it must not be selectable (got ${JSON.stringify(s.coverOptions)})`);
     expectCover(s, `${label} open`);
     const coverY = s.scrollY;
+    // SSOT §28.3: the cover has the same width/scale as the pages and never overflows sideways;
+    // SSOT §20.2: on a touch device the page selector is at least 44px tall.
+    const geo = await page.evaluate(() => {
+      const c = document.querySelector('.cover-sheet').getBoundingClientRect();
+      const p = document.querySelector('#book .page').getBoundingClientRect();
+      const sel = document.querySelector('.reader select').getBoundingClientRect();
+      return { vw: document.documentElement.clientWidth, cl: c.left, cr: c.right, cw: c.width, pw: p.width, selH: sel.height };
+    });
+    ok(Math.abs(geo.cw - geo.pw) <= 1, `${label}: cover width ${geo.cw} differs from page width ${geo.pw} (§28.3)`);
+    ok(geo.cl >= -1 && geo.cr <= geo.vw + 1, `${label}: cover overflows the viewport sideways (${geo.cl}..${geo.cr} of ${geo.vw}) (§28.3)`);
+    if (mobile) ok(geo.selH >= 44, `${label}: page selector is ${geo.selH}px tall; touch controls need ≥44px (§20.2)`);
 
     // 2. From the cover, choose page 1: this must navigate.
     const pick1 = await chooseLikeUser(page, 1);

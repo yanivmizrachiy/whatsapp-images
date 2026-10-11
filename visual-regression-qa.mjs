@@ -22,6 +22,18 @@ for(const [name,meta] of expected){
   ok(sha===meta.sha256,`${name}: pixel screenshot regression; expected ${meta.sha256}, got ${sha}`);
 }
 
+// SSOT §28.1/§28.6: the approved cover is shown 1:1, so its CI screenshot is locked like the pages.
+const cover=manifest.cover;
+ok(cover&&cover.file==='cover.png'&&/^[0-9a-f]{64}$/.test(cover.sha256||'')&&Number.isInteger(cover.bytes),'visual baseline must lock the cover screenshot (cover.png)');
+if(cover){
+  const file=`qa-artifacts/${cover.file}`;
+  ok(fs.existsSync(file),`missing current cover screenshot ${file}`);
+  if(fs.existsSync(file)){
+    ok(fs.statSync(file).size===cover.bytes,`cover.png: byte-size visual drift; expected ${cover.bytes}, got ${fs.statSync(file).size}`);
+    ok(digest(file)===cover.sha256,`cover.png: pixel screenshot regression; expected ${cover.sha256}, got ${digest(file)}`);
+  }
+}
+
 const current=fs.existsSync('qa-artifacts')
   ? fs.readdirSync('qa-artifacts').filter(n=>/^page-\d{2}\.png$/.test(n)).sort()
   : [];
@@ -32,4 +44,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`VISUAL REGRESSION QA PASS: ${manifest.pageCount} pages match reviewed baseline from workflow ${manifest.sourceWorkflowRun}.`);
+console.log(`VISUAL REGRESSION QA PASS: cover + ${manifest.pageCount} pages match reviewed baseline from workflow ${manifest.sourceWorkflowRun}.`);

@@ -41,6 +41,10 @@ const meaningful=(file)=>[
   /^app\.js$/,
   /^styles\.css$/,
   /^index\.html$/,
+  // Student-facing runtime modules loaded by index.html (reader §20/§28, markers §17.7, display policy).
+  /^reader-jump\.js$/,
+  /^question-markers\.(js|css)$/,
+  /^student-display-policy\.js$/,
   /^math-qa\.mjs$/,
   /^coverage-qa\.mjs$/,
   /^qa\.mjs$/,

@@ -11,8 +11,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T20:55:00+03:00",
-  "updatedBy": "Claude Code (HARUT_AGENT) — single-source governance audit: derived docs that still carried stale scope or their own definition of done now defer to SOURCE_OF_TRUTH.md, and ssot-qa/qa.mjs keep it that way.",
+  "updatedAt": "2026-10-11T22:10:00+03:00",
+  "updatedBy": "Claude Code (HARUT_AGENT) — closure audit: CONE-ARCH-01 stem rendered and missing §17.7 markers added on pages 4, 13, 33 and 41; new rendered-coverage/marker gate; cover screenshot locked; reader print and touch-size gates.",
   "headCommit": "pending-harut-closure",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -35,12 +35,14 @@
         "43 active student A4 pages",
         "content.js",
         "app.js",
-        "validated exports/student-pages"
+        "validated exports/student-pages",
+        "all 82 canonical questions rendered (stem + every subpart), verified in Chromium by question-marker-browser-qa.mjs; CONE-ARCH-01 stem (page 33) restored — it had not been rendered since 5c93d7c"
       ],
       "testsPassed": [
         "dynamic page-count browser QA",
         "PDF page-count QA",
-        "subsection work-unit gate"
+        "subsection work-unit gate",
+        "rendered-coverage gate: 82/82 canonical questions present on the pages (question-marker-browser-qa.mjs)"
       ],
       "remaining": []
     },
@@ -209,7 +211,8 @@
         "43-page consistency review",
         "2026-10-11: restored and canonicalized Yaniv question-display rule: no visible numeric question numbering; every main question starts with a blue circle. Locked source numbers remain in source/DOM only. Added data-driven question-markers layer and dedicated regression QA.",
         "2026-10-11 hardening: visual evidence audit caught one source-locked page-1 pattern (`2 א.`) whose question number was not covered by the first repair parser. Extended the presentation-only prefix parser to hide a numeric question number followed by a Hebrew subpart while keeping `א.` visible; added Playwright question-marker-browser-qa across all 43 pages to prove blue markers render and visible numeric question prefixes cannot return. Source text/data remain unchanged.",
-        "2026-10-11: Yaniv corrected marker styling: one compact solid blue dot only, no inner white dot/ring. Reduced main question marker from 6.6mm to 4.2mm and spacing accordingly; no wording/math/source IDs changed. Static and rendered QA now forbid nested markers and oversize dots."
+        "2026-10-11: Yaniv corrected marker styling: one compact solid blue dot only, no inner white dot/ring. Reduced main question marker from 6.6mm to 4.2mm and spacing accordingly; no wording/math/source IDs changed. Static and rendered QA now forbid nested markers and oversize dots.",
+        "§17.7 markers on every main question: pages 4 (OBJ-03/04/05), 13 (SEC-01) and 33 (ARCH-01) and 41 (stem with a blank) now open with the blue dot; stemless CONE-NET-06/CONE-BRIDGE-03 carry it on subpart א"
       ],
       "testsPassed": [
         "font load QA",
@@ -274,7 +277,10 @@
         "visual-baseline.json",
         "visual-regression-qa.mjs",
         "figure-containment gate (browser-qa.mjs): every student-page diagram is painted inside its direct parent box; catches visual spill that scrollHeight-based overflow checks miss",
-        "exact canonical-scope gate (qa.mjs): ==43 A4 pages and ==82 questions (were floors >=8/>=13); forbidden multiplication-glyph check extended to content.js; mobile horizontal-containment assertion (browser-qa.mjs §20.1)"
+        "exact canonical-scope gate (qa.mjs): ==43 A4 pages and ==82 questions (were floors >=8/>=13); forbidden multiplication-glyph check extended to content.js; mobile horizontal-containment assertion (browser-qa.mjs §20.1)",
+        "question-marker-browser-qa.mjs: fails if any of the 82 canonical questions is not rendered or a main question has no blue marker (SSOT §17.7, §2.4)",
+        "visual-baseline.json locks the CI cover screenshot (cover.png, identical sha256 in CI runs 38151852208 and 38159994948); visual-regression-qa.mjs requires it (SSOT §28.1/§28.6)",
+        "browser-qa.mjs: rendered page count must equal the canonical 43 (was >=8); the reader bar must not print (SSOT §20.4); reader-cover-regression-qa.mjs: cover width = page width, no sideways overflow (§28.3), mobile selector >=44px (§20.2); progress-qa.mjs treats reader-jump.js, question-markers.js/.css and student-display-policy.js as tracked student-facing files"
       ],
       "testsPassed": [
         "SSOT QA",
@@ -285,7 +291,9 @@
         "43-page visual regression",
         "geometric diagram label-safety gate",
         "figure-containment gate (SSOT §16.2): diagram cannot overflow its box onto neighbouring text",
-        "canonical scope exact-count QA (43 pages / 82 questions); mobile horizontal-containment QA (§20.1)"
+        "canonical scope exact-count QA (43 pages / 82 questions); mobile horizontal-containment QA (§20.1)",
+        "82-question rendered-coverage + every-main-question-marked gate (fails on the pre-fix code: ARCH-01 unrendered; OBJ-03/04/05, SEC-01, ARCH-01 unmarked)",
+        "cover screenshot lock; print hides the reader; exact rendered page count"
       ],
       "remaining": []
     },
@@ -628,6 +636,12 @@
       "percent": 100,
       "commit": "pending-harut-closure",
       "note": "Single-source governance audit (SSOT §1.5/§22.4). Derived docs that acted as competing requirement or status sources were reduced to pointers or corrected; no requirement was moved or invented (nothing valid was found outside the SSOT that the SSOT lacks). Added ssot-qa/qa.mjs guards so the drift cannot return silently. Traceability R73 (stale \"waiting for CI baseline\") closed with PR #15 merge evidence. Percent unchanged."
+    },
+    {
+      "date": "2026-10-11",
+      "percent": 100,
+      "commit": "pending-harut-closure",
+      "note": "Closure audit against the SSOT found two real student-facing gaps that the 100% claim on main did not reflect (SSOT §22.3): (1) the CONE-ARCH-01 stem (Archimedes question, page 33) was never rendered since 5c93d7c — app.js now renders it before the figure; (2) §17.7 blue markers were missing on main questions on pages 4 (OBJ-03/04/05 in the object columns), 13 (SEC-01 definition), 33 (ARCH-01) and 41 (stem whose canonical text has a ___ blank) — question-markers.js now strips blanks before matching and also covers .obj-col>.task, .definition and .subpart-task, still only for blocks whose text is a canonical prompt. New gate in question-marker-browser-qa.mjs (fails before, passes after). SSOT §17.7 clarified with origin note. Marker dots move pixels on pages 4, 13, 33 and 41 only; the page baseline is refreshed from this PR's CI artifact. Also: cover.png locked in visual-baseline.json; browser-qa pins 43 rendered pages and checks the reader does not print (§20.4); cover-regression checks §28.3 width and §20.2 mobile touch size; progress-qa tracks the reader/marker/policy modules. Percent stays 100% only with these fixes and green CI on the integration PR."
     }
   ],
   "readerUx20261011": "Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; pages adjacent with no white gap, separated only by the full-width 3px dark-blue line; full-width blue rule above footer text. Cover (SSOT §28): one unnumbered full-bleed cover sheet (approved v4, unchanged) sits before page 1 in the scroll view, print and PDF (cover + 43); it is not a page and not a selectable page option; while it is displayed the selector shows the disabled cover state \"שער החוברת\" (§28.2), so choosing page 1 from the cover always navigates."

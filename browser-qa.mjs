@@ -74,7 +74,10 @@ ok(!coverAudit.overflow,'cover: internal overflow');
 ok(coverAudit.art&&coverAudit.logo,'cover: background image or district logo did not load');
 ok(coverAudit.title===coverAudit.expected&&coverAudit.title==='חרוט',`cover: title mismatch (${coverAudit.title})`);
 ok(!coverAudit.out?.length,`cover: elements outside the sheet: ${(coverAudit.out||[]).join(', ')}`);
-ok(canonicalPageCount>=8,`canonical workbook must have at least 8 student pages, got ${canonicalPageCount}`);
+// SSOT §2.4: the rendered workbook must have exactly the canonical page count (pinned to 43 in
+// student-pages.manifest.json by qa.mjs), not merely "some" pages.
+const manifestPageCount=JSON.parse(fs.readFileSync('student-pages.manifest.json','utf8')).pageCount;
+ok(canonicalPageCount===manifestPageCount,`rendered page count ${canonicalPageCount} != canonical ${manifestPageCount} (SSOT §2.4)`);
 const subsectionAudit=await page.evaluate(()=>{
   const parts=[...document.querySelectorAll('.subpart')];
   return {
@@ -437,8 +440,10 @@ await page.emulateMedia({media:'print'});
 const printResult=await page.evaluate(()=>({
   visible:[...document.querySelectorAll('.page')].filter(p=>getComputedStyle(p).display!=='none').length,
   transforms:[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).transform),
-  cover:(c=>c&&{display:getComputedStyle(c).display,transform:getComputedStyle(c).transform})(document.querySelector('.cover-sheet'))
+  cover:(c=>c&&{display:getComputedStyle(c).display,transform:getComputedStyle(c).transform})(document.querySelector('.cover-sheet')),
+  reader:(r=>r?getComputedStyle(r).display:'missing')(document.querySelector('.reader'))
 }));
+ok(printResult.reader==='none',`print: the reader bar must not print (SSOT §20.4), got display=${printResult.reader}`);
 ok(printResult.cover?.display==='block'&&printResult.cover?.transform==='none','print: cover sheet must print unscaled before page 1');
 ok(printResult.visible===canonicalPageCount,`print: expected ${canonicalPageCount} printable pages, got ${printResult.visible}`);
 ok(printResult.transforms.every(t=>t==='none'),`print: transformed/scaled A4 page detected`);

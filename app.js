@@ -388,6 +388,7 @@ ${renderSubpart(findPart(appBeamParts,'ג'),{size:'subpart-medium',unit:'מ״ק'
 const arch1Parts=splitHebrewSubsections(prompt('CONE-ARCH-01'),['א','ב']);
 addPage(`${nextHeader('זירת החקר: הקשר בין חרוט לגליל החוסם')}
 <div class="question-intro">ארכימדס גילה קשר פשוט בין חרוט לגליל החוסם אותו. בעמודים הבאים תחקרו את הקשר הזה ותגלו מניין מגיע המקדם בנוסחת נפח החרוט.</div>
+<div class="task">${arch1Parts.intro}</div>
 <div class="arch-figure">${archRoofsSvg()}</div>
 ${renderSubpart(findPart(arch1Parts,'א'),{size:'subpart-small'})}
 ${renderSubpart(findPart(arch1Parts,'ב'),{size:'claim'})}`);
