@@ -20,6 +20,7 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import json
 
           ssot = Path('SOURCE_OF_TRUTH.md')
           s = ssot.read_text(encoding='utf-8')
@@ -71,6 +72,14 @@ jobs:
               assert marker2 in r
               r = r.replace(marker2, marker2 + extra2, 1)
           rqa.write_text(r, encoding='utf-8')
+
+          progress = Path('STUDENT_PROGRESS.json')
+          d = json.loads(progress.read_text(encoding='utf-8'))
+          d['updatedAt'] = '2026-10-11T11:09:00+03:00'
+          d['updatedBy'] = 'ChatGPT direct repo agent — Yaniv 2026-10-11 reader/footer requirement: SSOT §18.2 full-width blue footer rule; SSOT §20.3 immediate vertical scroll, no per-page labels between pages, blue-only full-width separator, sticky page selector remains the sole page-number display; canonical + browser + visual evidence are generated in the same hotfix workflow.'
+          d['headCommit'] = 'pending-reader-separator-hotfix'
+          d['readerUx20261011'] = 'Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; full-width blue separator; full-width blue rule above footer text.'
+          progress.write_text(json.dumps(d, ensure_ascii=False, indent=2) + '\n', encoding='utf-8')
           PY
       - name: Install dependencies
         run: npm install --no-audit --no-fund
@@ -118,7 +127,7 @@ jobs:
           printf 'Generated from reader separator hotfix workflow: %s\nWorkflow run: %s\n' "$GITHUB_SHA" "$GITHUB_RUN_ID" > exports/student-pages/GENERATED_FROM.txt
           git config user.name "ChatGPT Repo Agent"
           git config user.email "actions@users.noreply.github.com"
-          git add SOURCE_OF_TRUTH.md index.html styles.css qa.mjs reader-jump-qa.mjs visual-baseline.json exports/student-pages
+          git add SOURCE_OF_TRUTH.md STUDENT_PROGRESS.json index.html styles.css qa.mjs reader-jump-qa.mjs visual-baseline.json exports/student-pages
           git commit -m "fix(reader): blue-only separators and full-width footer rule"
           CONTENT_SHA=$(git rev-parse HEAD)
           python - "$CONTENT_SHA" <<'PY'
@@ -128,8 +137,12 @@ jobs:
           d=json.loads(p.read_text(encoding='utf-8'))
           d['sourceCommit']=sys.argv[1]
           p.write_text(json.dumps(d,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
+          progress=Path('STUDENT_PROGRESS.json')
+          j=json.loads(progress.read_text(encoding='utf-8'))
+          j['headCommit']=sys.argv[1]
+          progress.write_text(json.dumps(j,ensure_ascii=False,indent=2)+'\n',encoding='utf-8')
           PY
           git rm .github/workflows/reader-separator-hotfix.yml
-          git add visual-baseline.json
+          git add visual-baseline.json STUDENT_PROGRESS.json
           git commit -m "chore(qa): record reviewed separator baseline evidence"
           git push origin HEAD:main
