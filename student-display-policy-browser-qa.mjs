@@ -57,7 +57,9 @@ ok(!audit.headings.some(title=>title.includes('השלימו:')),'student page ti
 ok(audit.headings.includes('נפח חרוט'),'volume topic title missing after normalization');
 ok(audit.headings.includes('נפח חרוט — קירוב מספרי'),'numeric-approximation topic title missing after normalization');
 ok(audit.formulaNotes.length===2,'both active formula completions must remain visible outside the title');
-ok(audit.headers.join('|')==='רדיוס (ס״מ)|קוטר (ס״מ)|גובה (ס״מ)|נפח מדויק (סמ״ק)',`unexpected volume-table headers: ${audit.headers.join('|')}`);
+// SSOT §9.5: word + symbol + unit. The symbol is raw TeX before MathJax typesets and its letter afterwards.
+const headerPattern=[/^רדיוס (\\\(r\\\)|r) \(ס״מ\)$/,/^קוטר (\\\(d\\\)|d) \(ס״מ\)$/,/^גובה (\\\(h\\\)|h) \(ס״מ\)$/,/^נפח מדויק (\\\(V\\\)|V) \(סמ״ק\)$/];
+ok(audit.headers.length===4&&headerPattern.every((re,i)=>re.test(audit.headers[i])),`unexpected volume-table headers: ${audit.headers.join('|')}`);
 for(const row of audit.rows){
   row.forEach((cell,index)=>{
     if(!cell.text)return;

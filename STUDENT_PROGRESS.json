@@ -11,8 +11,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T16:35:00+03:00",
-  "updatedBy": "Claude Code — PR #15 pages 19–20 (SSOT „תיקונים נקודתיים בדפי תלמיד” 2026-10-11): page 19 pedagogical heading + cylinder-volume formula as active completion; page 20 student-chosen radius/height fields, stepwise cylinder/cone/comparison with 28mm work grids; page 32 untouched; visual baseline refresh pending CI render",
+  "updatedAt": "2026-10-11T23:30:00+03:00",
+  "updatedBy": "Claude Code — student-task redesign from Yaniv's live review (SSOT §6.4/§9.5/§9.6/§26.7.11): WHO-07 claim table, choose-r/h card, varied cylinder/cone table with algebraic rows, colourful sector-fold figure, names instead of תלמיד/תלמידה, word+symbol+unit table headers, dimKey bidi isolation; headings untouched (parallel session); visual baseline refresh pending CI render",
   "headCommit": "f997970d7d4f5f884a1776d7f3a2aab01a29fe09",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -105,13 +105,17 @@
         "CONE-CONV-01",
         "CONE-TAB-CONV-01",
         "CONE-TAB-APPROX-01",
-        "math-qa.mjs"
+        "math-qa.mjs",
+        "SSOT §9.5: every table header pairs the Hebrew word + symbol + unit (e.g. \"קוטר d (ס״מ)\", \"נפח מדויק V (סמ״ק)\"); student-display-policy.js no longer overwrites headers",
+        "SSOT §9.6 / CONE-RATIO-05: 7-row cylinder/cone table, a different given pair in every numeric row, 3 closing algebraic rows (a, 2a, 3a with b)"
       ],
       "testsPassed": [
         "table solver QA",
         "exact/approx pi QA",
         "unit conversion QA",
-        "estimation QA"
+        "estimation QA",
+        "math-qa.mjs CONE-RATIO-05 block: two givens per row, never both volumes, Vcone·3 = Vcyl, r²h for numeric rows, k² for algebraic rows, unique numeric given pairs, full worked answer",
+        "student-display-policy QA (static + browser): word + symbol + unit headers pinned"
       ],
       "remaining": []
     },
@@ -153,7 +157,9 @@
         "waffleConeSvg",
         "full-resolution diagram review",
         "43-page visual artifact",
-        "deterministic geometric label-safety gate (browser-qa.mjs): every diagram label clears all structural strokes by >=2 user units and stays within the viewBox"
+        "deterministic geometric label-safety gate (browser-qa.mjs): every diagram label clears all structural strokes by >=2 user units and stays within the viewBox",
+        "sectorFoldSvg (page 15): colourful 12 cm / 90° sector → fold → resulting cone → half axial section with s² = r² + h² and s > r, colour-matched word key; added to containment + clip selectors",
+        "dimKey: each \"symbol = word\" pair bidi-isolated so the pairs no longer interleave in RTL"
       ],
       "testsPassed": [
         "desktop/mobile/PDF rendering",
@@ -391,7 +397,8 @@
         "Phase 5 diagrams: funnelSvg, lightBeamSvg, archRoofsSvg, archCylinderInConeSvg, archSectionsSvg, circleSvg, rightTriangleSvg (deterministic, inside-viewBox labels, added to containment + clip selectors)",
         "Phase 5 anti-crowding (SSOT §16.6): three A4-overflowing pages each split into two roomy pages (funnel|hat, inversion|architectural-roof, area+Pythagoras|axial-section); party-hat slant label '15 ס״מ' dropped from the diagram (value stays in the prompt) to satisfy label-safety §15.3",
         "Phase 5 completes the §26.4.2 ladder (identify/sort, claim-checking, views, nets+sector angle, cross-sections, 1/3 ratio, volume-error analysis, applications, bridge-back); heavy raster scenes (§26.5.4) remain intentionally deferred and are not a gap",
-        "Visual baseline regenerated from CI run 37924233196 (headSha 5c93d7c) for the full 46-page workbook — the CI-environment-locked pixel render; visual-regression-qa verified against those exact CI PNGs (46/46 match)"
+        "Visual baseline regenerated from CI run 37924233196 (headSha 5c93d7c) for the full 46-page workbook — the CI-environment-locked pixel render; visual-regression-qa verified against those exact CI PNGs (46/46 match)",
+        "Yaniv review redesign 2026-10-11 (SSOT §26.7.11): CONE-WHO-07 claim table (נכונה / לא נכונה / נימוק קצר) replaces the grid + answer line; CONE-RATIO-04 choice card (הרדיוס שבחרתי / הגובה שבחרתי) beside the figure; names (SSOT §6.4) in CONE-VIEW-05, CONE-CUT-05, CONE-ERR-01..06"
       ],
       "testsPassed": [
         "phase-1 local QA (ssot/progress/contract/math/coverage)",
@@ -409,7 +416,8 @@
         "phase-5 preview desktop: split pages 33 (funnel), 34 (hat), 40 (inversion), 41 (architectural roof), 45 (area+Pythagoras), 46 (axial section) reviewed page-by-page — colorful, uncrowded, figures inside boxes, labels collision-free",
         "phase-5 visual regression: baseline regenerated from CI run 37924233196 (46 pages); visual-regression-qa PASS against the CI PNGs",
         "adversarial math/pedagogy review (background workflow, 11 agents / 6 strand buckets → independent high-effort skeptic re-derivation per finding): 0 confirmed mathematical errors across all 82 questions; every flagged item (5) verified as a non-defect (notation/duplication, no wrong answer/unit). CONE-SEC-01 answer-key slant symbol aligned to the canonical ℓ (metadata only; not student-rendered)",
-        "post-closure polish (2026-10-10): CONE-CLAIM-01 re-themed to a distinct misconception (2-D flat shape vs 3-D solid) to remove overlap with CONE-WHO-01; CONE-APP-01 funnel changed to r=7/h=9→147π and CONE-BRIDGE-06-א to r=5/h=12→ℓ=13 so no practice item reuses the locked CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π); funnelSvg labels updated to match. All three re-verified by math + adversarial check"
+        "post-closure polish (2026-10-10): CONE-CLAIM-01 re-themed to a distinct misconception (2-D flat shape vs 3-D solid) to remove overlap with CONE-WHO-01; CONE-APP-01 funnel changed to r=7/h=9→147π and CONE-BRIDGE-06-א to r=5/h=12→ℓ=13 so no practice item reuses the locked CURR-CONE-06 signature (r=6/h=8/ℓ=10/96π); funnelSvg labels updated to match. All three re-verified by math + adversarial check",
+        "student-task redesign: npm run qa PASS, browser-qa PASS (43 pages, no overflow/spill/clip/overlap, PDF 43), student-display-policy-browser-qa PASS, question-marker-browser-qa PASS; Chromium page review of pages 2, 7, 15, 19, 20, 21, 23, 25, 26"
       ],
       "remaining": []
     }
@@ -586,6 +594,12 @@
       "percent": 100,
       "commit": "pending-merge-pages-4-5-8-9-arch03",
       "note": "Review-session layout + math-notation fixes (Yaniv 2026-10-11, live preview). (1) Merged OBJ pages 4+5 ('זיהוי ומיון חפצים בצורת חרוט' + 'חרוט מול גופים אחרים') into one well-designed A4 (SSOT §26.7.9), and (2) merged the two 'מי צודק?' continuation pages 8+9 ('טענות נוספות' + 'חרוט מול פירמידה וסיכום') into one A4 (SSOT §26.7.10): the workbook went 45→44→43 A4 pages; all 82 questions preserved (layout merges, not content removal). (3) On the ratio-confirmation page CONE-ARCH-03 (r=5/h=9) added an accurate to-scale cylinder+cone figure (new scaleConeCylinderPair helper, shared 8px/cm scale, same base radius and height, shape-only so §15.3-safe; r/h values in the HTML figcaption), and fixed its math notation: the intro 'r = 5 ס״מ / h = 9 ס״מ' Latin-in-RTL bidi scramble was rewritten to clean Hebrew prose with units ('שרדיוסו 5 ס״מ ... שאורכו 9 ס״מ'), and the inline formula π·r²·h was wrapped in <bdi dir=ltr> so it renders left-to-right (verified: π left of h). (4) Extended the formula isolation to the other two student-visible inline formulas — CONE-RATIO-05 ('V = π·r²·h') and CONE-ARCH-02 ('π·r²·h' and the completion 'V = ___ · π · r² · h') — all 4 <bdi> now render LTR. (5) 'Words beside symbols' (Yaniv): added a Hebrew word-key (dimKey helper) beneath every measurement diagram (intro cone, axial section ×3, cylinder+cone ratio, ERR cone, sector, hat, roof) — e.g. 'רדיוס הבסיס = r · גובה החרוט = h · קו יוצר = ℓ · זווית הגזרה = α' — symbols kept, words added, as §15.3-safe HTML beneath the figure (not on the strokes). Recorded the new mandatory rules in SSOT §27.6 (bidi/formula isolation + units) and §27.7 (words beside symbols), logged the merges in §26.7.9/§26.7.10, and updated SSOT current-state counts 45→43. Pinned CANONICAL_PAGE_COUNT 45→43 in qa.mjs. Verified: npm run qa PASS (43 A4 pages, 82 questions); live preview all 43 pages overflowPx 0; merged 4+5, merged WHO, and ARCH-03 pages screenshotted. Pixels moved on every page (page-number shift + merged/figure pages) so visual-baseline.json is regenerated from this round's CI run (§26.7.3a pattern). Percent unchanged at 100%: layout consolidation + a real student-facing bidi/units/figure fix, not scope. Teacher pages untouched (locked §2.5). Pending Yaniv's confirmation before applying: the uniform 'חרוט – <topic>' title rescheme (it intersects GPT's student-display-policy.js, which rewrites two titles and locates pages by their title). Commit/baseline SHAs recorded after the CI run."
+    },
+    {
+      "date": "2026-10-11",
+      "percent": 100,
+      "commit": "pending-student-tasks-redesign",
+      "note": "Student-task redesign from Yaniv's live review (SSOT §26.7.11). (1) CONE-WHO-07: the work grid and answer line were removed; a claim table now gives each statement its own נכונה / לא נכונה boxes and a short-justification / correction cell. (2) Choose-r/h page (CONE-RATIO-04): a designed choice card with \"הרדיוס שבחרתי\" / \"הגובה שבחרתי\" write-in boxes and units beside the cylinder+cone figure; the duplicate concept note and the underscore line were removed. (3) CONE-RATIO-05: a 7-row table where every numeric row gives a different pair of quantities (r+h, r+Vcyl, h+Vcone, r+Vcone) and three closing algebraic rows (a, 2a, 3a with b) after an \"ובשפה אלגברית\" divider, plus a formula strip and a calculation grid; math-qa.mjs verifies every row and the worked answer. (4) Page 15: new colourful sectorFoldSvg (12 cm circle, 90° sector → fold → cone → half axial section, s² = r² + h², s > r) with a colour-matched word key. (5) Names instead of תלמיד/תלמידה (new SSOT §6.4) in CONE-VIEW-05, CONE-CUT-05 and CONE-ERR-01..06; locked CURR-CONE-06 untouched. (6) Table headers pair the Hebrew word + symbol + unit (new SSOT §9.5); student-display-policy.js no longer overwrites headers, and the static and browser policy QA pin the new headers. (7) dimKey pairs are bidi-isolated so \"symbol = word\" pairs no longer interleave. H1 headings, SSOT §27 and the title QA pins were deliberately not touched (a parallel session owns them). Verified: npm run qa PASS; browser-qa PASS (43 pages, no overflow/spill/clip/overlap, PDF 43); student-display-policy-browser-qa and question-marker-browser-qa PASS; Chromium page review. Pixels moved on several pages, so visual-baseline.json is regenerated from this round's CI run (§26.7.3a pattern). Percent unchanged at 100%: quality redesign from review, not scope. Teacher pages untouched (locked)."
     }
   ],
   "readerUx20261011": "Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; full-width blue separator; full-width blue rule above footer text."
