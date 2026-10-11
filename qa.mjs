@@ -128,6 +128,12 @@ ok(index.includes('download-pdf'),'reader must keep the direct-download control 
 ok(index.includes(' download>')||index.includes(' download '),'direct-download link must carry the HTML download attribute');
 ok(index.includes('exports/student-pages/cone-student.pdf'),'direct download must point to the validated canonical student PDF');
 
+// SSOT §20.1.1 mobile vertical-only: shell + pages clip overflow-x, gestures pan-y + pinch-zoom, no horizontal scroll.
+ok(/html\{[^}]*overflow-x:clip[^}]*overscroll-behavior-x:none[^}]*touch-action:pan-y pinch-zoom/.test(index),'reader html must declare overflow-x:clip, overscroll-behavior-x:none and touch-action:pan-y pinch-zoom (§20.1.1)');
+ok(index.includes('html,body{max-width:100%;overflow-x:clip}'),'html,body must be max-width:100% with overflow-x:clip (§20.1.1)');
+ok(index.includes('.reader,#book{max-width:100%;overflow-x:clip}'),'.reader and #book must be max-width:100% with overflow-x:clip (§20.1.1)');
+ok(!/overflow-x:\s*(auto|scroll)/.test(index)&&!/overflow-x:\s*(auto|scroll)/.test(css),'reader must never enable horizontal scrolling (overflow-x:auto/scroll)');
+
 // SSOT §20.3/§20.7 public reader contract: always opens in continuous scroll,
 // one visible action only ('הורדת PDF'), sticky non-button counter, and no
 // user-facing prev/next/print/view-toggle controls (internal ones stay hidden).

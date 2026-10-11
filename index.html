@@ -6,21 +6,25 @@
   <title>חרוט — דפי עבודה</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+    html{scroll-behavior:smooth;scroll-snap-type:y proximity;overflow-x:clip;overscroll-behavior-x:none;touch-action:pan-y pinch-zoom}
+    html,body{max-width:100%;overflow-x:clip}
+    body{overscroll-behavior-x:none;touch-action:pan-y pinch-zoom}
+    .reader,#book{max-width:100%;overflow-x:clip}
     .reader .reader-internal{display:none!important}
-    .reader>div{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .reader>div{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;max-width:100%}
     .reader .download-pdf{font-weight:700}
-    .page-jump{display:inline-flex;align-items:center;gap:7px;font-weight:700;white-space:nowrap}
-    .page-jump select{min-height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#172033;font:inherit;font-weight:700;padding:7px 11px;cursor:pointer}
+    .page-jump{display:inline-flex;align-items:center;gap:7px;font-weight:700;white-space:nowrap;max-width:100%}
+    .page-jump select{min-height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#172033;font:inherit;font-weight:700;padding:7px 11px;cursor:pointer;max-width:100%}
     .scroll-view .page{scroll-snap-align:start;scroll-margin-top:68px}
     .scroll-view .page:not(:last-child){box-shadow:0 3px 0 #1d4ed8}
     #book{transition:opacity 180ms ease}
     #book.reader-fading{opacity:0}
     @media(max-width:850px){
-      .reader{padding:8px 10px}
-      .reader>div{width:auto;gap:7px}
-      .reader .download-pdf{min-height:44px;padding-inline:12px}
-      .page-jump select{min-height:44px;max-width:46vw}
+      .reader{padding:8px 10px;width:100%}
+      .reader>div{width:100%;gap:7px;min-width:0}
+      .reader .download-pdf{min-height:44px;padding-inline:12px;flex:0 0 auto}
+      .page-jump{min-width:0;flex:1 1 150px}
+      .page-jump select{min-height:44px;max-width:100%;min-width:0;width:100%}
       .scroll-view .page{scroll-margin-top:92px}
     }
     @media(prefers-reduced-motion:reduce){#book{transition:none}}
