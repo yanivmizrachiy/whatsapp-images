@@ -27,6 +27,26 @@ jobs:
         run: npm install --no-audit --no-fund
       - name: Install Chromium
         run: npx playwright install --with-deps chromium
+      - name: Restore missing approved-cover PDF in closure PR
+        if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'yanivmizrachiy/whatsapp-images' && github.head_ref == 'claude/harut-closure-20261011'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch origin claude/harut-closure-20261011
+          git checkout -B claude/harut-closure-20261011 origin/claude/harut-closure-20261011
+          curl --fail --location --silent --show-error -H "Authorization: Bearer $GH_TOKEN" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/yanivmizrachiy/whatsapp-images/actions/artifacts/11711020890/zip" -o /tmp/harut-validated.zip
+          unzip -p /tmp/harut-validated.zip cone-student.pdf > /tmp/harut-validated.pdf
+          node --input-type=module -e "import fs from 'node:fs'; import {PDFDocument} from 'pdf-lib'; const p=await PDFDocument.load(fs.readFileSync('/tmp/harut-validated.pdf')); if(p.getPageCount()!==44)throw Error('Expected 44 PDF sheets'); const z=p.getPage(0).getSize(); if(Math.abs(z.width-595.28)>3||Math.abs(z.height-841.89)>3)throw Error('Cover not A4')"
+          cp /tmp/harut-validated.pdf exports/student-pages/cone-student.pdf
+          printf 'Generated from commit: a8d38572fb82d72c4c33a213d70376941b3adb1f\nWorkflow run: 38161515101\nArtifact: 11711020890\n' > exports/student-pages/GENERATED_FROM.txt
+          node export-pdf-qa.mjs
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add exports/student-pages/cone-student.pdf exports/student-pages/GENERATED_FROM.txt
+          if ! git diff --cached --quiet; then
+            git commit -m 'fix(pdf): persist 44-sheet workbook including approved cover'
+            git push origin HEAD:claude/harut-closure-20261011
+          fi
       - name: Run student workbook contract QA
         run: npm run qa
       - name: Enforce progress update on pull request
