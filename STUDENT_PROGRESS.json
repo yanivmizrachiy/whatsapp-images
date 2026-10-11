@@ -80,7 +80,8 @@
         "coverage-qa.mjs",
         "definition-to-application sequence",
         "43-page final pedagogical/visual review",
-        "CONE-CHANGE-01 guided investigation"
+        "CONE-CHANGE-01 guided investigation",
+        "PR #15 (gpt/cone-pages-19-20-20261011): page 19 heading „גליל וחרוט — נפחים” and the cylinder-volume reminder turned into an active completion (V = π · ___ · ___); page 20 heading „גליל וחרוט — מחשבים ומשווים נפחים”, fields „הרדיוס שבחרתי / הגובה שבחרתי”, CONE-RATIO-04 prompt+answer aligned to student-chosen dimensions (6c863b8), steps א/ב/ג with 28mm work grids; page 32 unchanged. 43 pages / 82 questions unchanged; A4 fit verified for pages 19/20/32 (no overflow). Visual baseline for pages 19–20 must be refreshed from the CI render before merge."
       ],
       "testsPassed": [
         "mandatory coverage QA",

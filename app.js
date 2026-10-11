@@ -232,20 +232,20 @@ addPage(`${nextHeader(`נפח חרוט — השלימו: ${tex('V=\\underline{\\
 
 // ===== Expansion phase 4 (SSOT §26): cone/cylinder 1/3 ratio + volume-error analysis, after the volume formula =====
 // RATIO — cone volume is a third of the same-base-same-height cylinder (student discovers the 1/3).
-addPage(`${nextHeader('חרוט וגליל — יחס השליש')}
-<div class="concept-note">לגליל ולחרוט שלפניכם אותו בסיס ואותו גובה. נזכיר שנפח גליל מחושב לפי ${tex('V=\\pi\\cdot r^{2}\\cdot h')}.</div>
+addPage(`${nextHeader('גליל וחרוט — נפחים')}
+<div class="concept-note">לגליל ולחרוט שלפניכם אותו בסיס ואותו גובה. השלימו את נוסחת נפח הגליל: ${tex('V=\\pi\\cdot\\underline{\\hspace{10mm}}\\cdot\\underline{\\hspace{10mm}}')}</div>
 <div class="ratio-figure">${cylinderConeRatioSvg()}${dimKey('r = רדיוס הבסיס · h = גובה')}</div>
 <div class="task first">${prompt('CONE-RATIO-01')}</div>${grid('small')}${answerLine('פעמים')}
 <div class="task">${prompt('CONE-RATIO-02')}</div>${grid('small')}${answerLine('סמ״ק')}
 <div class="task">${prompt('CONE-RATIO-03')}</div>${grid('small')}${answerLine('סמ״ק')}`);
 
 const ratioParts=splitHebrewSubsections(prompt('CONE-RATIO-04'),['א','ב','ג']);
-addPage(`${nextHeader('חרוט וגליל — חישוב נפחים')}
-<div class="concept-note">בחרו רדיוס וגובה נתונים, חשבו את נפח הגליל ואת נפח החרוט בעלי אותו בסיס ואותו גובה, והשוו ביניהם.</div>
+addPage(`${nextHeader('גליל וחרוט — מחשבים ומשווים נפחים')}
+<div class="concept-note">בחרו בעצמכם רדיוס וגובה חיוביים. השתמשו באותם ערכים לגליל ולחרוט, חשבו את שני הנפחים בשלבים והשוו ביניהם.</div>\n<div class="question-intro">הרדיוס שבחרתי: __________ ס״מ &nbsp;&nbsp; הגובה שבחרתי: __________ ס״מ</div>
 <div class="question-intro">${ratioParts.intro}</div>
-${renderSubpart(findPart(ratioParts,'א'),{size:'subpart-small',unit:'סמ״ק'})}
-${renderSubpart(findPart(ratioParts,'ב'),{size:'subpart-small',unit:'סמ״ק'})}
-${renderSubpart(findPart(ratioParts,'ג'),{size:'subpart-small'})}`);
+${renderSubpart(findPart(ratioParts,'א'),{size:'subpart-medium',unit:'סמ״ק'})}
+${renderSubpart(findPart(ratioParts,'ב'),{size:'subpart-medium',unit:'סמ״ק'})}
+${renderSubpart(findPart(ratioParts,'ג'),{size:'subpart-medium'})}`);
 
 addPage(`${nextHeader('חרוט וגליל — טבלת נפחים')}
 <div class="task first">${prompt('CONE-RATIO-05')}</div>
