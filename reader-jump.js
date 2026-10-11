@@ -12,6 +12,16 @@
   const getPages = () => [...book.querySelectorAll('.page')];
   const clamp = (n) => Math.max(1, Math.min(pages.length || 1, Number(n) || 1));
 
+  const ensureSeparators = () => {
+    book.querySelectorAll('.page-separator').forEach((el) => el.remove());
+    pages.slice(0, -1).forEach((page) => {
+      const separator = document.createElement('div');
+      separator.className = 'page-separator';
+      separator.setAttribute('aria-hidden', 'true');
+      page.after(separator);
+    });
+  };
+
   const setSelected = (n, syncHash = false) => {
     if (!pages.length) return;
     n = clamp(n);
@@ -84,6 +94,8 @@
       if (attempt < 80) window.setTimeout(() => init(attempt + 1), 50);
       return;
     }
+
+    ensureSeparators();
 
     selector.innerHTML = pages.map((_, i) => {
       const n = i + 1;
