@@ -41,7 +41,8 @@ async function waitForAssets(){
     if(document.fonts){
       await Promise.all([
         document.fonts.load('16px "Rubik"','אבג'),
-        document.fonts.load('900 16px "Rubik"','חרוט'),
+        document.fonts.load('900 16px "Harut Cover Rubik"','חרוט'),
+        document.fonts.load('700 16px "Harut Cover Rubik"','מנח״י'),
         document.fonts.load('16px "Heebo"','אבג')
       ]);
       await document.fonts.ready;
