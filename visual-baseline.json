@@ -1,16 +1,16 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "96dbce13f788cfe429617872fd2c97efc7f2752b",
-  "sourceWorkflowRun": 38118483767,
+  "sourceCommit": "0e71dda5eb28b89b911d190dbfc59f94a29521b1",
+  "sourceWorkflowRun": 38120302059,
   "artifact": "cone-visual-qa",
-  "reviewedBy": "ChatGPT — refreshed from CI #168 artifact after continuous-scroll counter fix; content/math/browser QA passed on the same head",
+  "reviewedBy": "ChatGPT — refreshed page-01 baseline from CI #174 artifact after the approved reader toolbar changed to page selector + download; browser/content/math QA passed on the same head",
   "reviewedAt": "2026-10-11",
   "pageCount": 43,
   "pages": {
     "page-01.png": {
-      "sha256": "b364aa67b1dce5243d56956a6fcb6ff747b3e25ed94e1b4cc4bbe53263d15e7e",
-      "bytes": 88683
+      "sha256": "b44a4a495634ab41e44553f27ab4e66c9814058523a23ee1f7d12ff8703901a9",
+      "bytes": 83603
     },
     "page-02.png": {
       "sha256": "e5dcdecd28eba252401b01a61418fa8a8ad9177c3f97a793b5fbf576c1f3b9b6",
