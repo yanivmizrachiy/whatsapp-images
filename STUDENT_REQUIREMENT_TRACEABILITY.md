@@ -43,7 +43,7 @@
 | R33 | ניצול A4 ללא צפיפות/overflow | 11-page layouts/workspaces | CI artifact 37853329815 reviewed page-by-page/contact sheet; no overflow gates | ✅ בוצע | אין |
 | R34 | footer מחוזי; עמוד 1 שורת איילת בלבד | shared footer + page1Footer | footer audit + browser QA | ✅ בוצע | אין |
 | R35 | סמל מחוז מאומת | pinned logo | image-load QA | ✅ בוצע | אין |
-| R36 | קורא: הקודם/הבא/מונה + גלילה רציפה | reader controls | browser QA | ✅ בוצע | אין |
+| R36 | קורא ציבורי (§20.3): גלילה רציפה כברירת מחדל, מונה/בורר עמוד, ללא ניווט דף־דף גלוי | `index.html` (`.reader-internal` מוסתר), `app.js` (scroll-view default) | `qa.mjs` + browser QA (אין לחיצות בפקדים מוסתרים) | ✅ בוצע | אין |
 | R37 | touch targets ≥44px | CSS | browser QA | ✅ בוצע | אין |
 | R38 | Desktop + Android + iPhone portrait/landscape | `browser-qa.mjs` | CI run 37856393919 | ✅ בוצע | אין |
 | R39 | Print/PDF במספר עמודים דינמי | print CSS + Playwright | CI run 37856393919 | ✅ בוצע | אין |
@@ -78,6 +78,7 @@
 | R68 | ליטוש איכות לאחר סגירה — אי־כפילות ו־CI (§26.7.6) | `content.js` (CLAIM-01 מוקדה מחדש; APP-01→r7/h9/147π; BRIDGE-06-א→r5/h12/ℓ13), `app.js` (תוויות משפך), `.github/workflows/qa.yml` (actions v4→v5) | אין כפילות מול CURR-CONE-06 הנעולה ולא מול WHO-01; math-QA + ביקורת אדוורסרית חוזרת ירוקות; CI יוצא מ־Node 20 | ✅ בוצע | עמודי מורה נעולים |
 | R69 | כללי תצוגה מחייבים לתלמיד (§27): „קוטר” במילה במקום הסימן d, יחידה על כל מידה מוצגת, כותרת H1 נושא בלבד עם השלמת נוסחה כמשימה נפרדת, שימור רשת 5×5 מ״מ | `student-display-policy.js` (post-render), `index.html` | `student-display-policy-qa.mjs` (static) + `student-display-policy-browser-qa.mjs` (rendered DOM, qa:browser) | ✅ בוצע | נאכף בשכבת post-render + browser-gate; איחוד לתוך §9/§12 ואכיפת fast-suite — להחלטת Yaniv/GPT |
 | R70 | איחוד עמ' 30–31 לעמוד אחד (§26.7.8, 46→45) + תיקון חיתוך מובייל פורטרייט (§20.1) | `app.js` (addPage ממוזג + scaleCone), `styles.css` (`transform-origin:top right`), `browser-qa.mjs` (horizontal-containment), `qa.mjs` (ספירה מדויקת 45/82 + glyph על content.js) | אימות חי 360/390/412 (כל 45 העמודים גלויים, 0 חיתוך) + דסקטופ ללא שינוי (baseline שמור) + browser-QA containment + `npm run qa` | ✅ בוצע | אין |
+| R71 | בורר עמוד קומפקטי + מעבר ישיר ב־fade (§20.3, יניב 2026-10-11): „עמוד X מתוך 43”, פעולה גלויה יחידה „הורדת PDF”, בלי הקודם/הבא/דף בודד/גלילה רציפה/פתח דף מלא/כל החוברות/הדפסה; deep-link `#page=N` נשמר | `reader-jump.js`, `index.html` (`#page-selector`, `#book.reader-fading` 180ms, `download-pdf`), `package.json` (qa) | `reader-jump-qa.mjs` + browser QA (select גלוי, קפיצה מיידית ללא smooth-scroll, מעקב גלילה) | ✅ בוצע | אין |
 
 ## כללי עדכון ראיות
 
@@ -100,7 +101,7 @@
 
 - ביקורת עצמאית סעיף-סעיף של SSOT §2–§27 (workflow אדוורסרי ב־6 scopes + אימות חי של פרודקשן/PDF/הדפסה/מובייל). מסקנה: אין פער תוכן/פלט — כל דרישה מחייבת מתקיימת בפלט המשומש ובאתר החי — למעט פגם אמיתי אחד: חיתוך מובייל פורטרייט (§20.1).
 - §20.1 תוקן: ב־360/390/412px העמוד היה חתוך כ־55–63% משמאל (`transform-origin:top center` על עמוד A4 מיושר־ימין ב־RTL; `#book{overflow:hidden}` הסתיר זאת מבדיקות הרוחב/scrollWidth). שונה ל־`top right` → כל 45 העמודים גלויים במלואם ([8, vw−8]); נוסף assertion מניעת־חיתוך ב־`browser-qa.mjs`. דסקטופ/A4/הדפסה ללא שינוי → baseline הפיקסלים לא נגע.
-- מצב קנוני נוכחי: 45 דפי A4 / 82 שאלות; מטריצת ה־traceability עודכנה עד R70 (כולל §27 ו־§20.1).
+- מצב קנוני נוכחי: 43 דפי A4 / 82 שאלות; מטריצת ה־traceability עודכנה עד R71 (כולל §27, §20.1 ובורר העמוד §20.3).
 - אכיפה חוזקה: `qa.mjs` מקבע 45/82 במדויק (היו floors ‎>=8/>=13); בדיקת glyph־הכפל הורחבה ל־`content.js`.
 - נוקה: `exports/student-pages/page-46.png` היתום (משארית 46→45) הוסר; שלב ה־persist ב־`qa.yml` מנקה עמודים שהוסרו כדי שלא יישארו יתומים.
 - אין עמודי מורה פעילים (נעולים §2.5). פריטי SSOT/ארכיטקטורה שנותרו ל־Yaniv+GPT (לא שונו כאן): איחוד כללי §27 לתוך §9/§12, חוזק §27 source־vs־policy, ניסוח §25.1 מול הסבב שנפתח מחדש, חלופת PR #3 (reflow — דורשת תיקון §20.1 „scale בלבד”), כותרות r/h בעמ' 23/27, גרשיים מול מרכאות ASCII ב־footer.
