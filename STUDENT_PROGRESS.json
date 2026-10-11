@@ -5,14 +5,14 @@
   "teacherPagesAllowed": false,
   "authority": "SOURCE_OF_TRUTH.md",
   "handoff20261011": "PR #10 completes the interrupted student-display cleanup: student-facing קוטר, explicit units, topic-only H1 titles with separate active completion, preserved 5x5mm calculation grids; SSOT §27 records the Claude/ChatGPT handoff; prior full QA run #161 passed before this docs/tracker-only handoff.",
-  "executionPlan": "AI_STUDIO_STUDENT_EXECUTION.md",
+  "executionPlan": "SOURCE_OF_TRUTH.md §23–§24 (agent execution loop and GitHub save rule)",
   "traceability": "STUDENT_REQUIREMENT_TRACEABILITY.md",
   "calculationRule": "overallPercent = sum(weight * completionPercent / 100); weights must sum to 100",
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T20:30:00+03:00",
-  "updatedBy": "Claude Code (HARUT_AGENT) — SSOT §28.2 reader cover state before merging PR #22: the selector shows a disabled \"שער החוברת\" state while the cover is displayed, so choosing page 1 from the cover navigates; protected by reader-cover-regression-qa.mjs (Chromium desktop + 390x844) in npm run qa:browser.",
+  "updatedAt": "2026-10-11T20:55:00+03:00",
+  "updatedBy": "Claude Code (HARUT_AGENT) — single-source governance audit: derived docs that still carried stale scope or their own definition of done now defer to SOURCE_OF_TRUTH.md, and ssot-qa/qa.mjs keep it that way.",
   "headCommit": "pending-harut-closure",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -342,11 +342,13 @@
       "evidence": [
         "single reconciled SOURCE_OF_TRUTH.md",
         "README navigation-only",
-        "derived execution docs marked non-authoritative"
+        "derived execution docs marked non-authoritative",
+        "2026-10-11 governance audit (before merging PR #22): PARALLEL_MAX_POWER_EXECUTION.md (own 12-point \"what counts as 100%\" list, 8 pages, P01–P14, AI Studio push-to-main permission) and AI_STUDIO_STUDENT_EXECUTION.md (11 pages, stale SHAs, its own authority hierarchy) reduced to historical pointer docs; CLAUDE.md no longer restates page counts/closure SHAs; student-pages.manifest.json (8 pages, listed derived docs as \"canonicalFiles\") rewritten as a derived index; exports/student-pages/README.md (8 pages) corrected; SSOT §2.4 stale \"current HEAD\" wording and duplicate/stale §27.6 (PR #10 already merged) fixed; tracker executionPlan now points to SSOT §23–§24."
       ],
       "testsPassed": [
         "SSOT single-authority QA",
-        "canonical status reconciliation"
+        "canonical status reconciliation",
+        "ssot-qa.mjs: every non-SSOT .md must point to SOURCE_OF_TRUTH.md in its opening lines and may not carry its own \"מה נחשב 100%\"/\"תנאי סיום\"/\"דרישות מחייבות\" section (fails on the old PARALLEL_MAX_POWER_EXECUTION.md); qa.mjs pins student-pages.manifest.json to 43 pages / 82 questions / PDF = cover + 43 and forbids it listing canonical files"
       ],
       "remaining": []
     },
@@ -620,6 +622,12 @@
       "percent": 100,
       "commit": "pending-harut-closure",
       "note": "Pre-merge fix for PR #22 (cover sheet). Confirmed bug: with the cover displayed the page selector already read \"עמוד 1 מתוך 43\", so choosing page 1 fired no change event on a native <select> and nothing happened; keyboard ArrowDown from the cover jumped to page 2. Fixed as a state model in reader-jump.js (cover | page N; disabled \"שער החוברת\" selector state; one scroll-derived state function over [cover, ...pages]; in-page hashchange deep links). SSOT §28.2/§28.6/§20.3 updated in the same change. New Chromium regression gate reader-cover-regression-qa.mjs (fails before, passes after) runs in npm run qa:browser/CI; browser-qa.mjs now expects the cover state on open and returns to page 1 by scrolling to page 1. Page rendering, 43 pages / 82 questions and the page baseline are unchanged. Percent stays 100% pending CI on the integration PR; production verification follows the merge. Teacher pages untouched."
+    },
+    {
+      "date": "2026-10-11",
+      "percent": 100,
+      "commit": "pending-harut-closure",
+      "note": "Single-source governance audit (SSOT §1.5/§22.4). Derived docs that acted as competing requirement or status sources were reduced to pointers or corrected; no requirement was moved or invented (nothing valid was found outside the SSOT that the SSOT lacks). Added ssot-qa/qa.mjs guards so the drift cannot return silently. Traceability R73 (stale \"waiting for CI baseline\") closed with PR #15 merge evidence. Percent unchanged."
     }
   ],
   "readerUx20261011": "Current canonical reader requirement: 43 pages / 82 questions unchanged; immediate continuous downward scrolling; selector + PDF only; direct fade jump; no between-page page-count labels; pages adjacent with no white gap, separated only by the full-width 3px dark-blue line; full-width blue rule above footer text. Cover (SSOT §28): one unnumbered full-bleed cover sheet (approved v4, unchanged) sits before page 1 in the scroll view, print and PDF (cover + 43); it is not a page and not a selectable page option; while it is displayed the selector shows the disabled cover state \"שער החוברת\" (§28.2), so choosing page 1 from the cover always navigates."

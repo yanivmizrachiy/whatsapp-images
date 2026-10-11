@@ -34,6 +34,12 @@ const CANONICAL_PAGE_COUNT=43;
 
 ok(ids.length===CANONICAL_QUESTION_COUNT,`canonical question-count drift; expected ${CANONICAL_QUESTION_COUNT}, got ${ids.length}`);
 ok(new Set(ids).size===ids.length,'duplicate question IDs found');
+// The derived manifest must not drift from the canonical scope or claim authority (SSOT §1.5, §2.4, §28.4).
+const manifest=JSON.parse(read('./student-pages.manifest.json'));
+ok(manifest.authority==='SOURCE_OF_TRUTH.md','student-pages.manifest.json must defer to SOURCE_OF_TRUTH.md');
+ok(manifest.pageCount===CANONICAL_PAGE_COUNT&&manifest.questionCount===CANONICAL_QUESTION_COUNT,`student-pages.manifest.json counts drifted (${manifest.pageCount}/${manifest.questionCount}, expected ${CANONICAL_PAGE_COUNT}/${CANONICAL_QUESTION_COUNT})`);
+ok(manifest.pdf?.sheets===CANONICAL_PAGE_COUNT+1&&manifest.coverSheet?.countedInPageCount===false,'student-pages.manifest.json must describe the PDF as cover + every student page (SSOT §28.4)');
+ok(!('canonicalFiles' in manifest)&&!('progressTracking' in manifest),'student-pages.manifest.json must not list its own canonical/authority files');
 ok(officialQuestion?.locked===true,'official curriculum question is not locked');
 ok(Boolean(orientationQuestion),'varied-orientation identification task missing');
 ok(orientationQuestion?.prompt.includes('מעטפת החרוט'),'varied-orientation task must include mantle identification');
