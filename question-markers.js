@@ -30,7 +30,7 @@
   const hideLeadingQuestionNumber=el=>{
     const node=firstTextNode(el);
     if(!node)return false;
-    const match=node.nodeValue.match(/^(\s*\d+\s*\.\s*)/);
+    const match=node.nodeValue.match(/^(\s*\d+\s*(?:\.\s*|\s+(?=[אבגדהוזחטיכלמנסעפצקרשת][.)]\s*)))/);
     if(!match)return false;
     const rest=node.nodeValue.slice(match[0].length);
     if(!rest.trim()){
@@ -60,7 +60,7 @@
       el.classList.add('source-number-only');
       return;
     }
-    if(/^\d+\.\s*\S/.test(text)){
+    if(/^\d+(?:\.\s*\S|\s+[אבגדהוזחטיכלמנסעפצקרשת][.)]\s*\S)/.test(text)){
       hideLeadingQuestionNumber(el);
       addMarker(el);
     }
