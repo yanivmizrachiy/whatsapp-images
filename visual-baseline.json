@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "project": "חרוט חדש",
-  "sourceCommit": "dafa682851af63b17ef8c137addd95328f93defa",
-  "sourceWorkflowRun": 38144393574,
+  "sourceCommit": "5c0cf93eceba4abe1d61025a6a5f5a2e01c2a1e6",
+  "sourceWorkflowRun": 38149545769,
   "artifact": "cone-visual-qa",
-  "reviewedBy": "Yaniv explicit correction: compact single solid question dots, no nested ring",
+  "reviewedBy": "Yaniv review redesign: WHO-07 claim table, choose-r/h card, varied ratio table, sector-fold figure, names, word+symbol headers",
   "reviewedAt": "2026-10-11",
   "pageCount": 43,
   "pages": {
@@ -33,16 +33,16 @@
       "bytes": 56166
     },
     "page-07.png": {
-      "sha256": "b70f1f3ea21a6504ab957df162be791823f522a2d0349d8f1f24016988647975",
-      "bytes": 87627
+      "sha256": "1388569ef047fbd83bc19b2c5ee64a0c116b382abd52b2d3b076932b357451f0",
+      "bytes": 86671
     },
     "page-08.png": {
       "sha256": "175e75e791b2ef9c522c936165d880b04de946e51f93724da3bcd283b6828cad",
       "bytes": 58695
     },
     "page-09.png": {
-      "sha256": "d1aa9627c5a808f5287817ce884af1f7dd57dc282c976d2401519fcab3ddf582",
-      "bytes": 66550
+      "sha256": "10ea6f3470f446e3025aa54e76983c16a0ebb40f18627ade952576b1538c6582",
+      "bytes": 66714
     },
     "page-10.png": {
       "sha256": "bd74ad0c93a9d7e695a7ecba4e56803c19fec9f1e4eadb49ff231509cea5438d",
@@ -65,48 +65,48 @@
       "bytes": 43408
     },
     "page-15.png": {
-      "sha256": "de91a1b859c01bb877113d23e58c4fc03fc7acd1c23db53e11bf7ea1da74ca09",
-      "bytes": 44923
+      "sha256": "f5ecbe5802034c7d77ac225d1d1112b59db9df7ec1a8bfc3adb517ebfd8cb16a",
+      "bytes": 74681
     },
     "page-16.png": {
-      "sha256": "49efb69bdb56f97573f4f5932929fbc9025e81b14e5b8603599926e2431bd333",
-      "bytes": 58508
+      "sha256": "4ce1aeda4cbcce5c2134bf36bb07304341d13e70d7a321da6af6c9df836f980d",
+      "bytes": 58750
     },
     "page-17.png": {
-      "sha256": "c4c7c734c3d3a1c10e7627e4f3aa6d5d73e5dfb63ba5fc3dc4c8ff971ab9b259",
-      "bytes": 68320
+      "sha256": "b861eabaa23d11237455807c2e125a9dd34bd349e38eafa001e7cfa901cfbf05",
+      "bytes": 68139
     },
     "page-18.png": {
-      "sha256": "fcfb9213026cc2b7ea63d811b16920348358c01fed8821d2859e169e1ed2a77a",
-      "bytes": 47971
+      "sha256": "c3add8992a51bd9b82ca79a232f1120d350a3805b7c58a3adfa82b5a554fa6cb",
+      "bytes": 49116
     },
     "page-19.png": {
       "sha256": "f4d847610cfe84089c95d3e5786fec357368e8b72ed429ee7b0040e40714dfac",
       "bytes": 64831
     },
     "page-20.png": {
-      "sha256": "8ebf56b99d5d491ef3345882fa1dbaaffd43c30a9daea4a3ea0127bbfff9e596",
-      "bytes": 48815
+      "sha256": "d0123147b7ebea318d4c7a56411b9179e69f19b4df96513e8678dcb06292e60d",
+      "bytes": 57408
     },
     "page-21.png": {
-      "sha256": "f62c2930e33ebfc34e83e4a7ebc3ebeaaba03426e6b839ceb7237ea06d0eb9b7",
-      "bytes": 37205
+      "sha256": "b18ea2be731823b93eb579bd3fc128b307ecdaf69b0606f690cd5c9447f72c36",
+      "bytes": 60770
     },
     "page-22.png": {
       "sha256": "a01a0d5aafc08554b416ac7df275d4e387469f04712b401e56b70b59df8d06ce",
       "bytes": 39328
     },
     "page-23.png": {
-      "sha256": "f97f453267dae74e72f404af3f919da39ed64042ab1ef528d3424dbf8efd9130",
-      "bytes": 67121
+      "sha256": "ee1c168aa9e58d37ce613a5c774c55c868cfbf782c7908d4a85f8c3c23b46073",
+      "bytes": 68388
     },
     "page-24.png": {
-      "sha256": "5f3ab9b0b7a5815fadae8802b3117044c7866f5b87fa2c322f84457ad4a91694",
-      "bytes": 67555
+      "sha256": "00e1914141cef8f98ac4e229ec66293d4f87e268e4438bcf832a16f014f2e5ea",
+      "bytes": 66975
     },
     "page-25.png": {
-      "sha256": "abbec0d107dc0c2beb3470cf4556ed9a3b3793c453646ae54ce5a13e53277ab3",
-      "bytes": 51149
+      "sha256": "a22a9ea4577ad806683c562acb8f2bf90f90d7e64ea2efc03ea4b97b4fea5959",
+      "bytes": 54251
     },
     "page-26.png": {
       "sha256": "253c18c0a55d8d2671833de3ea154e3dab1dd055d88e71c06e0c2ccfd0858673",
@@ -165,8 +165,8 @@
       "bytes": 80583
     },
     "page-40.png": {
-      "sha256": "dd4aa53d7d1b0b7faa26135da2c4bdf0abc795c49b1c0527462537e62e5a15f3",
-      "bytes": 48596
+      "sha256": "f1a0e542053f17a138370783bf5e1c7afbddb808f192edd59254bc0d2877dcc4",
+      "bytes": 52194
     },
     "page-41.png": {
       "sha256": "6a9af4f554da6823130c8f667cf8a96b2ca2b1b3173b16900a001a0110a6ef6d",
@@ -177,8 +177,8 @@
       "bytes": 42571
     },
     "page-43.png": {
-      "sha256": "8c994158b135b89f2df6cc50187ba1bd3b4036d9939a632bd1e2436cb6c031f1",
-      "bytes": 44371
+      "sha256": "bb6674a9e31abfec225e66733098bc089b42faad6e82b754bd8c48e404dbfcae",
+      "bytes": 44481
     }
   }
 }
