@@ -6,7 +6,7 @@
   "artifact": "cone-visual-qa",
   "reviewedBy": "ChatGPT — regenerated from CI render after student-facing units/קוטר/topic-title policy; static + browser QA passed before baseline refresh",
   "reviewedAt": "2026-10-11",
-  "pageCount": 45,
+  "pageCount": 43,
   "pages": {
     "page-01.png": {
       "sha256": "964f1587d68a12a3393c9e82c7617a1b94f3e28f05909229f643ad105bbcbca9",
@@ -179,14 +179,6 @@
     "page-43.png": {
       "sha256": "d4cc55214ada9ac07a0fdbf4af0fd525804395f7931a1a5fbd5c0135f0434a08",
       "bytes": 68242
-    },
-    "page-44.png": {
-      "sha256": "01f5864be82d588cf964828b1b91661861c8e009075f77a0b7bb6eb2f4037fcf",
-      "bytes": 41560
-    },
-    "page-45.png": {
-      "sha256": "bade099660d043e74586ee26936453be5e0f0a89f4ebfeceec6133308ad63511",
-      "bytes": 44181
     }
   }
 }

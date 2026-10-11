@@ -128,14 +128,20 @@ ok(index.includes('download-pdf'),'reader must keep the direct-download control 
 ok(index.includes(' download>')||index.includes(' download '),'direct-download link must carry the HTML download attribute');
 ok(index.includes('exports/student-pages/cone-student.pdf'),'direct download must point to the validated canonical student PDF');
 
-// Continuous scroll view (reader shell only): every student page stacked for
-// review via ?view=scroll or the toggle; the default reader stays single-page
-// and print pagination must not change.
-ok(index.includes('id="view-toggle"'),'reader must keep the scroll-view toggle control (view-toggle)');
-ok(app.includes("get('view')")&&app.includes("urlView==='scroll'"),'reader must honour ?view=scroll');
+// SSOT §20.3/§20.7 public reader contract: always opens in continuous scroll,
+// one visible action only ('הורדת PDF'), sticky non-button counter, and no
+// user-facing prev/next/print/view-toggle controls (internal ones stay hidden).
+ok(index.includes("searchParams.set('view','scroll')"),'public reader must open in continuous scroll by default (§20.3)');
+ok(index.includes('.reader .reader-internal{display:none!important}'),'internal reader controls must stay hidden from the user (§20.7)');
+ok(/<button[^>]*id="prev"[^>]*class="reader-internal"|<button[^>]*class="reader-internal"[^>]*id="prev"/.test(index),'prev control must be internal/hidden');
+ok(/<button[^>]*id="next"[^>]*class="reader-internal"|<button[^>]*class="reader-internal"[^>]*id="next"/.test(index),'next control must be internal/hidden');
+ok(/<button[^>]*id="view-toggle"[^>]*class="reader-internal"|<button[^>]*class="reader-internal"[^>]*id="view-toggle"/.test(index),'view toggle must be internal/hidden');
+ok(!/<button(?![^>]*reader-internal)[^>]*onclick="print\(\)"/.test(index),'print control must not be visible to the user');
+ok((index.match(/class="reader-action[^"]*"/g)||[]).length===1&&index.includes('class="reader-action download-pdf"'),'exactly one visible reader action is allowed: הורדת PDF');
+ok(/<span id="counter"/.test(index),'page counter must be a non-button text read-out');
 ok(app.includes("classList.toggle('scroll-view',scrollView)"),'reader must expose the scroll-view body class');
-ok(app.includes("addEventListener('scroll',syncCounterToScroll"),'scroll view counter must follow the page in view');
-ok(css.includes('.scroll-view .page{margin-bottom:18px}'),'scroll-view page stacking style missing');
+ok(app.includes("addEventListener('scroll',syncCounterToScroll"),'sticky counter must follow the page in view while scrolling');
+ok(css.includes('.scroll-view .page{margin-bottom:18px}'),'scroll-view page separation style missing');
 ok(css.includes('@media print{.scroll-view .page,.scroll-view .page:last-child{margin:0}}'),'scroll view must not alter print pagination');
 
 ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
