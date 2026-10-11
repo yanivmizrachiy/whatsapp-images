@@ -334,7 +334,9 @@ async function inspectScrollView(width,height,label){
       counter:counterEl?.textContent||'',
       counterIsButton:!!counterEl?.closest('button,a'),
       sticky:getComputedStyle(document.querySelector('.reader')).position==='sticky',
-      download:(()=>{const a=document.querySelector('a.download-pdf');return a&&a.hasAttribute('download')&&new URL(a.href).origin===location.origin&&getComputedStyle(a).display!=='none'})()
+      download:(()=>{const a=document.querySelector('a.download-pdf');return a&&a.hasAttribute('download')&&new URL(a.href).origin===location.origin&&getComputedStyle(a).display!=='none'})(),
+      selector:(()=>{const sel=document.querySelector('#page-selector');if(!sel)return null;const r=sel.getBoundingClientRect();return {visible:getComputedStyle(sel).display!=='none'&&r.height>0,h:r.height,options:sel.options.length,text:sel.options[sel.selectedIndex]?.textContent.trim(),isButton:sel.tagName!=='SELECT'}})(),
+      forbiddenVisible:[...document.querySelectorAll('#prev,#next,#view-toggle,.reader button')].filter(el=>getComputedStyle(el).display!=='none').length
     };
   });
   ok(result.scrollClass&&result.view==='scroll',`${label}: public reader did not open in continuous scroll`);
@@ -342,11 +344,34 @@ async function inspectScrollView(width,height,label){
   ok(result.counter===`1 / ${canonicalPageCount}`,`${label}: initial counter mismatch: ${result.counter}`);
   ok(!result.counterIsButton&&result.sticky,`${label}: counter must be a sticky non-button read-out`);
   ok(result.download,`${label}: הורדת PDF must be a visible same-origin download link`);
+  ok(result.selector&&result.selector.visible&&!result.selector.isButton&&result.selector.options===canonicalPageCount&&result.selector.text===`עמוד 1 מתוך ${canonicalPageCount}`,`${label}: compact page <select> must be visible with ${canonicalPageCount} options reading "עמוד X מתוך N" (got ${JSON.stringify(result.selector)})`);
+  ok(result.selector&&result.selector.h>=40,`${label}: page selector touch target too small (${result.selector?.h}px)`);
+  ok(result.forbiddenVisible===0,`${label}: prev/next/view-toggle/print controls must not be visible (${result.forbiddenVisible})`);
   ok(!result.pageOverflow,`${label}: scroll view internal A4 overflow detected`);
   ok(!result.bodyOverflow,`${label}: scroll view horizontal overflow detected`);
   ok(result.scrollable,`${label}: scroll view must be vertically scrollable`);
   await scrollReaderTo(4);
   ok((await page.textContent('#counter'))?.trim()===`5 / ${canonicalPageCount}`,`${label}: counter did not follow a manual scroll to page 5`);
+  ok(await page.$eval('#page-selector',el=>Number(el.value))===5,`${label}: page selector did not follow a manual scroll to page 5`);
+  // §20.3 selector: choosing a page = short fade + instant jump (no smooth scroll through the pages in between).
+  await scrollReaderTo(-1);
+  const jumpTarget=Math.min(canonicalPageCount,30);
+  const t0=Date.now();
+  await page.selectOption('#page-selector',String(jumpTarget));
+  const faded=await page.waitForFunction(()=>document.getElementById('book').classList.contains('reader-fading'),null,{timeout:1000}).then(()=>true).catch(()=>false);
+  ok(faded,`${label}: selecting a page must fade #book out (reader-fading) before the jump`);
+  await page.waitForFunction(()=>!document.getElementById('book').classList.contains('reader-fading'),null,{timeout:2000});
+  const jumpMs=Date.now()-t0;
+  await page.waitForTimeout(250);
+  const landed=await page.evaluate((n)=>{const p=document.querySelectorAll('.page')[n-1].getBoundingClientRect();const bar=document.querySelector('.reader').getBoundingClientRect();
+    return {top:p.top-bar.bottom,sel:Number(document.getElementById('page-selector').value),hash:location.hash,transition:getComputedStyle(document.getElementById('book')).transitionDuration}},jumpTarget);
+  ok(landed.top>-40&&landed.top<60,`${label}: selector jump must land page ${jumpTarget} under the sticky bar (offset ${Math.round(landed.top)}px)`);
+  ok(landed.sel===jumpTarget&&landed.hash===`#page=${jumpTarget}`,`${label}: selector/hash must reflect the jumped page (sel=${landed.sel}, hash=${landed.hash})`);
+  ok(jumpMs<900,`${label}: page jump must be a short fade-jump, not a long smooth scroll (${jumpMs}ms)`);
+  const tr=parseFloat(landed.transition)*(/ms$/.test(landed.transition)?1:1000);
+  ok(tr>=150&&tr<=220,`${label}: #book fade transition must be 150–220ms (got ${landed.transition})`);
+  await scrollReaderTo(-1);
+  ok(await page.$eval('#page-selector',el=>Number(el.value))===1,`${label}: selector did not return to page 1 on scroll`);
   await page.emulateMedia({media:'print'});
   const printMargins=await page.evaluate(()=>[...document.querySelectorAll('.page')].map(p=>getComputedStyle(p).marginBottom));
   ok(printMargins.every(m=>m==='0px'),`${label}: scroll view must print without inter-page margins (${[...new Set(printMargins)].join(',')})`);
@@ -400,4 +425,4 @@ if(failures.length){
   failures.forEach((f,i)=>console.error(`${i+1}. ${f}`));
   process.exit(1);
 }
-console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; continuous-scroll reader; print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);
+console.log(`BROWSER QA PASS: HTTP-served workbook; ${canonicalPageCount} A4 pages; ${subsectionAudit.count} independent subsection work units; canonical fonts/images; desktop + Android + iPhone portrait/landscape; continuous-scroll reader with page selector fade-jump; print; screenshots; PDF ${pdfBytes.length} bytes / ${canonicalPageCount} A4 pages; no internal overflow.`);

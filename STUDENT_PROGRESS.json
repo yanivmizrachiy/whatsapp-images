@@ -11,8 +11,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T15:40:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — merged OBJ pages 4+5 (SSOT §26.7.9) and the two \u05de\u05d9 \u05e6\u05d5\u05d3\u05e7? continuation pages 8+9 (SSOT §26.7.10) into single well-designed A4 pages, taking the workbook 45\u219244\u219243 A4 pages with all 82 questions preserved (layout merges, no content removal); added an accurate to-scale cylinder+cone figure to the ratio-confirmation page CONE-ARCH-03 (r=5/h=9) via a new scaleConeCylinderPair helper (shared 8px/cm scale, same base & height, shape-only so §15.3-safe), and fixed that page\u2019s math notation — the r = 5 \u05e1\u05f4\u05de / h = 9 \u05e1\u05f4\u05de Latin-in-RTL bidi scramble rewritten to clean Hebrew prose with units, and inline \u03c0\u00b7r\u00b2\u00b7h wrapped in <bdi dir=ltr>. Pinned CANONICAL_PAGE_COUNT 45\u219243 in qa.mjs. npm run qa PASS (43 A4 pages / 82 questions); live preview all 43 pages overflowPx 0.",
+  "updatedAt": "2026-10-11T10:40:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — merged OBJ pages 4+5 (SSOT §26.7.9) and the two מי צודק? continuation pages 8+9 (SSOT §26.7.10) into single well-designed A4 pages, taking the workbook 45→44→43 A4 pages with all 82 questions preserved (layout merges, no content removal); added an accurate to-scale cylinder+cone figure to the ratio-confirmation page CONE-ARCH-03 (r=5/h=9) via a new scaleConeCylinderPair helper (shared 8px/cm scale, same base & height, shape-only so §15.3-safe), and fixed that page’s math notation — the r = 5 ס״מ / h = 9 ס״מ Latin-in-RTL bidi scramble rewritten to clean Hebrew prose with units, and inline π·r²·h wrapped in <bdi dir=ltr>. Pinned CANONICAL_PAGE_COUNT 45→43 in qa.mjs. npm run qa PASS (43 A4 pages / 82 questions); live preview all 43 pages overflowPx 0.",
   "headCommit": "pending-merge-pages-4-5-8-9-arch03",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -219,12 +219,13 @@
         "P12"
       ],
       "evidence": [
-        "prev/next reader",
-        "continuous scroll view",
         "dynamic page count",
         "print CSS",
         "validated cone-student.pdf",
-        "§20.1 full A4 page visible on portrait phones 360/390/412 (transform-origin top right; external scale only, A4 geometry unchanged)"
+        "§20.1 full A4 page visible on portrait phones 360/390/412 (transform-origin top right; external scale only, A4 geometry unchanged)",
+        "§20.3 public reader (Yaniv 2026-10-11): continuous scroll by default; exactly two visible controls — the „הורדת PDF” button (static same-origin PDF, download attr) and one compact page <select> „עמוד X מתוך 43” (reader-jump.js / #page-selector); prev/next/single/continuous/print controls hidden (QA-internal only)",
+        "page selection = short fade (#book.reader-fading, 180ms) → instant jump (scroll-behavior:auto) → fade-in; selector follows manual scrolling; #page=N deep-link kept",
+        "dynamic page count"
       ],
       "testsPassed": [
         "desktop",
@@ -232,7 +233,9 @@
         "iPhone portrait/landscape",
         "mobile horizontal-containment (§20.1): scaled page fully visible, not clipped off-screen",
         "print",
-        "PDF"
+        "PDF",
+        "reader-jump-qa.mjs (static contract: selector + download-only + fade + direct jump + scroll sync + deep-link)",
+        "browser-qa.mjs §20.3: continuous default, one visible action, visible <select>, instant fade-jump lands under the sticky bar, selector follows scroll"
       ],
       "remaining": []
     },
