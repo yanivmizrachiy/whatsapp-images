@@ -33,18 +33,15 @@
     }
   }
 
-  // The canonical table may keep d internally for deterministic mathematics,
-  // but a student sees full Hebrew names and a unit context in every column.
+  // The canonical renderer (app.js) already labels every column with the Hebrew
+  // word, the symbol and the unit (SSOT §9.5, e.g. "קוטר d (ס״מ)"); this boundary
+  // only guarantees that every printed value also carries its own unit.
   const volumeTable=[...book.querySelectorAll('table.practice-table')].find(table=>{
     const labels=[...table.querySelectorAll('thead th')].map(th=>(th.textContent||'').trim());
     return labels.length===4&&labels.some(label=>label.includes('\\(d\\)'))&&labels.some(label=>label.includes('\\(V\\)'));
   });
 
   if(volumeTable){
-    const headers=[...volumeTable.querySelectorAll('thead th')];
-    ['רדיוס (ס״מ)','קוטר (ס״מ)','גובה (ס״מ)','נפח מדויק (סמ״ק)'].forEach((label,index)=>{
-      if(headers[index])headers[index].textContent=label;
-    });
     for(const row of volumeTable.querySelectorAll('tbody tr')){
       [...row.cells].forEach((cell,index)=>{
         const value=(cell.textContent||'').trim();

@@ -13,7 +13,9 @@ const grid=(size='medium')=>`<div class="work-grid ${size}"></div>`;
 const answerLine=(unit='')=>`<div class="final-answer">תשובה: <span></span>${unit?` <em>${unit}</em>`:''}</div>`;
 // SSOT §15.2/§27: diagram symbols are always accompanied by their Hebrew words.
 // Rendered as an HTML key beneath the figure (not on the SVG strokes) so it stays §15.3-safe.
-const dimKey=(txt)=>`<div class="dim-key">${txt}</div>`;
+// Each "symbol = word" pair is its own bidi-isolated, unbreakable unit, so a wrapped key never interleaves
+// the Latin symbol of one pair with the Hebrew words of the next.
+const dimKey=(txt)=>`<div class="dim-key">${txt.split(' · ').map(item=>`<span class="dk">${item}</span>`).join(' · ')}</div>`;
 const tableCell=(value,isVPi=false)=>value==null?'':(isVPi?tex(`${value}\\pi`):String(value));
 const volumeTableRows=()=>D.volumeTableRows.map(row=>`<tr><td>${tableCell(row.r)}</td><td>${tableCell(row.d)}</td><td>${tableCell(row.h)}</td><td>${tableCell(row.vPi,true)}</td></tr>`).join('');
 const q=id=>D.questions.find(item=>item.id===id)||null;
@@ -67,6 +69,46 @@ const coneSectorCompareSvg=()=>`<svg class="sector-compare-svg" viewBox="0 0 460
 const coneSectorAngleSvg=()=>`<svg class="sector-angle-svg" viewBox="0 0 420 260" role="img" aria-label="גזרת עיגול עם סימון זווית הגזרה אלפא"><path d="M210 60 L244 164.6 A110 110 0 0 1 176 164.6 Z" fill="#e0e7ff" stroke="#4338ca" stroke-width="2.8"/><path d="M220.5 92.3 A34 34 0 0 1 199.5 92.3" fill="none" stroke="#4338ca" stroke-width="2.4"/><text x="210" y="116" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#4338ca">α</text></svg>`;
 // Large single sector for the unrolled mantle (CONE-SEC): radius = slant s, arc = base circumference, angle α.
 const sectorSvg=()=>`<svg class="sector-svg" viewBox="0 0 460 360" role="img" aria-label="מעטפת פרוסה — גזרת עיגול עם רדיוס שווה לקו היוצר וקשת שווה להיקף הבסיס"><path d="M230 70 L320 225.9 A180 180 0 0 1 140 225.9 Z" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3.2"/><path d="M253 109.8 A46 46 0 0 1 207 109.8" fill="none" stroke="#1d4ed8" stroke-width="2.4"/><text x="230" y="132" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#1d4ed8">α</text><text x="296" y="150" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#1d4ed8">s</text><text x="230" y="300" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="15" font-weight="700" fill="#475569">הקשת = היקף הבסיס</text></svg>`;
+// Colour-coded sheet → cone → half axial section (CONE-SEC-05/06, SSOT §26.7.11): the 12 cm, 90° sector folds into
+// a cone; its radius becomes the slant s (orange), its arc the base circumference (purple); in the half axial section
+// s is the hypotenuse over r (blue) and h (green), so s > r. Cone and triangle keep the true 4:1 ratio of s to r.
+// Absolute coordinates only and text-anchor="middle" only (in an RTL page "start" anchors at the right edge).
+const sectorFoldSvg=()=>{
+  const F="font-family=\"'Rubik',sans-serif\"",OR='#ea580c',PU='#7c3aed',BL='#1d4ed8',GR='#15803d',INK='#0f172a';
+  const cx=645,cy=140,R=95,k=R*Math.SQRT1_2,ax=+(cx-k).toFixed(2),bx=+(cx+k).toFixed(2),aby=+(cy+k).toFixed(2);
+  const vx=390,vy=48,S=180,r=45,oy=+(vy+Math.sqrt(S*S-r*r)).toFixed(2),ry=14,tx=170;
+  return `<svg class="sector-fold-svg" viewBox="0 0 760 275" role="img" aria-label="גזרה של 90 מעלות מעיגול שרדיוסו 12 סנטימטר מתקפלת לחרוט: רדיוס הגזרה הופך לקו היוצר וקשת הגזרה הופכת להיקף הבסיס; בחצי החתך הצירי הקו היוצר הוא היתר ולכן ארוך מרדיוס הבסיס">`
+  +`<text x="${cx}" y="24" text-anchor="middle" ${F} font-size="15" font-weight="700" fill="${INK}">עיגול שרדיוסו 12 ס״מ</text>`
+  +`<circle cx="${cx}" cy="${cy}" r="${R}" fill="#f8fafc" stroke="#94a3b8" stroke-width="2" stroke-dasharray="7 6"/>`
+  +`<path d="M${cx} ${cy} L${ax} ${aby} A${R} ${R} 0 0 0 ${bx} ${aby} Z" fill="#ffedd5"/>`
+  +`<line x1="${cx}" y1="${cy}" x2="${ax}" y2="${aby}" stroke="${OR}" stroke-width="4"/><line x1="${cx}" y1="${cy}" x2="${bx}" y2="${aby}" stroke="${OR}" stroke-width="4"/>`
+  +`<path d="M${ax} ${aby} A${R} ${R} 0 0 0 ${bx} ${aby}" fill="none" stroke="${PU}" stroke-width="5"/>`
+  +`<polyline points="${(cx-9.9).toFixed(1)},${(cy+9.9).toFixed(1)} ${cx},${(cy+19.8).toFixed(1)} ${(cx+9.9).toFixed(1)},${(cy+9.9).toFixed(1)}" fill="none" stroke="${INK}" stroke-width="2"/><circle cx="${cx}" cy="${cy}" r="4" fill="${INK}"/>`
+  +`<text x="${cx}" y="${cy+46}" text-anchor="middle" ${F} font-size="16" font-weight="800" fill="#9a3412">90°</text>`
+  +`<text x="705" y="158" text-anchor="middle" ${F} font-size="15" font-weight="800" fill="${OR}">12 ס״מ</text>`
+  +`<text x="${cx}" y="262" text-anchor="middle" ${F} font-size="15" font-weight="800" fill="${PU}">קשת הגזרה</text>`
+  +`<line x1="540" y1="140" x2="503" y2="140" stroke="#64748b" stroke-width="3"/><polygon points="490,140 504,132 504,148" fill="#64748b"/>`
+  +`<text x="515" y="126" text-anchor="middle" ${F} font-size="13" font-weight="700" fill="#475569">מקפלים</text>`
+  +`<text x="${vx}" y="24" text-anchor="middle" ${F} font-size="15" font-weight="700" fill="${INK}">החרוט שמתקבל</text>`
+  +`<path d="M${vx} ${vy} L${vx} ${oy} L${vx+r} ${oy} Z" fill="#fef3c7"/>`
+  +`<path d="M${vx-r} ${oy} A${r} ${ry} 0 0 1 ${vx+r} ${oy}" fill="none" stroke="${PU}" stroke-width="2.5" stroke-dasharray="6 5"/><path d="M${vx-r} ${oy} A${r} ${ry} 0 0 0 ${vx+r} ${oy}" fill="none" stroke="${PU}" stroke-width="4.5"/>`
+  +`<line x1="${vx}" y1="${vy}" x2="${vx-r}" y2="${oy}" stroke="${OR}" stroke-width="4"/><line x1="${vx}" y1="${vy}" x2="${vx+r}" y2="${oy}" stroke="${OR}" stroke-width="4"/>`
+  +`<line x1="${vx}" y1="${vy}" x2="${vx}" y2="${oy}" stroke="${GR}" stroke-width="2.5" stroke-dasharray="7 5"/><line x1="${vx}" y1="${oy}" x2="${vx+r}" y2="${oy}" stroke="${BL}" stroke-width="3"/>`
+  +`<polyline points="${vx},${oy-9} ${vx+9},${oy-9} ${vx+9},${oy}" fill="none" stroke="${INK}" stroke-width="1.8"/><circle cx="${vx}" cy="${vy}" r="4" fill="${INK}"/>`
+  +`<text x="455" y="140" text-anchor="middle" ${F} font-size="15" font-weight="800" fill="${OR}">12 ס״מ</text>`
+  +`<text x="${vx}" y="262" text-anchor="middle" ${F} font-size="15" font-weight="800" fill="${PU}">היקף הבסיס</text>`
+  +`<line x1="335" y1="140" x2="297" y2="140" stroke="#64748b" stroke-width="3"/><polygon points="284,140 298,132 298,148" fill="#64748b"/>`
+  +`<text x="150" y="24" text-anchor="middle" ${F} font-size="15" font-weight="700" fill="${INK}">חצי החתך הצירי</text>`
+  +`<path d="M${tx} ${vy} L${tx} ${oy} L${tx+r} ${oy} Z" fill="#fef3c7"/>`
+  +`<line x1="${tx}" y1="${vy}" x2="${tx}" y2="${oy}" stroke="${GR}" stroke-width="4"/><line x1="${tx}" y1="${oy}" x2="${tx+r}" y2="${oy}" stroke="${BL}" stroke-width="4"/><line x1="${tx}" y1="${vy}" x2="${tx+r}" y2="${oy}" stroke="${OR}" stroke-width="4"/>`
+  +`<polyline points="${tx},${oy-11} ${tx+11},${oy-11} ${tx+11},${oy}" fill="none" stroke="${INK}" stroke-width="1.8"/>`
+  +`<text x="${tx-14}" y="142" text-anchor="middle" ${F} font-size="18" font-weight="800" fill="${GR}">h</text>`
+  +`<text x="${tx+22}" y="${oy+26}" text-anchor="middle" ${F} font-size="18" font-weight="800" fill="${BL}">r</text>`
+  +`<text x="${tx+44}" y="140" text-anchor="middle" ${F} font-size="18" font-weight="800" fill="${OR}">s</text>`
+  +`<text x="70" y="118" text-anchor="middle" direction="ltr" ${F} font-size="18" font-weight="700" fill="${INK}"><tspan fill="${OR}">s</tspan>² = <tspan fill="${BL}">r</tspan>² + <tspan fill="${GR}">h</tspan>²</text>`
+  +`<text x="70" y="154" text-anchor="middle" direction="ltr" ${F} font-size="22" font-weight="800" fill="${INK}"><tspan fill="${OR}">s</tspan> &gt; <tspan fill="${BL}">r</tspan></text>`
+  +`<text x="70" y="186" text-anchor="middle" ${F} font-size="13" font-weight="700" fill="#475569">היתר ארוך מכל ניצב</text></svg>`;
+};
 // Cone with three parallel cuts א/ב/ג (CONE-CUT-03): closer to the base → larger circle.
 const coneCutsSvg=()=>`<svg class="cone-cuts-svg" viewBox="0 0 420 360" role="img" aria-label="חרוט ישר עם שלושה חתכים מקבילים לבסיס, מסומנים א, ב, ג"><ellipse cx="210" cy="300" rx="140" ry="34" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3.5"/><path d="M210 30 L70 300 M210 30 L350 300" fill="none" stroke="#1d4ed8" stroke-width="3.5"/><path d="M70 300 A140 34 0 0 0 350 300" fill="none" stroke="#1d4ed8" stroke-width="3.5"/><path d="M70 300 A140 34 0 0 1 350 300" fill="none" stroke="#64748b" stroke-width="2.2" stroke-dasharray="8 6"/><line x1="210" y1="30" x2="210" y2="300" stroke="#475569" stroke-width="2.4" stroke-dasharray="7 6"/><ellipse cx="210" cy="110" rx="41.5" ry="10" fill="none" stroke="#dc2626" stroke-width="2.6"/><text x="267" y="115" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#dc2626">א</text><ellipse cx="210" cy="190" rx="83" ry="18" fill="none" stroke="#dc2626" stroke-width="2.6"/><text x="309" y="196" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#dc2626">ב</text><ellipse cx="210" cy="255" rx="116.7" ry="26" fill="none" stroke="#dc2626" stroke-width="2.6"/><text x="344" y="261" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="800" fill="#dc2626">ג</text><circle cx="210" cy="30" r="4.5" fill="#111827"/></svg>`;
 // Render helpers for the expansion pages.
@@ -77,7 +119,10 @@ const secTable=(id)=>`<table class="practice-table sec-table"><thead><tr><th>ר�
 const cylinderConeRatioSvg=()=>`<svg class="ratio-svg" viewBox="0 0 560 360" role="img" aria-label="גליל וחרוט בעלי אותו בסיס ואותו גובה, להשוואת נפחים"><g><path d="M60 290 A90 24 0 0 0 240 290" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><path d="M60 290 A90 24 0 0 1 240 290" fill="none" stroke="#1d4ed8" stroke-width="4"/><line x1="60" y1="70" x2="60" y2="290" stroke="#1d4ed8" stroke-width="4"/><line x1="240" y1="70" x2="240" y2="290" stroke="#1d4ed8" stroke-width="4"/><ellipse cx="150" cy="70" rx="90" ry="24" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><line x1="150" y1="70" x2="150" y2="290" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="150" y1="70" x2="240" y2="70" stroke="#111827" stroke-width="3"/><circle cx="150" cy="70" r="4" fill="#111827"/><text x="105" y="186" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">h</text><text x="262" y="66" text-anchor="start" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">r</text><text x="150" y="336" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#1d4ed8">גליל</text></g><g><path d="M320 290 A90 24 0 0 0 500 290" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><path d="M320 290 A90 24 0 0 1 500 290" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M410 70 L320 290 M410 70 L500 290" fill="none" stroke="#1d4ed8" stroke-width="4"/><line x1="410" y1="70" x2="410" y2="290" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="410" y1="290" x2="500" y2="290" stroke="#111827" stroke-width="3"/><circle cx="410" cy="70" r="5" fill="#111827"/><circle cx="410" cy="290" r="4" fill="#111827"/><text x="394" y="186" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">h</text><text x="516" y="292" text-anchor="start" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">r</text><text x="410" y="336" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="800" fill="#1d4ed8">חרוט</text></g></svg>`;
 // Cone labelled by its full base DIAMETER (not radius) — the diameter-vs-radius error (CONE-ERR-05).
 const diameterConeSvg=()=>`<svg class="diameter-cone-svg" viewBox="0 0 520 440" role="img" aria-label="חרוט ישר שקוטר בסיסו 12 סנטימטר וגובהו 10 סנטימטר"><ellipse cx="260" cy="350" rx="178" ry="46" fill="#f8fafc" stroke="#1d4ed8" stroke-width="4"/><path d="M260 54 L82 350 M260 54 L438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 46 0 0 0 438 350" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M82 350 A178 46 0 0 1 438 350" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="54" x2="260" y2="350" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="82" y1="350" x2="438" y2="350" stroke="#111827" stroke-width="3.5"/><circle cx="260" cy="54" r="5" fill="#111827"/><text x="288" y="210" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#475569">10 ס״מ</text><text x="260" y="424" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="18" font-weight="700" fill="#111827">קוטר 12 ס״מ</text></svg>`;
-const ratioTable=(id)=>`<table class="practice-table ratio-table"><thead><tr><th>${tex('r')}</th><th>${tex('h')}</th><th>נפח הגליל</th><th>נפח החרוט</th></tr></thead><tbody>${(q(id)?.ratioTableRows||[]).map(row=>`<tr><td>${row.r} ס״מ</td><td>${row.h} ס״מ</td><td></td><td></td></tr>`).join('')}</tbody></table>`;
+// Cylinder/cone table with a different unknown in every row (CONE-RATIO-05): given cells are printed and tinted,
+// the rest are blanks; an "algebraic" divider introduces the closing rows. Headers pair word + symbol (SSOT §9.5).
+const ratioCell=(row,key,unit)=>row.given.includes(key)?`<td class="given">${tex(row[key])} ${unit}</td>`:'<td></td>';
+const ratioTable=(id)=>{const rows=q(id)?.ratioTableRows||[];const firstAlgebra=rows.findIndex(row=>row.algebra);return `<table class="practice-table ratio-table"><thead><tr><th>רדיוס הבסיס ${tex('r')} (ס״מ)</th><th>גובה ${tex('h')} (ס״מ)</th><th>נפח הגליל (סמ״ק)</th><th>נפח החרוט (סמ״ק)</th></tr></thead><tbody>${rows.map((row,i)=>`${i===firstAlgebra?`<tr class="ratio-divider"><th colspan="4">ובשפה אלגברית: ${tex('a')} ו־${tex('b')} הם מספרים חיוביים</th></tr>`:''}<tr${row.algebra?' class="algebra-row"':''}>${ratioCell(row,'r','ס״מ')}${ratioCell(row,'h','ס״מ')}${ratioCell(row,'vCyl','סמ״ק')}${ratioCell(row,'vCone','סמ״ק')}</tr>`).join('')}</tbody></table>`;};
 // ===== Phase 5 expansion diagrams (applications, architecture, grade-7 bridge) — inline-styled labels, gated by containment + clip =====
 // Funnel: a cone standing on its apex (CONE-APP-01).
 const funnelSvg=()=>`<svg class="funnel-svg" viewBox="0 0 520 430" role="img" aria-label="משפך בצורת חרוט ישר, הקודקוד למטה"><ellipse cx="260" cy="96" rx="172" ry="46" fill="#eff6ff" stroke="#1d4ed8" stroke-width="4"/><path d="M88 96 L260 372 L432 96" fill="none" stroke="#1d4ed8" stroke-width="4"/><path d="M88 96 A172 46 0 0 0 432 96" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="260" y1="96" x2="260" y2="372" stroke="#475569" stroke-width="3" stroke-dasharray="8 7"/><line x1="260" y1="96" x2="432" y2="96" stroke="#111827" stroke-width="3"/><circle cx="260" cy="372" r="4" fill="#111827"/><circle cx="260" cy="96" r="4" fill="#111827"/><text x="348" y="80" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#111827">7 ס״מ</text><text x="294" y="246" text-anchor="middle" font-family="'Rubik',sans-serif" font-size="17" font-weight="700" fill="#475569">9 ס״מ</text></svg>`;
@@ -99,7 +144,9 @@ const scaleCone=(rCm,hCm)=>{const U=8,rx=rCm*U,ry=Math.max(7,Math.round(rx*0.3))
 // Cylinder + cone drawn to the SAME shared scale (8 px/cm), same base radius and height.
 // Shape only — no <text>; the r/h values live in the HTML figcaption beside it (SSOT §15.3-safe).
 const scaleConeCylinderPair=(rCm,hCm)=>{const U=8,rx=rCm*U,ry=Math.max(7,Math.round(rx*0.3)),h=hCm*U,pad=18,gap=52,topY=16,baseY=topY+h,cylCx=pad+rx,coneCx=cylCx+rx+gap+rx,W=coneCx+rx+pad,H=baseY+ry+14;return `<svg class="pair-scale-svg" viewBox="0 0 ${W} ${H}" role="img" aria-label="גליל וחרוט באותו רדיוס בסיס ${rCm} סנטימטר ובאותו גובה ${hCm} סנטימטר, מצוירים בקנה מידה"><line x1="${cylCx-rx}" y1="${topY}" x2="${cylCx-rx}" y2="${baseY}" stroke="#1d4ed8" stroke-width="3"/><line x1="${cylCx+rx}" y1="${topY}" x2="${cylCx+rx}" y2="${baseY}" stroke="#1d4ed8" stroke-width="3"/><path d="M${cylCx-rx} ${baseY} A${rx} ${ry} 0 0 0 ${cylCx+rx} ${baseY}" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><path d="M${cylCx-rx} ${baseY} A${rx} ${ry} 0 0 1 ${cylCx+rx} ${baseY}" fill="none" stroke="#1d4ed8" stroke-width="3"/><ellipse cx="${cylCx}" cy="${topY}" rx="${rx}" ry="${ry}" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><line x1="${cylCx}" y1="${topY}" x2="${cylCx}" y2="${baseY}" stroke="#475569" stroke-width="2" stroke-dasharray="6 5"/><ellipse cx="${coneCx}" cy="${baseY}" rx="${rx}" ry="${ry}" fill="#eff6ff" stroke="#1d4ed8" stroke-width="3"/><path d="M${coneCx-rx} ${baseY} A${rx} ${ry} 0 0 1 ${coneCx+rx} ${baseY}" fill="none" stroke="#1d4ed8" stroke-width="3"/><path d="M${coneCx-rx} ${baseY} A${rx} ${ry} 0 0 0 ${coneCx+rx} ${baseY}" fill="none" stroke="#64748b" stroke-width="2.5" stroke-dasharray="9 7"/><line x1="${coneCx-rx}" y1="${baseY}" x2="${coneCx}" y2="${topY}" stroke="#1d4ed8" stroke-width="3"/><line x1="${coneCx+rx}" y1="${baseY}" x2="${coneCx}" y2="${topY}" stroke="#1d4ed8" stroke-width="3"/><line x1="${coneCx}" y1="${topY}" x2="${coneCx}" y2="${baseY}" stroke="#475569" stroke-width="2" stroke-dasharray="6 5"/><circle cx="${coneCx}" cy="${topY}" r="3.5" fill="#111827"/></svg>`;};
-const claimCheckList=(id)=>{const full=prompt(id);const cut=full.indexOf('(1)');const intro=full.slice(0,cut).trim();const items=full.slice(cut).split(/\(\d+\)\s*/).map(s=>s.trim()).filter(Boolean);return `<div class="task first">${intro}</div><ul class="claim-list">${items.map(t=>`<li><span class="claim-box"></span><span class="claim-text">${t}</span></li>`).join('')}</ul>`;};
+// Claim table (CONE-WHO-07): every claim has its own verdict boxes and justification cell on the same row,
+// so the block needs no separate work grid or answer line.
+const claimTable=(id)=>{const full=prompt(id);const cut=full.indexOf('(1)');const intro=full.slice(0,cut).trim();const items=full.slice(cut).split(/\(\d+\)\s*/).map(s=>s.trim()).filter(Boolean);return `<div class="task first">${intro}</div><table class="practice-table claim-table"><thead><tr><th>טענה</th><th>נכונה</th><th>לא נכונה</th><th>נימוק קצר / תיקון</th></tr></thead><tbody>${items.map(t=>`<tr><td class="claim-text">${t}</td><td><span class="claim-box"></span></td><td><span class="claim-box"></span></td><td></td></tr>`).join('')}</tbody></table>`;};
 const addPage=(html,foot=footer)=>{const p=document.createElement('section');p.className='page';p.dataset.kind='student';p.innerHTML=html+foot();book.append(p);return p};
 let pageNumber=1;
 const nextHeader=title=>header(title,++pageNumber);
@@ -159,7 +206,7 @@ addPage(`${nextHeader('מי צודק? — טענות וסיכום')}
 <div class="task">${prompt('CONE-WHO-04')} <b>נכונה / לא נכונה</b></div>${grid('who-reason')}
 <div class="task">${prompt('CONE-WHO-05')} <b>נכונה / לא נכונה</b></div>${grid('who-reason')}
 <div class="two-column who-compare"><div class="compare-figure">${coneVsPyramidSvg()}</div><div><div class="task first">${prompt('CONE-WHO-06')} <b>נכונה / לא נכונה</b></div>${grid('who-reason')}</div></div>
-${claimCheckList('CONE-WHO-07')}${grid('medium')}${answerLine()}`);
+${claimTable('CONE-WHO-07')}`);
 
 // VIEW — top/side views and position.
 addPage(`${nextHeader('מבטים של חרוט — מלמעלה ומהצד')}
@@ -209,7 +256,8 @@ ${secTable('CONE-SEC-04')}
 <div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
 
 addPage(`${nextHeader('מהגזרה אל רדיוס הבסיס')}
-<div class="concept-note">זכרו: הקו היוצר תמיד ארוך מרדיוס הבסיס, כי ${tex('s=\\sqrt{r^2+h^2}>r')}. לכן רדיוס הגזרה (${tex('s')}) גדול מרדיוס בסיס החרוט (${tex('r')}).</div>
+<div class="concept-note">זכרו: הקו היוצר ארוך מרדיוס הבסיס, כי ${tex('s=\\sqrt{r^2+h^2}>r')}. לכן רדיוס הגזרה ${tex('s')} גדול תמיד מרדיוס הבסיס ${tex('r')}.</div>
+<figure class="sector-fold-figure">${sectorFoldSvg()}${dimKey('<span class="k-s">s = קו יוצר = רדיוס הגזרה</span> · <span class="k-r">r = רדיוס הבסיס</span> · <span class="k-h">h = גובה החרוט</span> · <span class="k-arc">קשת הגזרה = היקף הבסיס</span>')}</figure>
 <div class="task first">${prompt('CONE-SEC-05')}</div>${grid('reverse')}${answerLine()}
 <div class="task">${prompt('CONE-SEC-06')}</div>${grid('claim')}${answerLine()}`);
 
@@ -227,7 +275,7 @@ addPage(`${nextHeader('חתכים מקבילים — גודל העיגול וב�
 addPage(`${nextHeader(`נפח חרוט — השלימו: ${tex('V=\\underline{\\hspace{28mm}}')}`)}
 <div class="task">${prompt('CONE-VOL-01')}</div>${grid('medium')}${answerLine('סמ״ק')}
 <div class="task">${prompt('CONE-TAB-01')}</div>
-<table class="practice-table"><thead><tr><th>${tex('r')}</th><th>${tex('d')}</th><th>${tex('h')}</th><th>${tex('V')}</th></tr></thead><tbody>${volumeTableRows()}</tbody></table>
+<table class="practice-table"><thead><tr><th>רדיוס ${tex('r')} (ס״מ)</th><th>קוטר ${tex('d')} (ס״מ)</th><th>גובה ${tex('h')} (ס״מ)</th><th>נפח מדויק ${tex('V')} (סמ״ק)</th></tr></thead><tbody>${volumeTableRows()}</tbody></table>
 <div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
 
 // ===== Expansion phase 4 (SSOT §26): cone/cylinder 1/3 ratio + volume-error analysis, after the volume formula =====
@@ -241,16 +289,17 @@ addPage(`${nextHeader('גליל וחרוט — נפחים')}
 
 const ratioParts=splitHebrewSubsections(prompt('CONE-RATIO-04'),['א','ב','ג']);
 addPage(`${nextHeader('גליל וחרוט — מחשבים ומשווים נפחים')}
-<div class="concept-note">בחרו בעצמכם רדיוס וגובה חיוביים. השתמשו באותם ערכים לגליל ולחרוט, חשבו את שני הנפחים בשלבים והשוו ביניהם.</div>\n<div class="question-intro">הרדיוס שבחרתי: __________ ס״מ &nbsp;&nbsp; הגובה שבחרתי: __________ ס״מ</div>
 <div class="question-intro">${ratioParts.intro}</div>
+<div class="choice-card"><div class="choice-fields"><div class="choice-title">המידות שבחרתי — אותן מידות לגליל ולחרוט</div><div class="choice-field"><span class="choice-label">הרדיוס שבחרתי</span><span class="choice-eq">${tex('r=')}<span class="choice-box"></span></span><span class="choice-unit">ס״מ</span></div><div class="choice-field"><span class="choice-label">הגובה שבחרתי</span><span class="choice-eq">${tex('h=')}<span class="choice-box"></span></span><span class="choice-unit">ס״מ</span></div></div><div class="choice-figure">${cylinderConeRatioSvg()}</div></div>
 ${renderSubpart(findPart(ratioParts,'א'),{size:'subpart-medium',unit:'סמ״ק'})}
 ${renderSubpart(findPart(ratioParts,'ב'),{size:'subpart-medium',unit:'סמ״ק'})}
 ${renderSubpart(findPart(ratioParts,'ג'),{size:'subpart-medium'})}`);
 
 addPage(`${nextHeader('חרוט וגליל — טבלת נפחים')}
 <div class="task first">${prompt('CONE-RATIO-05')}</div>
+<div class="formula-strip"><span>נפח הגליל: <bdi dir="ltr">${tex('V=\\pi\\cdot r^2\\cdot h')}</bdi></span><span>נפח החרוט: <bdi dir="ltr">${tex('V=\\frac{1}{3}\\cdot\\pi\\cdot r^2\\cdot h')}</bdi></span></div>
 ${ratioTable('CONE-RATIO-05')}
-<div class="work-caption">מרחב חישוב לטבלה</div>${grid('table-work')}`);
+<div class="work-caption">מרחב חישוב לטבלה</div>${grid('ratio-work')}`);
 
 addPage(`${nextHeader('יחס השליש — הכללה ובדיקת טענה')}
 <div class="task first">${prompt('CONE-RATIO-06')}</div>${grid('subpart-explain')}${answerLine()}
@@ -258,7 +307,7 @@ addPage(`${nextHeader('יחס השליש — הכללה ובדיקת טענה')}
 
 // ERR — diagnose & fix common volume-calculation mistakes (missing 1/3, un-squared r, times-3, diameter, units).
 addPage(`${nextHeader('ניתוח שגיאות נפוצות בחישוב הנפח')}
-<div class="concept-note">לפניכם פתרונות של תלמידים לאותה שאלה. בכל סעיף מצאו היכן נפלה הטעות ותקנו אותה עד לתשובה הנכונה.</div>
+<div class="concept-note">לפניכם הפתרונות של ארבעה חברים לאותה שאלה. בכל סעיף מצאו היכן נפלה הטעות ותקנו אותה עד לתשובה הנכונה.</div>
 <div class="two-column"><div class="diagram-box">${coneSvg()}${dimKey('r = רדיוס הבסיס · h = גובה החרוט')}</div><div><div class="task first">${prompt('CONE-ERR-01')}</div>${grid('medium')}${answerLine('סמ״ק')}</div></div>
 <div class="task">${prompt('CONE-ERR-02')}</div>${grid('small')}${answerLine('סמ״ק')}
 <div class="task">${prompt('CONE-ERR-03')}</div>${grid('small')}${answerLine('סמ״ק')}`);
@@ -272,10 +321,10 @@ const convRow=q('CONE-TAB-CONV-01');
 const approxRow=q('CONE-TAB-APPROX-01');
 addPage(`${nextHeader('המרת יחידות וקירוב מספרי')}
 <div class="task">${convRow.prompt}</div>
-<table class="practice-table"><thead><tr><th>רדיוס נתון</th><th>${tex('r')} בס״מ</th><th>${tex('h')}</th><th>${tex('V')} מדויק</th></tr></thead><tbody><tr><td>${convRow.table.rGiven}</td><td></td><td>${convRow.table.h} ס״מ</td><td></td></tr></tbody></table>
+<table class="practice-table"><thead><tr><th>רדיוס נתון</th><th>רדיוס ${tex('r')} (ס״מ)</th><th>גובה ${tex('h')} (ס״מ)</th><th>נפח מדויק ${tex('V')} (סמ״ק)</th></tr></thead><tbody><tr><td>${convRow.table.rGiven}</td><td></td><td>${convRow.table.h} ס״מ</td><td></td></tr></tbody></table>
 <div class="work-caption">מרחב חישוב להמרה ולנפח</div>${grid('table-work')}${answerLine('סמ״ק')}
 <div class="task">${approxRow.prompt}</div>
-<table class="practice-table"><thead><tr><th>${tex('V')} מדויק</th><th>${tex('\\pi')}</th><th>${tex('V')} מקורב</th></tr></thead><tbody><tr><td>${tableCell(approxRow.table.vPiCoeff,true)}</td><td>${tex('\\approx 3.14')}</td><td></td></tr></tbody></table>
+<table class="practice-table"><thead><tr><th>נפח מדויק ${tex('V')} (סמ״ק)</th><th>הערך של ${tex('\\pi')}</th><th>נפח מקורב ${tex('V')} (סמ״ק)</th></tr></thead><tbody><tr><td>${tableCell(approxRow.table.vPiCoeff,true)}</td><td>${tex('\\approx 3.14')}</td><td></td></tr></tbody></table>
 <div class="work-caption">מרחב חישוב לקירוב</div>${grid('medium')}${answerLine('סמ״ק')}`);
 
 addPage(`${nextHeader('חתך צירי ומשפט פיתגורס')}
@@ -381,7 +430,7 @@ addPage(`${nextHeader('שאלות מתוך תוכנית הלימודים')}
 ${renderSubpart(officialA,{size:'official-part-a',unit:'ס״מ'})}
 ${renderSubpart(officialB,{size:'official-part-b',unit:'סמ״ק'})}`);
 
-const comparisonTable=`<table class="comparison-table"><thead><tr><th></th><th>אפשרות א׳</th><th>אפשרות ב׳</th></tr></thead><tbody><tr><th>${tex('r')}</th><td></td><td></td></tr><tr><th>${tex('h')}</th><td></td><td></td></tr><tr><th>${tex('V')}</th><td></td><td></td></tr><tr><th>פי כמה מהנפח המקורי</th><td></td><td></td></tr></tbody></table>`;
+const comparisonTable=`<table class="comparison-table"><thead><tr><th></th><th>אפשרות א׳</th><th>אפשרות ב׳</th></tr></thead><tbody><tr><th>רדיוס ${tex('r')} (ס״מ)</th><td></td><td></td></tr><tr><th>גובה ${tex('h')} (ס״מ)</th><td></td><td></td></tr><tr><th>נפח ${tex('V')} (סמ״ק)</th><td></td><td></td></tr><tr><th>פי כמה מהנפח המקורי</th><td></td><td></td></tr></tbody></table>`;
 addPage(`${nextHeader('שאלות מתוך תוכנית הלימודים — המשך')}
 ${renderSubpart(officialC,{size:'official-part-c',extra:comparisonTable})}
 ${renderSubpart(officialD,{size:'official-part-d',unit:'סמ״ק'})}`);

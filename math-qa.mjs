@@ -107,6 +107,33 @@ ok(changeDoubleH/changeBase===2,'guided investigation: doubling height must doub
 ok(changeDoubleR/changeBase===4,'guided investigation: doubling radius must quadruple cone volume');
 ok(answer('CONE-CHANGE-01').includes('24π')&&answer('CONE-CHANGE-01').includes('48π')&&answer('CONE-CHANGE-01').includes('96π'),'guided dimension-change stored values drifted');
 
+// CONE-RATIO-05 (SSOT §26.7.11): cylinder/cone table with a different unknown in every row,
+// closing with algebraic rows. Every row must be internally consistent (Vcyl = π·r²·h,
+// Vcone = Vcyl/3), determined by exactly two given cells, and the numeric rows must not
+// repeat the same given-pair pattern.
+const ratioRows=questions.get('CONE-RATIO-05')?.ratioTableRows||[];
+const piCoef=s=>{const f=String(s).match(/^\\frac\{(\d+)\}\{(\d+)\}\\pi/);if(f)return Number(f[1])/Number(f[2]);const m=String(s).match(/^(\d*)\\pi/);return m?(m[1]===''?1:Number(m[1])):NaN;};
+const aCoef=s=>{const m=String(s).match(/^(\d*)a$/);return m?(m[1]===''?1:Number(m[1])):NaN;};
+const numericRows=ratioRows.filter(row=>!row.algebra);
+const algebraRows=ratioRows.filter(row=>row.algebra);
+ok(numericRows.length>=4&&algebraRows.length>=2,'CONE-RATIO-05 needs at least 4 numeric rows and 2 algebraic rows');
+for(const [i,row] of ratioRows.entries()){
+  ok(Array.isArray(row.given)&&row.given.length===2,`CONE-RATIO-05 row ${i+1} must give exactly two cells`);
+  ok(!(row.given.includes('vCyl')&&row.given.includes('vCone')),`CONE-RATIO-05 row ${i+1}: the two volumes alone do not determine r and h`);
+  const cyl=piCoef(row.vCyl),cone=piCoef(row.vCone);
+  ok(Math.abs(cone*3-cyl)<1e-9,`CONE-RATIO-05 row ${i+1}: cone volume must be a third of the cylinder volume`);
+  if(row.algebra){
+    ok(row.h==='b'&&Math.abs(cyl-aCoef(row.r)**2)<1e-9&&/a\^2 b$/.test(row.vCyl)&&/a\^2 b$/.test(row.vCone),`CONE-RATIO-05 algebraic row ${i+1} is inconsistent with V = π·r²·h`);
+  }else{
+    const r=Number(row.r),h=Number(row.h);
+    ok(cyl===r*r*h,`CONE-RATIO-05 row ${i+1}: cylinder coefficient must be r²·h = ${r*r*h}`);
+  }
+}
+const numericPatterns=numericRows.map(row=>[...row.given].sort().join('+'));
+ok(new Set(numericPatterns).size===numericPatterns.length,'CONE-RATIO-05 numeric rows must each hide a different unknown (no repeated given pattern)');
+ok(new Set(ratioRows.map(row=>[...row.given].sort().join('+'))).size>=5,'CONE-RATIO-05 must cover at least five different given-pair patterns');
+for(const needle of ['45π','15π','h = 10','120π','r = 5','225π','h = 6','96π','r = 3a','3π·a²·b'])ok(answer('CONE-RATIO-05').includes(needle),`CONE-RATIO-05 stored answer lacks ${needle}`);
+
 const officialBase=volumeCoeff(6,8);
 const officialLarge=volumeCoeff(12,8);
 ok(officialBase===96&&officialLarge===384,'official question exact π coefficients are wrong');

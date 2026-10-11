@@ -10,8 +10,11 @@ const ok=(condition,message)=>{if(!condition)failures.push(message)};
 const appPos=index.indexOf('src="app.js"');
 const policyPos=index.indexOf('src="student-display-policy.js"');
 ok(appPos>=0&&policyPos>appPos,'student display policy must load after the canonical renderer');
-ok(policy.includes('קוטר (ס״מ)'),'diameter must be student-facing Hebrew with an explicit length unit');
-ok(policy.includes('נפח מדויק (סמ״ק)'),'volume table must expose the volume unit in its student-facing header');
+// SSOT §9.5: table headers pair the Hebrew word with the symbol and the unit.
+const app=read('./app.js');
+ok(app.includes("<th>קוטר ${tex('d')} (ס״מ)</th>"),'diameter must be student-facing Hebrew (word + symbol) with an explicit length unit');
+ok(app.includes("<th>נפח מדויק ${tex('V')} (סמ״ק)</th>"),'volume table must expose the volume unit in its student-facing header');
+ok(!policy.includes("headers[index].textContent="),'display policy must not overwrite the word + symbol table headers rendered by app.js');
 ok(policy.includes("heading.textContent='נפח חרוט'"),'formula prompt must not remain embedded in the volume-page title');
 ok(policy.includes("heading.textContent='נפח חרוט — קירוב מספרי'"),'approximation page must use a topic title rather than a demo/prompt title');
 ok(policy.includes('formula-completion'),'active formula completion must be preserved outside the title');
