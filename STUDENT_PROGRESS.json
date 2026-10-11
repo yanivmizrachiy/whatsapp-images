@@ -200,12 +200,17 @@
         "approved heading weights",
         "district footer",
         "shared visual language",
-        "43-page consistency review"
+        "43-page consistency review",
+        "2026-10-11: restored and canonicalized Yaniv question-display rule: no visible numeric question numbering; every main question starts with a blue circle. Locked source numbers remain in source/DOM only. Added data-driven question-markers layer and dedicated regression QA.",
+        "2026-10-11 hardening: visual evidence audit caught one source-locked page-1 pattern (`2 א.`) whose question number was not covered by the first repair parser. Extended the presentation-only prefix parser to hide a numeric question number followed by a Hebrew subpart while keeping `א.` visible; added Playwright question-marker-browser-qa across all 43 pages to prove blue markers render and visible numeric question prefixes cannot return. Source text/data remain unchanged.",
+        "2026-10-11: Yaniv corrected marker styling: one compact solid blue dot only, no inner white dot/ring. Reduced main question marker from 6.6mm to 4.2mm and spacing accordingly; no wording/math/source IDs changed. Static and rendered QA now forbid nested markers and oversize dots."
       ],
       "testsPassed": [
         "font load QA",
         "heading-weight QA",
-        "visual consistency audit"
+        "visual consistency audit",
+        "question-marker-qa.mjs",
+        "question-marker-browser-qa.mjs"
       ],
       "remaining": []
     },

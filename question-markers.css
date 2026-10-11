@@ -1,0 +1,5 @@
+/* SSOT §17.7 — presentation-only question markers; source wording stays intact. */
+.question-with-marker{position:relative;padding-inline-start:6.2mm}
+.question-marker{position:absolute;inset-inline-start:0;top:.28em;width:4.2mm;height:4.2mm;border-radius:50%;background:#1d4ed8;display:block;box-sizing:border-box}
+.source-question-number{font-size:0!important;line-height:0!important;display:inline-block!important;width:0!important;max-width:0!important;overflow:hidden!important;white-space:nowrap!important}
+.source-number-only{display:none!important}
