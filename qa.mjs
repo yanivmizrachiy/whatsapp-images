@@ -24,11 +24,13 @@ const axialSketchQuestion=data.questions.find(q=>q.id==='CONE-AX-SKETCH-01');
 const conversionQuestion=data.questions.find(q=>q.id==='CONE-CONV-01');
 const ids=data.questions.map(q=>q.id);
 
-// SSOT §2.4 canonical scope: exactly 82 questions across 45 A4 pages.
+// SSOT §2.4 canonical scope: exactly 82 questions across 43 A4 pages
+// (46 at the expansion merge; pages 30-31 merged in §26.7.8, pages 4-5 and the two
+// "מי צודק?" continuation pages each merged in §26.7.9/§26.7.10 — layout merges, no question dropped).
 // Pinned exactly (not a floor) so any page/question add or drop fails the portable fast suite
 // immediately, instead of being caught only by the CI-locked pixel baseline.
 const CANONICAL_QUESTION_COUNT=82;
-const CANONICAL_PAGE_COUNT=45;
+const CANONICAL_PAGE_COUNT=43;
 
 ok(ids.length===CANONICAL_QUESTION_COUNT,`canonical question-count drift; expected ${CANONICAL_QUESTION_COUNT}, got ${ids.length}`);
 ok(new Set(ids).size===ids.length,'duplicate question IDs found');

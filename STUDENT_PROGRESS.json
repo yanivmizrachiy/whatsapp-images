@@ -11,9 +11,9 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-11T12:00:00+03:00",
-  "updatedBy": "Claude Code (Opus 4.8) — §20.1 mobile portrait-clip fix + audit-driven QA hardening (independent full audit, Yaniv 2026-10-11): fixed the student-facing mobile blocker where the scaled A4 page was ~55–63% clipped off the left edge on portrait phones (360/390/412) — root cause transform-origin:top center on the RTL right-aligned 210mm page; changed to 'top right' so the full page is visible at [8, vw−8]; #book overflow:hidden had masked it from the width/scrollWidth checks. Added a browser-qa horizontal-containment assertion (mobile page left>=-1 and right<=viewport) so the clip cannot silently regress. Pinned the canonical scope exactly in qa.mjs (==45 pages / ==82 questions, previously floors >=8/>=13) and extended the forbidden multiplication-glyph check to content.js. Removed the stale orphan exports/student-pages/page-46.png left by the 46→45 merge and hardened the qa.yml persist step to clear removed page images first. Desktop/A4/print render unchanged, so the visual baseline is untouched.",
-  "headCommit": "pending-mobile-clip-and-qa-hardening",
+  "updatedAt": "2026-10-11T15:40:00+03:00",
+  "updatedBy": "Claude Code (Opus 4.8) — merged OBJ pages 4+5 (SSOT §26.7.9) and the two \u05de\u05d9 \u05e6\u05d5\u05d3\u05e7? continuation pages 8+9 (SSOT §26.7.10) into single well-designed A4 pages, taking the workbook 45\u219244\u219243 A4 pages with all 82 questions preserved (layout merges, no content removal); added an accurate to-scale cylinder+cone figure to the ratio-confirmation page CONE-ARCH-03 (r=5/h=9) via a new scaleConeCylinderPair helper (shared 8px/cm scale, same base & height, shape-only so §15.3-safe), and fixed that page\u2019s math notation — the r = 5 \u05e1\u05f4\u05de / h = 9 \u05e1\u05f4\u05de Latin-in-RTL bidi scramble rewritten to clean Hebrew prose with units, and inline \u03c0\u00b7r\u00b2\u00b7h wrapped in <bdi dir=ltr>. Pinned CANONICAL_PAGE_COUNT 45\u219243 in qa.mjs. npm run qa PASS (43 A4 pages / 82 questions); live preview all 43 pages overflowPx 0.",
+  "headCommit": "pending-merge-pages-4-5-8-9-arch03",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
     "partial": "work exists but at least one acceptance criterion is still open",
@@ -32,7 +32,7 @@
         "P14"
       ],
       "evidence": [
-        "45 active student A4 pages",
+        "43 active student A4 pages",
         "content.js",
         "app.js",
         "validated exports/student-pages"
@@ -79,7 +79,7 @@
       "evidence": [
         "coverage-qa.mjs",
         "definition-to-application sequence",
-        "45-page final pedagogical/visual review",
+        "43-page final pedagogical/visual review",
         "CONE-CHANGE-01 guided investigation"
       ],
       "testsPassed": [
@@ -151,7 +151,7 @@
         "orientedConeSvg",
         "waffleConeSvg",
         "full-resolution diagram review",
-        "45-page visual artifact",
+        "43-page visual artifact",
         "deterministic geometric label-safety gate (browser-qa.mjs): every diagram label clears all structural strokes by >=2 user units and stays within the viewBox"
       ],
       "testsPassed": [
@@ -199,7 +199,7 @@
         "approved heading weights",
         "district footer",
         "shared visual language",
-        "45-page consistency review"
+        "43-page consistency review"
       ],
       "testsPassed": [
         "font load QA",
@@ -255,7 +255,7 @@
         "visual-baseline.json",
         "visual-regression-qa.mjs",
         "figure-containment gate (browser-qa.mjs): every student-page diagram is painted inside its direct parent box; catches visual spill that scrollHeight-based overflow checks miss",
-        "exact canonical-scope gate (qa.mjs): ==45 A4 pages and ==82 questions (were floors >=8/>=13); forbidden multiplication-glyph check extended to content.js; mobile horizontal-containment assertion (browser-qa.mjs §20.1)"
+        "exact canonical-scope gate (qa.mjs): ==43 A4 pages and ==82 questions (were floors >=8/>=13); forbidden multiplication-glyph check extended to content.js; mobile horizontal-containment assertion (browser-qa.mjs §20.1)"
       ],
       "testsPassed": [
         "SSOT QA",
@@ -263,10 +263,10 @@
         "coverage/inventory QA",
         "math QA",
         "browser QA",
-        "45-page visual regression",
+        "43-page visual regression",
         "geometric diagram label-safety gate",
         "figure-containment gate (SSOT §16.2): diagram cannot overflow its box onto neighbouring text",
-        "canonical scope exact-count QA (45 pages / 82 questions); mobile horizontal-containment QA (§20.1)"
+        "canonical scope exact-count QA (43 pages / 82 questions); mobile horizontal-containment QA (§20.1)"
       ],
       "remaining": []
     },
@@ -569,6 +569,12 @@
       "percent": 100,
       "commit": "pending-mobile-clip-and-qa-hardening",
       "note": "Independent full audit (Yaniv 2026-10-11: do not accept 'I finished' as proof — a full independent audit). Built a requirement→implementation→QA→evidence→status matrix for SSOT §2-§27 (6-scope adversarial workflow + live production/PDF/print/mobile verification). Result: no content/output gap — every binding requirement holds in the shipped output and on live production — except ONE real student-facing defect: §20.1 mobile portrait-clip. On 360/390/412px the scaled A4 page was ~55-63% clipped off the left edge (transform-origin:top center on the RTL right-aligned 210mm page; #book overflow:hidden masked it, so browser-qa — which only checked width/scrollWidth — stayed green and G09 read 100%). Fix: transform-origin → 'top right' so the full page lands at [8, vw-8]; verified live at 360/390/412 (all 45 pages fully visible, 0 clipped) and desktop unchanged (transform:none above 850px, so the CI pixel baseline is untouched). Added a browser-qa horizontal-containment assertion (mobile page left>=-1 and right<=viewport) to prevent silent regression. Enforcement hardening for documented-only findings: pinned the canonical scope exactly in qa.mjs (==45 pages / ==82 questions, previously floors >=8/>=13) and extended the forbidden multiplication-glyph check to content.js (previously app.js only). Cleanup: removed the stale orphan exports/student-pages/page-46.png left by the 46→45 merge and hardened the qa.yml persist step to clear removed page images first so orphans cannot recur. Refreshed stale derived evidence (G01/G03/G06/G08/G10 '11-page'→'45-page', G12 R-range). Percent unchanged at 100%: the mobile fix makes the existing 100% honest on phones; the rest is QA hardening + evidence currency, not scope. Teacher pages untouched (locked per §2.5). Left for Yaniv+GPT (SSOT/architecture scope, not changed here): fold §27 display rules into §9/§12, the §27 source-vs-post-render-policy robustness, §25.1 closure wording vs the reopened display round, PR #3 reflow-reader alternative (would require amending §20.1 'scale only'), r/h symbol table headers on pages 23/27, and footer gershayim vs ASCII quotes. Commit/SHA recorded after push."
+    },
+    {
+      "date": "2026-10-11",
+      "percent": 100,
+      "commit": "pending-merge-pages-4-5-8-9-arch03",
+      "note": "Review-session layout + math-notation fixes (Yaniv 2026-10-11, live preview). (1) Merged OBJ pages 4+5 ('זיהוי ומיון חפצים בצורת חרוט' + 'חרוט מול גופים אחרים') into one well-designed A4 (SSOT §26.7.9), and (2) merged the two 'מי צודק?' continuation pages 8+9 ('טענות נוספות' + 'חרוט מול פירמידה וסיכום') into one A4 (SSOT §26.7.10): the workbook went 45→44→43 A4 pages; all 82 questions preserved (layout merges, not content removal). (3) On the ratio-confirmation page CONE-ARCH-03 (r=5/h=9) added an accurate to-scale cylinder+cone figure (new scaleConeCylinderPair helper, shared 8px/cm scale, same base radius and height, shape-only so §15.3-safe; r/h values in the HTML figcaption), and fixed its math notation: the intro 'r = 5 ס״מ / h = 9 ס״מ' Latin-in-RTL bidi scramble was rewritten to clean Hebrew prose with units ('שרדיוסו 5 ס״מ ... שאורכו 9 ס״מ'), and the inline formula π·r²·h was wrapped in <bdi dir=ltr> so it renders left-to-right (verified: π left of h). (4) Extended the formula isolation to the other two student-visible inline formulas — CONE-RATIO-05 ('V = π·r²·h') and CONE-ARCH-02 ('π·r²·h' and the completion 'V = ___ · π · r² · h') — all 4 <bdi> now render LTR. (5) 'Words beside symbols' (Yaniv): added a Hebrew word-key (dimKey helper) beneath every measurement diagram (intro cone, axial section ×3, cylinder+cone ratio, ERR cone, sector, hat, roof) — e.g. 'רדיוס הבסיס = r · גובה החרוט = h · קו יוצר = ℓ · זווית הגזרה = α' — symbols kept, words added, as §15.3-safe HTML beneath the figure (not on the strokes). Recorded the new mandatory rules in SSOT §27.6 (bidi/formula isolation + units) and §27.7 (words beside symbols), logged the merges in §26.7.9/§26.7.10, and updated SSOT current-state counts 45→43. Pinned CANONICAL_PAGE_COUNT 45→43 in qa.mjs. Verified: npm run qa PASS (43 A4 pages, 82 questions); live preview all 43 pages overflowPx 0; merged 4+5, merged WHO, and ARCH-03 pages screenshotted. Pixels moved on every page (page-number shift + merged/figure pages) so visual-baseline.json is regenerated from this round's CI run (§26.7.3a pattern). Percent unchanged at 100%: layout consolidation + a real student-facing bidi/units/figure fix, not scope. Teacher pages untouched (locked §2.5). Pending Yaniv's confirmation before applying: the uniform 'חרוט – <topic>' title rescheme (it intersects GPT's student-display-policy.js, which rewrites two titles and locates pages by their title). Commit/baseline SHAs recorded after the CI run."
     }
   ]
 }
