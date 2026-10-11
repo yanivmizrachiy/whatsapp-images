@@ -2,31 +2,59 @@
 <html lang="he" dir="rtl">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <title>חרוט — דפי עבודה</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>חוברת החרוט</title>
   <link rel="stylesheet" href="styles.css">
   <style>
-    html{scroll-behavior:smooth;scroll-snap-type:y proximity}
+    html{scroll-behavior:smooth;scroll-snap-type:y proximity;overflow-x:clip}
+    html,body{max-width:100%}
+
+    /* Public reader chrome intentionally mirrors גליל חדש. */
+    .reader{position:sticky;top:0;z-index:20;min-height:52px;background:#fff;border-bottom:1px solid #d9e2ef;
+            box-shadow:0 2px 10px rgba(42,61,89,.06);display:flex;align-items:center;flex-wrap:wrap;
+            justify-content:flex-start;gap:8px 10px;padding:8px 16px}
+    .reader .title{font-weight:800;font-size:18px;white-space:nowrap;flex:0 1 auto;min-width:0;overflow:hidden;text-overflow:ellipsis}
+    .reader .visible-controls{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
     .reader .reader-internal{display:none!important}
-    .reader>div{margin-inline-start:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .reader .download-pdf{font-weight:700}
-    .page-jump{display:inline-flex;align-items:center;gap:7px;font-weight:700;white-space:nowrap}
-    .page-jump select{min-height:40px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#172033;font:inherit;font-weight:700;padding:7px 11px;cursor:pointer}
-    .scroll-view .page{scroll-snap-align:start;scroll-margin-top:68px}
+
+    /* Same compact selector as the cylinder reader: not a button. */
+    .counter{flex:0 0 auto;font:inherit;font-size:14px;font-weight:600;color:#41526b;white-space:nowrap;
+             background:#f1f5fb;border:1px solid #e0e8f3;border-radius:999px;padding:5px 30px 5px 12px;
+             min-height:34px;cursor:pointer;-webkit-appearance:none;appearance:none;
+             background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'><path d='M1 1l5 5 5-5' fill='none' stroke='%2341526b' stroke-width='2' stroke-linecap='round'/></svg>");
+             background-repeat:no-repeat;background-position:right 11px center}
+    .counter:focus-visible{outline:3px solid #93b4ff;outline-offset:2px}
+
+    /* Same single visible action as גליל: direct static PDF download. */
+    .download-pdf{flex:0 0 auto;display:inline-flex;align-items:center;gap:7px;min-height:34px;min-width:0;
+                  font:inherit;font-weight:700;text-decoration:none;background:#1d4ed8;color:#fff;
+                  border:1px solid #1d4ed8;border-radius:10px;padding:8px 15px;white-space:nowrap}
+    .download-pdf:hover{background:#1744b8;border-color:#1744b8;text-decoration:none}
+    .download-pdf:focus-visible{outline:3px solid #93b4ff;outline-offset:2px}
+    .download-pdf svg{width:16px;height:16px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+    /* Continuous manual scroll. Direct selector jumps use a short fade, never a long page-by-page scroll. */
     #book{transition:opacity 180ms ease}
     #book.reader-fading{opacity:0}
+    .scroll-view .page{scroll-snap-align:start;scroll-margin-top:70px}
+
+    /* No "עמוד X מתוך N" labels between sheets. A clean full-width blue rule is the only separator. */
+    .page-separator{width:100%;max-width:210mm;height:3px;background:#1d4ed8;margin:14px auto 18px;border:0;pointer-events:none}
+
     @media(max-width:850px){
-      .reader{padding:8px 10px}
-      .reader>div{width:auto;gap:7px}
-      .reader .download-pdf{min-height:44px;padding-inline:12px}
-      .page-jump select{min-height:44px;max-width:46vw}
+      .reader{min-height:48px;padding:7px 10px;gap:8px}
+      .reader .title{font-size:16px}
+      .reader .visible-controls{gap:8px}
+      .counter{font-size:13px;min-height:44px;max-width:48vw;padding:4px 26px 4px 10px;background-position:right 9px center}
+      .download-pdf{min-height:44px;padding:7px 12px}
       .scroll-view .page{scroll-margin-top:92px}
+      .page-separator{margin:10px auto 14px}
     }
     @media(prefers-reduced-motion:reduce){#book{transition:none}}
+    @media print{.page-separator{display:none!important}}
   </style>
   <script>
-    // Yaniv 2026-10-11: public workbook opens directly in continuous-scroll mode.
-    // Keep the URL explicit so the existing reader logic and QA use one canonical state.
+    // Canonical public state: continuous vertical reader only.
     (()=>{const u=new URL(location.href);if(!u.searchParams.has('view')){u.searchParams.set('view','scroll');history.replaceState(null,'',u)}})();
     window.MathJax={tex:{inlineMath:[['\\(','\\)']]},svg:{fontCache:'global'}};
   </script>
@@ -34,21 +62,24 @@
 </head>
 <body>
   <header class="reader">
-    <strong>חרוט</strong>
-    <div>
-      <button class="reader-internal" id="prev" tabindex="-1" aria-hidden="true">הקודם</button>
-      <span id="counter" class="reader-internal" aria-live="polite"></span>
-      <button class="reader-internal" id="next" tabindex="-1" aria-hidden="true">הבא</button>
-      <button class="reader-internal" id="view-toggle" tabindex="-1" aria-hidden="true" aria-pressed="true" title="הצגת כל הדפים ברצף לגלילה">כל הדפים</button>
-      <label class="page-jump" for="page-selector">
-        <span>מעבר לעמוד</span>
-        <select id="page-selector" aria-label="בחירת עמוד"></select>
-      </label>
-      <a class="reader-action download-pdf" href="exports/student-pages/cone-student.pdf" download>הורדת PDF</a>
-      <button class="reader-internal" tabindex="-1" aria-hidden="true" onclick="print()">הדפסה / PDF</button>
+    <strong class="title">חוברת החרוט</strong>
+
+    <!-- Temporary hidden compatibility hooks for app.js; never user-facing. -->
+    <button class="reader-internal" id="prev" tabindex="-1" aria-hidden="true">הקודם</button>
+    <span id="counter" class="reader-internal" aria-live="polite"></span>
+    <button class="reader-internal" id="next" tabindex="-1" aria-hidden="true">הבא</button>
+    <button class="reader-internal" id="view-toggle" tabindex="-1" aria-hidden="true" aria-pressed="true">כל הדפים</button>
+
+    <div class="visible-controls">
+      <select class="counter" id="page-selector" aria-label="בחירת עמוד"></select>
+      <a class="reader-action download-pdf" href="exports/student-pages/cone-student.pdf" download="חרוט-חדש.pdf" aria-label="הורדת החוברת כקובץ PDF">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>
+        הורדת PDF
+      </a>
     </div>
   </header>
-  <main id="book"></main>
+
+  <main id="book" aria-label="חוברת החרוט — גלילה רציפה של כל הדפים"></main>
   <script src="content.js"></script>
   <script src="app.js"></script>
   <script src="student-display-policy.js"></script>
