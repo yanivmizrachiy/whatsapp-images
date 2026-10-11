@@ -150,7 +150,7 @@ ok(/\.gz-footer\{[^}]*right:0;left:0;[^}]*border-top:1.5px solid var\(--deep\)/.
 ok(/<span id="counter"/.test(index),'page counter must be a non-button text read-out');
 ok(app.includes("classList.toggle('scroll-view',scrollView)"),'reader must expose the scroll-view body class');
 ok(app.includes("addEventListener('scroll',syncCounterToScroll"),'sticky counter must follow the page in view while scrolling');
-ok(css.includes('.scroll-view .page{margin-bottom:18px}'),'scroll-view page separation style missing');
+ok(css.includes('.scroll-view .page{margin-bottom:3px}'),'scroll-view pages must be adjacent (separated only by the 3px blue line, no white gap; §20.3)');
 ok(css.includes('@media print{.scroll-view .page,.scroll-view .page:last-child{margin:0}}'),'scroll view must not alter print pagination');
 
 ok(app.includes('yanivmizrachiy/jerusalem/5dd97f6acfc3e3f95550ef1cb714d416261f174c/public/logo.png'),'verified immutable district logo source missing');
