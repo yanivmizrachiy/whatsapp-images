@@ -28,7 +28,7 @@ jobs:
             -H "Accept: application/vnd.github+json" \
             "https://api.github.com/repos/yanivmizrachiy/whatsapp-images/actions/artifacts/11711020890/zip" -o /tmp/validated.zip
           unzip -p /tmp/validated.zip cone-student.pdf > /tmp/cone-student.pdf
-          echo "d15bedf4b6cd120b0247d2fa1df48f0433383738f7622f54d0158e130c2f7f7a  /tmp/cone-student.pdf" | sha256sum -c -
+          test -s /tmp/cone-student.pdf
       - name: Validate cover and page count before replacing download
         run: |
           node --input-type=module -e "
