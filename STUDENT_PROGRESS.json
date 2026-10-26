@@ -11,8 +11,8 @@
   "weightsSum": 100,
   "baselinePercent": 91.1,
   "overallPercent": 100,
-  "updatedAt": "2026-10-12T00:00:00+03:00",
-  "updatedBy": "Claude Code — post-merge sync: PR #23 (Harut closure, supersedes #22) merged into main as 2902e1f; CI regenerated the validated exports (cover + 43 pages, 44-sheet PDF) as 3a6a305; headCommit pinned to that main. No content change.",
+  "updatedAt": "2026-10-26T00:00:00+02:00",
+  "updatedBy": "ChatGPT — isolated project-identity guard proposal; pending QA/review; no production modification",
   "headCommit": "3a6a30556f90c1d05244449fd6f2ab9217d4d3c4",
   "statusRules": {
     "done": "completionPercent=100 and all acceptance criteria/tests/evidence exist",
@@ -661,6 +661,11 @@
       "date": "2026-10-12",
       "change": "Compute A4 mobile scaling from actual book width rather than window width.",
       "validation": "Pending browser and CI verification; preserve original cover artwork and all pages."
+    },
+    {
+      "date": "2026-10-26",
+      "change": "Safe isolated PR: introduce canonical GitHub/Vercel project identity preflight used before agent edits and in existing QA; no workbook, PDF, deployment or production change.",
+      "validation": "Pending CI/independent review and Vercel target recheck before merge; SSOT §29. No change to 100% student content completion and no claim of production activation."
     }
   ]
 }
